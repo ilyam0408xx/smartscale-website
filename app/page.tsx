@@ -1,65 +1,172 @@
-import Image from "next/image";
+import type { Metadata } from 'next'
+import JsonLd from '@/components/JsonLd'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import WhatsAppFloat from '@/components/WhatsAppFloat'
+import HeroSection from '@/components/sections/HeroSection'
+import PainSection from '@/components/sections/PainSection'
+import ServicesSection from '@/components/sections/ServicesSection'
+import MidCta from '@/components/sections/MidCta'
+import StatsSection from '@/components/sections/StatsSection'
+import TestimonialsSection from '@/components/sections/TestimonialsSection'
+import StorySection from '@/components/sections/StorySection'
+import ContactSection from '@/components/sections/ContactSection'
+import {
+  organizationSchema,
+  personSchema,
+  webSiteSchema,
+  faqSchema,
+} from '@/lib/schema'
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Smart Scale — מערכות חכמות לעסקים',
+  description:
+    'בונה מערכות שעושות לעסק שלך את העבודה החוזרת — לידים, תזכורות, ניירת — אוטומטית. 7+ שנות ניסיון, 24 תהליכים ללקוח אחד. שיחת ייעוץ חינם.',
+  alternates: {
+    canonical: 'https://ilyamaltsev.com',
+    languages: { he: 'https://ilyamaltsev.com' },
+  },
+  openGraph: {
+    title: 'Smart Scale — מערכות חכמות לעסקים',
+    description:
+      'בונה מערכות שעושות לעסק שלך את העבודה החוזרת — לידים, תזכורות, ניירת — אוטומטית.',
+    url: 'https://ilyamaltsev.com',
+    locale: 'he_IL',
+    type: 'website',
+    images: [
+      {
+        url: 'https://ilyamaltsev.com/og/homepage.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Smart Scale — מערכות חכמות לעסקים ישראליים, איליה מלצב',
+      },
+    ],
+  },
+}
+
+const homepageFAQs = [
+  {
+    question: 'מה זה Smart Scale?',
+    answer:
+      'Smart Scale היא חברה ישראלית שבונה מערכות אוטומטיות לעסקים קטנים ובינוניים. המערכות מחליפות עבודה ידנית חוזרת — כל ליד מקבל מענה תוך 2 דקות, תזכורות יוצאות לבד, ומסמכים מסתדרים אוטומטית. המייסד הוא איליה מלצב, עם 7+ שנות ניסיון.',
+  },
+  {
+    question: 'כמה עולה לבנות מערכת?',
+    answer:
+      'מחיר מינימלי לפרויקט הוא 2,500 ש"ח. מערכות בינוניות עולות 3,500-4,500 ש"ח, ומערכות מלאות עם 10+ תהליכים עולות 5,000-7,000 ש"ח. התשלום: 50% מראש, 50% עם סיום. כל מערכת כוללת 45 ימי תמיכה.',
+  },
+  {
+    question: 'כמה זמן לוקח לבנות מערכת?',
+    answer:
+      'מערכת בסיסית (בוט WhatsApp, תזכורות) — שבוע עד שבועיים. מערכת CRM מלאה עם אוטומציות — 2-4 שבועות. מערכת ניהול מסמכים מורכבת — 4-6 שבועות. כל לוח זמנים מוסכם מראש.',
+  },
+  {
+    question: 'האם אני צריך לדעת טכנולוגיה?',
+    answer:
+      'לא. המערכת עובדת עם הכלים שכבר יש לך — WhatsApp, Google Drive, Gmail. לא צריך ללמוד שום תוכנה חדשה. איליה מלווה אותך עד שהכל עובד, ומדריך אותך בפשטות.',
+  },
+  {
+    question: 'מה קורה אם משהו לא עובד אחרי ההקמה?',
+    answer:
+      'כל מערכת כוללת 45 ימי תמיכה ותיקונים ללא עלות נוספת. אם יש בעיה — שולחים הודעה ב-WhatsApp ומקבלים מענה תוך שעות. לרוב תקלות מתוקנות תוך יום עסקים.',
+  },
+  {
+    question: 'האם זה מתאים לעסק קטן?',
+    answer:
+      'כן — במיוחד לעסק קטן. עסק עם 1-10 עובדים מרוויח הכי הרבה מאוטומציה כי כל שעה שנחסכת שווה יותר. עסקים קטנים שבנו מערכות עם Smart Scale חוסכים בממוצע 15 שעות עבודה בשבוע.',
+  },
+]
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <JsonLd data={organizationSchema()} />
+      <JsonLd data={personSchema()} />
+      <JsonLd data={webSiteSchema()} />
+      <JsonLd data={faqSchema(homepageFAQs)} />
+
+      <Header />
+      <main>
+        <HeroSection />
+        <PainSection />
+        <ServicesSection />
+        <MidCta />
+        <StatsSection />
+        <TestimonialsSection />
+        <StorySection />
+
+        {/* FAQ Section */}
+        <section
+          id="faq"
+          style={{ padding: '80px 0', background: '#f9f9f7' }}
+        >
+          <div
+            className="wrap"
+            style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px' }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <h2
+              style={{
+                fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+                fontWeight: 800,
+                color: '#0a0a0a',
+                marginBottom: 8,
+              }}
+            >
+              שאלות שכולם שואלים
+            </h2>
+            <p className="direct-answer">
+              Smart Scale בונה מערכות לעסקים ישראליים קטנים ובינוניים. מחיר
+              מינימלי 2,500 ש&quot;ח, תוך שבועיים להקמה, ללא צורך בידע טכני.
+              45 ימי תמיכה כלולים בכל פרויקט.
+            </p>
+            <div
+              style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+            >
+              {homepageFAQs.map((faq, i) => (
+                <details
+                  key={i}
+                  style={{
+                    border: '1px solid #e5e5e5',
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <summary
+                    style={{
+                      padding: '18px 20px',
+                      fontWeight: 600,
+                      fontSize: 16,
+                      cursor: 'pointer',
+                      listStyle: 'none',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      color: '#0a0a0a',
+                    }}
+                  >
+                    {faq.question}
+                    <span style={{ fontSize: 20, color: '#0ea5e9' }}>+</span>
+                  </summary>
+                  <div
+                    style={{
+                      padding: '0 20px 18px',
+                      fontSize: 15,
+                      color: '#3a3a3a',
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {faq.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <ContactSection />
       </main>
-    </div>
-  );
+      <Footer />
+      <WhatsAppFloat />
+    </>
+  )
 }

@@ -1,7 +1,24 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
+import createMDX from '@next/mdx'
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  images: {
+    formats: ['image/webp', 'image/avif'],
+  },
+  async redirects() {
+    return [
+      { source: '/business-card', destination: '/', permanent: true },
+    ]
+  },
+}
 
-export default nextConfig;
+export default withMDX(nextConfig)
