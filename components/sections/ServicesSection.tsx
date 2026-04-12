@@ -64,6 +64,7 @@ export default function ServicesSection() {
           {services.map((service, i) => (
             <div
               key={i}
+              className="reveal"
               style={{
                 border: '1px solid #e5e5e5',
                 borderRadius: 16,

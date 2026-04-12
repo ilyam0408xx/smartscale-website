@@ -37,6 +37,7 @@ export default function PainSection() {
           {pains.map((pain, i) => (
             <div
               key={i}
+              className="reveal"
               style={{
                 background: '#fff',
                 borderRadius: 12,

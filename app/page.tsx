@@ -3,6 +3,7 @@ import JsonLd from '@/components/JsonLd'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
+import ScrollReveal from '@/components/ScrollReveal'
 import HeroSection from '@/components/sections/HeroSection'
 import PainSection from '@/components/sections/PainSection'
 import ServicesSection from '@/components/sections/ServicesSection'
@@ -85,6 +86,7 @@ export default function HomePage() {
       <JsonLd data={webSiteSchema()} />
       <JsonLd data={faqSchema(homepageFAQs)} />
 
+      <ScrollReveal />
       <Header />
       <main>
         <HeroSection />

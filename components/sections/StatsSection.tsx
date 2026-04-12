@@ -26,7 +26,7 @@ export default function StatsSection() {
           }}
         >
           {stats.map((stat, i) => (
-            <div key={i}>
+            <div key={i} className="reveal">
               <div
                 style={{
                   fontSize: 'clamp(2.5rem, 6vw, 4rem)',

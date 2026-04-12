@@ -81,7 +81,7 @@ export default function TestimonialsSection() {
           }}
         >
           {testimonials.map((t) => (
-            <div key={t.videoId}>
+            <div key={t.videoId} className="reveal">
               <a
                 href={t.url}
                 target="_blank"

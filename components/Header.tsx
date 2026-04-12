@@ -111,35 +111,44 @@ export default function Header() {
         />
       </button>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 64,
-            insetInlineStart: 0,
-            insetInlineEnd: 0,
-            background: '#fff',
-            borderTop: '1px solid #e5e5e5',
-            padding: '20px 40px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          }}
-        >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 16, fontWeight: 500, color: '#0a0a0a' }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      )}
+      {/* Mobile menu — always rendered, animated open/close */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 64,
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          background: '#fff',
+          borderTop: menuOpen ? '1px solid #e5e5e5' : 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          boxShadow: menuOpen ? '0 4px 20px rgba(0,0,0,0.08)' : 'none',
+          overflow: 'hidden',
+          maxHeight: menuOpen ? 300 : 0,
+          padding: menuOpen ? '20px 40px' : '0 40px',
+          opacity: menuOpen ? 1 : 0,
+          transition: 'max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease',
+          pointerEvents: menuOpen ? 'auto' : 'none',
+        }}
+      >
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setMenuOpen(false)}
+            style={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: '#0a0a0a',
+              transform: menuOpen ? 'translateY(0)' : 'translateY(-8px)',
+              transition: 'transform 0.3s ease',
+            }}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
     </nav>
   )
 }
