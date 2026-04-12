@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
+import Accordion from '@/components/Accordion'
 import { faqSchema, breadcrumbSchema, WA_LINK } from '@/lib/schema'
 
 export const metadata: Metadata = {

@@ -3,7 +3,9 @@ import JsonLd from '@/components/JsonLd'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
+import Accordion from '@/components/Accordion'
 import ScrollReveal from '@/components/ScrollReveal'
+import HashScroll from '@/components/HashScroll'
 import HeroSection from '@/components/sections/HeroSection'
 import PainSection from '@/components/sections/PainSection'
 import ServicesSection from '@/components/sections/ServicesSection'
@@ -87,6 +89,7 @@ export default function HomePage() {
       <JsonLd data={faqSchema(homepageFAQs)} />
 
       <ScrollReveal />
+      <HashScroll />
       <Header />
       <main>
         <HeroSection />
@@ -121,47 +124,7 @@ export default function HomePage() {
               מינימלי 2,500 ש&quot;ח, תוך שבועיים להקמה, ללא צורך בידע טכני.
               45 ימי תמיכה כלולים בכל פרויקט.
             </p>
-            <div
-              style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-            >
-              {homepageFAQs.map((faq, i) => (
-                <details
-                  key={i}
-                  style={{
-                    border: '1px solid #e5e5e5',
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <summary
-                    style={{
-                      padding: '18px 20px',
-                      fontWeight: 600,
-                      fontSize: 16,
-                      cursor: 'pointer',
-                      listStyle: 'none',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      color: '#0a0a0a',
-                    }}
-                  >
-                    {faq.question}
-                    <span style={{ fontSize: 20, color: '#0ea5e9' }}>+</span>
-                  </summary>
-                  <div
-                    style={{
-                      padding: '0 20px 18px',
-                      fontSize: 15,
-                      color: '#3a3a3a',
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {faq.answer}
-                  </div>
-                </details>
-              ))}
-            </div>
+            <Accordion items={homepageFAQs} />
           </div>
         </section>
 

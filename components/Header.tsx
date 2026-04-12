@@ -3,10 +3,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -14,12 +17,68 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = [
-    { href: '#services', label: 'שירותים' },
-    { href: '#testimonials', label: 'המלצות' },
+  // Handle anchor navigation: smooth scroll on homepage, navigate+scroll from other pages
+  function handleAnchorClick(e: React.MouseEvent, sectionId: string) {
+    e.preventDefault()
+    setMenuOpen(false)
+
+    if (pathname === '/') {
+      // Already on homepage — just smooth scroll
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      // Navigate to homepage, then scroll once it loads
+      router.push('/#' + sectionId)
+    }
+  }
+
+  const navLinks: { href: string; label: string; anchor?: string }[] = [
+    { href: '/', label: 'דף הבית' },
+    { href: '#services', label: 'שירותים', anchor: 'services' },
+    { href: '#testimonials', label: 'המלצות', anchor: 'testimonials' },
     { href: '/blog', label: 'בלוג' },
-    { href: '#contact', label: 'דברו איתי' },
+    { href: '#contact', label: 'דברו איתי', anchor: 'contact' },
   ]
+
+  const linkStyle = {
+    color: '#0a0a0a' as const,
+    transition: 'color 0.2s',
+    textDecoration: 'none' as const,
+    cursor: 'pointer' as const,
+  }
+
+  function renderLink(link: (typeof navLinks)[0], mobile = false) {
+    const style = mobile
+      ? { fontSize: 16, fontWeight: 500, ...linkStyle }
+      : linkStyle
+
+    if (link.anchor) {
+      return (
+        <a
+          key={link.href}
+          href={'/#' + link.anchor}
+          style={style}
+          onClick={(e) => handleAnchorClick(e, link.anchor!)}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#0ea5e9')}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#0a0a0a')}
+        >
+          {link.label}
+        </a>
+      )
+    }
+
+    return (
+      <Link
+        key={link.href}
+        href={link.href}
+        style={style}
+        onClick={() => setMenuOpen(false)}
+        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#0ea5e9')}
+        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#0a0a0a')}
+      >
+        {link.label}
+      </Link>
+    )
+  }
 
   return (
     <nav
@@ -50,25 +109,8 @@ export default function Header() {
       </Link>
 
       {/* Desktop nav */}
-      <div
-        className="hidden md:flex gap-8"
-        style={{ fontSize: 15, fontWeight: 500 }}
-      >
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            style={{ color: '#0a0a0a', transition: 'color 0.2s' }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLElement).style.color = '#0ea5e9')
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLElement).style.color = '#0a0a0a')
-            }
-          >
-            {link.label}
-          </Link>
-        ))}
+      <div className="hidden md:flex gap-8" style={{ fontSize: 15, fontWeight: 500 }}>
+        {navLinks.map((link) => renderLink(link))}
       </div>
 
       {/* Hamburger */}
@@ -79,39 +121,12 @@ export default function Header() {
         aria-expanded={menuOpen}
         style={{ background: 'none', border: 'none', cursor: 'pointer' }}
       >
-        <span
-          style={{
-            display: 'block',
-            width: 24,
-            height: 2,
-            background: '#0a0a0a',
-            transition: 'transform 0.2s',
-            transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none',
-          }}
-        />
-        <span
-          style={{
-            display: 'block',
-            width: 24,
-            height: 2,
-            background: '#0a0a0a',
-            opacity: menuOpen ? 0 : 1,
-            transition: 'opacity 0.2s',
-          }}
-        />
-        <span
-          style={{
-            display: 'block',
-            width: 24,
-            height: 2,
-            background: '#0a0a0a',
-            transition: 'transform 0.2s',
-            transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none',
-          }}
-        />
+        <span style={{ display: 'block', width: 24, height: 2, background: '#0a0a0a', transition: 'transform 0.2s', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+        <span style={{ display: 'block', width: 24, height: 2, background: '#0a0a0a', opacity: menuOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+        <span style={{ display: 'block', width: 24, height: 2, background: '#0a0a0a', transition: 'transform 0.2s', transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
 
-      {/* Mobile menu — always rendered, animated open/close */}
+      {/* Mobile menu */}
       <div
         style={{
           position: 'absolute',
@@ -125,29 +140,14 @@ export default function Header() {
           gap: 16,
           boxShadow: menuOpen ? '0 4px 20px rgba(0,0,0,0.08)' : 'none',
           overflow: 'hidden',
-          maxHeight: menuOpen ? 300 : 0,
+          maxHeight: menuOpen ? 320 : 0,
           padding: menuOpen ? '20px 40px' : '0 40px',
           opacity: menuOpen ? 1 : 0,
           transition: 'max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease',
           pointerEvents: menuOpen ? 'auto' : 'none',
         }}
       >
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setMenuOpen(false)}
-            style={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: '#0a0a0a',
-              transform: menuOpen ? 'translateY(0)' : 'translateY(-8px)',
-              transition: 'transform 0.3s ease',
-            }}
-          >
-            {link.label}
-          </Link>
-        ))}
+        {navLinks.map((link) => renderLink(link, true))}
       </div>
     </nav>
   )
