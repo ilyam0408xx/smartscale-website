@@ -82,6 +82,21 @@ a {
   margin-bottom: 12px;
 }
 
+/* Article prose styles */
+.prose h2 { font-size: 1.5rem; font-weight: 800; margin: 2rem 0 0.75rem; color: #0a0a0a; }
+.prose h3 { font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: #0a0a0a; }
+.prose p  { margin-bottom: 1.1rem; line-height: 1.85; color: #3a3a3a; }
+.prose ul, .prose ol { margin: 0.75rem 0 1rem 1.5rem; }
+.prose li { margin-bottom: 0.5rem; line-height: 1.7; }
+.prose strong { font-weight: 700; color: #0a0a0a; }
+.prose hr { margin: 2rem 0; border: none; border-top: 1px solid #e5e5e5; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.prose th, .prose td { padding: 10px 14px; border: 1px solid #e5e5e5; text-align: right; }
+.prose th { background: #f9f9f7; font-weight: 700; }
+.prose em { font-style: italic; color: #6b6b6b; }
+.prose .direct-answer { background: #f0f9ff; border-inline-start: 3px solid #0ea5e9; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1rem 0 1.5rem; }
+.prose .tldr { background: #f0fdf4; border-inline-start: 3px solid #22c55e; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1rem 0 1.5rem; }
+
 /* Blog card hover */
 .blog-card {
   transition: box-shadow 0.2s, transform 0.2s;

@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { remark } from 'remark'
+import remarkHtml from 'remark-html'
 
 export interface PostMeta {
   slug: string
@@ -72,5 +74,10 @@ export async function getPostBySlug(
     tags: data.tags || [],
   }
 
-  return { meta, content }
+  // Convert markdown → HTML
+  const processed = await remark()
+    .use(remarkHtml, { sanitize: false })
+    .process(content)
+
+  return { meta, content: processed.toString() }
 }

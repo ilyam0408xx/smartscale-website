@@ -141,11 +141,8 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Article content */}
           <div
-            style={{
-              fontSize: 17,
-              lineHeight: 1.8,
-              color: '#3a3a3a',
-            }}
+            className="prose"
+            style={{ fontSize: 17 }}
             dangerouslySetInnerHTML={{ __html: content }}
           />
 
