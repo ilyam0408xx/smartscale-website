@@ -3,6 +3,7 @@ import { Heebo } from 'next/font/google'
 import './globals.css'
 import CookieBanner from '@/components/CookieBanner'
 import PixelLoader from '@/components/PixelLoader'
+import AiWidget from '@/components/AiWidget'
 
 const heebo = Heebo({
   subsets: ['hebrew', 'latin'],
@@ -59,6 +60,7 @@ export default function RootLayout({
         {children}
         <PixelLoader />
         <CookieBanner />
+        <AiWidget />
       </body>
     </html>
   )
