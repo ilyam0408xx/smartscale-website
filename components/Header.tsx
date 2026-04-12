@@ -17,7 +17,7 @@ export default function Header() {
   const navLinks = [
     { href: '#services', label: 'שירותים' },
     { href: '#testimonials', label: 'המלצות' },
-    { href: '#story', label: 'הסיפור שלי' },
+    { href: '/blog', label: 'בלוג' },
     { href: '#contact', label: 'דברו איתי' },
   ]
 
@@ -55,7 +55,7 @@ export default function Header() {
         style={{ fontSize: 15, fontWeight: 500 }}
       >
         {navLinks.map((link) => (
-          <a
+          <Link
             key={link.href}
             href={link.href}
             style={{ color: '#0a0a0a', transition: 'color 0.2s' }}
@@ -67,7 +67,7 @@ export default function Header() {
             }
           >
             {link.label}
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -129,14 +129,14 @@ export default function Header() {
           }}
         >
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               style={{ fontSize: 16, fontWeight: 500, color: '#0a0a0a' }}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
       )}

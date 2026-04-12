@@ -163,6 +163,24 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Blog teaser */}
+        <section style={{ padding: '60px 0', background: '#fff', borderTop: '1px solid #e5e5e5' }}>
+          <div className="wrap" style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+            <div>
+              <p className="section-label">בלוג</p>
+              <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 800, color: '#0a0a0a', marginBottom: 8 }}>
+                מדריכים לבעלי עסקים
+              </h2>
+              <p style={{ fontSize: 16, color: '#6b6b6b', maxWidth: 460 }}>
+                מאמרים מעשיים על חיסכון בזמן, מניעת אובדן לידים, ואוטומציה לעסקים ישראליים.
+              </p>
+            </div>
+            <a href="/blog" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', border: '2px solid #0ea5e9', borderRadius: 8, color: '#0ea5e9', fontWeight: 700, fontSize: 16, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              לכל המאמרים ←
+            </a>
+          </div>
+        </section>
+
         <ContactSection />
       </main>
       <Footer />
