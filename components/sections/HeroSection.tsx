@@ -59,9 +59,9 @@ export default function HeroSection() {
             className="direct-answer"
             style={{ color: '#6b6b6b', marginBottom: 32, fontSize: 18 }}
           >
-            בונה מערכות חכמות לעסקים. ניהול לקוחות, בוטי WhatsApp, ותזכורות
-            אוטומטיות — כל מה שחוסך לך זמן ומכניס לך כסף, עובד 24/7 בלי שתגע
-            בזה.
+            אני בונה מערכות חכמות לעסקים. ניהול לקוחות, בוטי WhatsApp,
+            ותזכורות אוטומטיות — כל מה שחוסך לך זמן ומכניס לך כסף, עובד 24/7
+            בלי שתגע בזה.
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <a

@@ -56,7 +56,7 @@ export default function ContactSection() {
         >
           שיחת ייעוץ חינם, בלי התחייבות.
           <br />
-          נבין ביחד מה אפשר לשפר אצלך ונבנה תוכנית.
+          נבין ביחד מה אפשר לשפר אצלך, ואבנה לך תוכנית.
         </p>
         <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 28 }}>
           <a

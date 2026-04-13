@@ -65,7 +65,7 @@ export default function CRMPage() {
               <strong>בקצרה:</strong>
               <ul>
                 <li>כל ליד נכנס למערכת ומקבל מענה תוך 2 דקות — גם בלילה</li>
-                <li>עסק שבנינו ל-CRM חוסך בממוצע 15 שעות עבודה ידנית בשבוע</li>
+                <li>עסק שבניתי לו CRM חוסך בממוצע 15 שעות עבודה ידנית בשבוע</li>
                 <li>מחיר: מ-2,500 ש"ח. ללא תשלום חודשי. מוכן תוך שבועיים.</li>
               </ul>
             </div>
@@ -100,7 +100,7 @@ export default function CRMPage() {
           <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px' }}>
             <h2 style={{ fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 800, marginBottom: 12 }}>מה המערכת עושה</h2>
             <p className="direct-answer">
-              מערכת CRM של Smart Scale מרכזת את כל הלידים ממקורות שונים — WhatsApp, אתר, פייסבוק — למקום אחד. כל ליד עובר שלבים מוגדרים עם תזכורות אוטומטיות. אף ליד לא נשכח, אף פולואפ לא מפוספס.
+              מערכת ה-CRM שאני בונה מרכזת את כל הלידים ממקורות שונים — WhatsApp, אתר, פייסבוק — למקום אחד. כל ליד עובר שלבים מוגדרים עם תזכורות אוטומטיות. אף ליד לא נשכח, אף פולואפ לא מפוספס.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 32 }}>
               {[
@@ -130,7 +130,7 @@ export default function CRMPage() {
             </h2>
             <p style={{ color: '#e5e5e5', fontSize: 17, lineHeight: 1.8, maxWidth: 680 }}>
               אריק ניהל עסק עם תורים דרך WhatsApp וגיליון. לידים נשכחו, פולואפים לא קרו.
-              אחרי שבנינו לו מערכת — 24 תהליכים רצים לבד. מהרגע שנכנס ליד חדש ועד פולואפ אחרי טיפול,
+              אחרי שבניתי לו מערכת — 24 תהליכים רצים לבד. מהרגע שנכנס ליד חדש ועד פולואפ אחרי טיפול,
               הכל קורה אוטומטי. הוא חוסך 3 שעות ביום ומנהל פי 2 יותר לקוחות.
             </p>
           </div>
@@ -140,7 +140,7 @@ export default function CRMPage() {
         <section style={{ padding: '80px 0', background: '#fff' }}>
           <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px' }}>
             <h2 style={{ fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 800, marginBottom: 8 }}>שאלות נפוצות</h2>
-            <p className="direct-answer">מערכת CRM של Smart Scale מתחילה מ-2,500 ש"ח, נבנית תוך שבועיים, ועובדת עם הכלים שכבר יש לך — WhatsApp, Gmail, גוגל שיטס. ללא תשלום חודשי.</p>
+            <p className="direct-answer">מערכת CRM שאני בונה מתחילה מ-2,500 ש"ח, נבנית תוך שבועיים, ועובדת עם הכלים שכבר יש לך — WhatsApp, Gmail, גוגל שיטס. ללא תשלום חודשי.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
               {faqs.map((faq, i) => (
                 <details key={i} style={{ border: '1px solid #e5e5e5', borderRadius: 12, overflow: 'hidden' }}>

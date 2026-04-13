@@ -106,7 +106,7 @@ export default function AutomationPage() {
         <section style={{ padding: '80px 0', background: '#f9f9f7' }}>
           <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px' }}>
             <h2 style={{ fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 800, marginBottom: 8 }}>שאלות נפוצות</h2>
-            <p className="direct-answer">אוטומציה עסקית של Smart Scale עובדת עם הכלים שכבר יש לך, מתחילה מ-2,500 ש"ח, ועובדת לבד תוך שבוע מההקמה.</p>
+            <p className="direct-answer">האוטומציה שאני בונה עובדת עם הכלים שכבר יש לך, מתחילה מ-2,500 ש"ח, ועובדת לבד תוך שבוע מההקמה.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
               {faqs.map((faq, i) => (
                 <details key={i} style={{ border: '1px solid #e5e5e5', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>

@@ -10,7 +10,7 @@ import { getAllPosts } from '@/lib/blog'
 export const metadata: Metadata = {
   title: 'מדריכים לבעלי עסקים — חיסכון בזמן ואוטומציה',
   description:
-    'מאמרים ומדריכים מעשיים לבעלי עסקים ישראליים על אוטומציה, ניהול לקוחות, בוטי WhatsApp, וחיסכון בזמן. כתוב על ידי איליה מלצב.',
+    'מאמרים ומדריכים מעשיים שאני כותב לבעלי עסקים ישראליים — על אוטומציה, ניהול לקוחות, בוטי WhatsApp, וחיסכון בזמן.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/blog',
     languages: { he: 'https://ilyamaltsev.com/blog' },
