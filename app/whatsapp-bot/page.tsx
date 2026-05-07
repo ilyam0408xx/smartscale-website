@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
 import Accordion from '@/components/Accordion'
-import { faqSchema, breadcrumbSchema, WA_LINK } from '@/lib/schema'
+import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'בוט WhatsApp לעסקים — תגובה תוך 2 דקות',
@@ -35,6 +35,7 @@ const faqs = [
 export default function WhatsAppBotPage() {
   return (
     <>
+      <JsonLd data={serviceSchema({ name: 'בוט WhatsApp לעסקים', description: 'בוט WhatsApp שעונה ללידים 24/7 תוך 2 דקות — תיאום תורים, תזכורות, מיון לידים. מסיר 80% מהעומס.', url: '/whatsapp-bot', price: '2500' })} />
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'בוט WhatsApp', url: '/whatsapp-bot' }])} />
       <Header />
@@ -93,6 +94,21 @@ export default function WhatsAppBotPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Case study */}
+        <section style={{ padding: '60px 0', background: '#0a0a0a' }}>
+          <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 40px' }}>
+            <p className="section-label" style={{ color: '#aaaaaa' }}>דוגמה אמיתית</p>
+            <h2 style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 800, color: '#fff', marginBottom: 16 }}>
+              קליניקה שהורידה no-shows ב-55% בחודש הראשון
+            </h2>
+            <p style={{ color: '#e5e5e5', fontSize: 17, lineHeight: 1.8, maxWidth: 680 }}>
+              קליניקת ייעוץ ביקשה להפחית אי-הגעות לתורים שעלו להם 4-5 שעות אבודות בשבוע.
+              הקמנו בוט WhatsApp שמתאם תורים, שולח תזכורת 24 שעות לפני, ומבקש אישור חזרה.
+              בחודש הראשון — no-shows ירדו מ-20% ל-9%. הבעלים עצמה הפסיקה לטפל בתיאום ידני לגמרי.
+            </p>
           </div>
         </section>
 

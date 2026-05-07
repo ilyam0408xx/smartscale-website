@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
 import Accordion from '@/components/Accordion'
-import { faqSchema, breadcrumbSchema, WA_LINK } from '@/lib/schema'
+import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'אוטומציה לעסקים — 15 שעות בשבוע שחוזרות אליך',
@@ -35,6 +35,7 @@ const faqs = [
 export default function AutomationPage() {
   return (
     <>
+      <JsonLd data={serviceSchema({ name: 'אוטומציה עסקית לעסקים ישראליים', description: 'אוטומציה עסקית לעסקים ישראליים — לידים, תזכורות, מסמכים, דוחות. עסקים חוסכים 12-18 שעות שבועיות.', url: '/automation', price: '2500' })} />
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'אוטומציה לעסקים', url: '/automation' }])} />
       <Header />

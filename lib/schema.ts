@@ -111,6 +111,29 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
   }
 }
 
+interface ServiceSchemaProps {
+  name: string
+  description: string
+  url: string
+  price?: string
+}
+
+export function serviceSchema(props: ServiceSchemaProps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: props.name,
+    description: props.description,
+    url: `${BASE_URL}${props.url}`,
+    provider: { '@type': 'Organization', name: 'Smart Scale', url: BASE_URL },
+    areaServed: { '@type': 'Country', name: 'IL' },
+    inLanguage: 'he',
+    ...(props.price && {
+      offers: { '@type': 'Offer', price: props.price, priceCurrency: 'ILS' },
+    }),
+  }
+}
+
 interface ArticleSchemaProps {
   title: string
   description: string

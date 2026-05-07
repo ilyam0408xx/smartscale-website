@@ -16,6 +16,12 @@ Smart Scale בונה מערכות אוטומטיות לעסקים ישראליי
 
 ## דפים ראשיים
 - [דף הבית](https://ilyamaltsev.com): מערכות אוטומטיות לעסקים ישראליים
+- [מערכת ניהול לקוחות](https://ilyamaltsev.com/crm): CRM לעסקים — לא תאבד לקוח אחד
+- [בוט WhatsApp](https://ilyamaltsev.com/whatsapp-bot): תגובה תוך 2 דקות, 24/7
+- [אוטומציה](https://ilyamaltsev.com/automation): 15 שעות בשבוע שחוזרות אליך
+- [גנרציית לידים](https://ilyamaltsev.com/lead-gen): 100 לידים ב-6 דקות — Reacherful
+- [אודות](https://ilyamaltsev.com/about): איליה מלצב — מייסד Smart Scale
+- [שאלות ותשובות](https://ilyamaltsev.com/faq): כל השאלות על המערכות
 - [בלוג](https://ilyamaltsev.com/blog): מדריכים לבעלי עסקים
 
 ## תוכן מלא

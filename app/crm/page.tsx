@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
 import Accordion from '@/components/Accordion'
-import { faqSchema, breadcrumbSchema, WA_LINK } from '@/lib/schema'
+import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'מערכת ניהול לקוחות לעסקים — לא תאבד לקוח אחד',
@@ -21,6 +21,14 @@ export const metadata: Metadata = {
     url: 'https://ilyamaltsev.com/crm',
     locale: 'he_IL',
     type: 'website',
+    images: [
+      {
+        url: 'https://ilyamaltsev.com/og/homepage.webp',
+        width: 1200,
+        height: 630,
+        alt: 'מערכת ניהול לקוחות לעסקים — Smart Scale',
+      },
+    ],
   },
 }
 
@@ -35,6 +43,7 @@ const faqs = [
 export default function CRMPage() {
   return (
     <>
+      <JsonLd data={serviceSchema({ name: 'מערכת ניהול לקוחות לעסקים', description: 'מערכת CRM מותאמת אישית לעסקים ישראליים — ריכוז לידים, פולואפ אוטומטי, ותזכורות. עסקים חוסכים 15 שעות בשבוע.', url: '/crm', price: '2500' })} />
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'מערכת ניהול לקוחות', url: '/crm' }])} />
       <Header />
