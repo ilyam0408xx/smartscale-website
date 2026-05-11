@@ -4,7 +4,7 @@ import CRMMini from './CRMMini'
 
 export default function LiveDemo() {
   return (
-    <section className="demo" id="demo" data-screen-label="05 Live Demo">
+    <section className="demo" data-screen-label="05 Live Demo">
       <div className="container">
         <div className="section-head">
           <div className="section-eyebrow mono">הדגמה חיה</div>
@@ -16,7 +16,8 @@ export default function LiveDemo() {
             שום דבר לא נופל בין הכיסאות.
           </p>
         </div>
-        <div className="demo-grid">
+        {/* anchor lands here, at the start of the WhatsApp + flow + CRM demos */}
+        <div className="demo-grid" id="demo">
           <div className="demo-side">
             <div className="demo-side-eyebrow mono">• שיחה חיה ב-WhatsApp</div>
             <WhatsAppSim />

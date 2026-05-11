@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local Playwright screenshots from .snapshots/snap.mjs
+/.snapshots/*.png
+
 # next.js
 /.next/
 /out/
