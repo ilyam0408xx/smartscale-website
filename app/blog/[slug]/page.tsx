@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -69,134 +68,76 @@ export default async function BlogPostPage({ params }: Props) {
       />
 
       <Header />
-      <main style={{ paddingTop: 100, paddingBottom: 80 }}>
-        <article
-          className="wrap"
-          style={{ maxWidth: 720, margin: '0 auto', padding: '0 40px' }}
-        >
-          {/* Breadcrumb */}
-          <nav
-            style={{
-              fontSize: 13,
-              color: '#aaaaaa',
-              marginBottom: 32,
-              display: 'flex',
-              gap: 8,
-              alignItems: 'center',
-            }}
-            aria-label="ניווט"
-          >
-            <Link href="/" style={{ color: '#aaaaaa' }}>
-              דף הבית
-            </Link>
-            <span>›</span>
-            <Link href="/blog" style={{ color: '#aaaaaa' }}>
-              בלוג
-            </Link>
-            <span>›</span>
-            <span style={{ color: '#6b6b6b' }}>{meta.title}</span>
+      <main>
+        <article className="blog-article">
+          <nav className="crumb" aria-label="ניווט">
+            <Link href="/">דף הבית</Link>
+            <span className="sep">›</span>
+            <Link href="/blog">בלוג</Link>
+            <span className="sep">›</span>
+            <span>{meta.title}</span>
           </nav>
 
-          <h1
-            style={{
-              fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
-              fontWeight: 900,
-              color: '#0a0a0a',
-              lineHeight: 1.2,
-              marginBottom: 20,
-            }}
-          >
-            {meta.title}
-          </h1>
-
-          {/* Author byline */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              marginBottom: 40,
-              paddingBottom: 24,
-              borderBottom: '1px solid #e5e5e5',
-            }}
-          >
-            <Image
-              src="/images/ilya.jpg"
-              alt="איליה מלצב"
-              width={40}
-              height={40}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div>
-              <p style={{ fontWeight: 600, fontSize: 14, color: '#0a0a0a' }}>
-                {meta.author}
-              </p>
-              <p style={{ fontSize: 13, color: '#aaaaaa' }}>
-                {meta.date}
-                {' · '}
-                עודכן לאחרונה: {meta.date}
-              </p>
-            </div>
+          <div className="article-hero" aria-label="תמונה ראשית">
+            [ תמונה תוטמע כאן ]
           </div>
 
-          {/* Article content */}
+          <header className="article-header">
+            <h1 className="article-title">{meta.title}</h1>
+            <div className="byline">
+              <strong>{meta.author}</strong>
+              {' · '}
+              {meta.date}
+              {' · '}
+              {meta.readingTime} דק׳ קריאה
+            </div>
+          </header>
+
           <div
             className="prose"
-            style={{ fontSize: 17 }}
             dangerouslySetInnerHTML={{ __html: content }}
           />
 
-          {/* CTA at end of article */}
-          <div
-            style={{
-              marginTop: 60,
-              padding: '32px',
-              background: '#f0f9ff',
-              borderRadius: 16,
-              border: '1px solid #bae6fd',
-              textAlign: 'center',
-            }}
-          >
-            <h3
-              style={{
-                fontWeight: 800,
-                fontSize: 20,
-                color: '#0a0a0a',
-                marginBottom: 8,
-              }}
-            >
-              רוצה לראות איך זה עובד אצלך?
-            </h3>
-            <p
-              style={{
-                color: '#6b6b6b',
-                marginBottom: 20,
-                fontSize: 16,
-              }}
-            >
-              שיחת ייעוץ חינם, בלי התחייבות. 15 דקות שיכולות לשנות את האופן
-              שבו העסק שלך עובד.
-            </p>
+          <div className="cta-block">
+            <div className="cta-eyebrow">שיחת ייעוץ חינם</div>
+            <div className="cta-line">בוא נראה איך זה יעבוד אצלך</div>
             <a
               href={WA_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '14px 28px',
-                background: '#25D366',
-                color: '#fff',
-                borderRadius: 8,
-                fontWeight: 700,
-                fontSize: 16,
-                textDecoration: 'none',
-              }}
+              className="cta-wa"
             >
-              שיחת ייעוץ חינם ב-WhatsApp
+              <span>שיחה ב-WhatsApp</span>
+              <span className="cta-wa-arrow" aria-hidden="true">←</span>
             </a>
           </div>
+
+          <section className="related" aria-label="להמשך קריאה">
+            <div className="related-head">
+              <span className="related-eyebrow">להמשך קריאה</span>
+              <Link href="/blog" className="related-all">כל הכתבות ←</Link>
+            </div>
+            <div className="related-grid">
+              <a href="#" className="related-card">
+                <div className="related-thumb">[ תמונה ]</div>
+                <span className="related-cat">CRM · ניהול</span>
+                <div className="related-title">איך CRM פשוט יכול לחסוך לעסק שלך 10 שעות בשבוע</div>
+                <div className="related-meta">5 דק׳ קריאה</div>
+              </a>
+              <a href="#" className="related-card">
+                <div className="related-thumb">[ תמונה ]</div>
+                <span className="related-cat">OCR · אוטומציה</span>
+                <div className="related-title">זיהוי מסמכים אוטומטי: מחשבונית ל-Drive בלי לגעת</div>
+                <div className="related-meta">4 דק׳ קריאה</div>
+              </a>
+              <a href="#" className="related-card">
+                <div className="related-thumb">[ תמונה ]</div>
+                <span className="related-cat">לידים · שיווק</span>
+                <div className="related-title">למה רוב הלידים שלך הולכים לפח (ואיך לתקן את זה)</div>
+                <div className="related-meta">7 דק׳ קריאה</div>
+              </a>
+            </div>
+          </section>
         </article>
       </main>
       <Footer />
