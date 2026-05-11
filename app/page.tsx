@@ -10,7 +10,8 @@ import Stats from '@/components/landing/Stats'
 import LiveDemo from '@/components/landing/LiveDemo'
 import Testimonials from '@/components/landing/Testimonials'
 import Story from '@/components/landing/Story'
-import FAQSection, { HOMEPAGE_FAQS } from '@/components/landing/FAQSection'
+import FAQSection from '@/components/landing/FAQSection'
+import { HOMEPAGE_FAQS } from '@/components/landing/faqs'
 import CTA from '@/components/landing/CTA'
 import {
   organizationSchema,
