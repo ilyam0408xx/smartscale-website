@@ -7,6 +7,10 @@ import Hero from '@/components/landing/Hero'
 import PainPoints from '@/components/landing/PainPoints'
 import Services from '@/components/landing/Services'
 import Stats from '@/components/landing/Stats'
+import LiveDemo from '@/components/landing/LiveDemo'
+import Testimonials from '@/components/landing/Testimonials'
+import Story from '@/components/landing/Story'
+import FAQSection, { HOMEPAGE_FAQS } from '@/components/landing/FAQSection'
 import CTA from '@/components/landing/CTA'
 import {
   organizationSchema,
@@ -41,28 +45,7 @@ export const metadata: Metadata = {
   },
 }
 
-const homepageFAQs = [
-  {
-    question: 'מה זה Smart Scale?',
-    answer:
-      'אני איליה מלצב, ובניתי את Smart Scale כדי לבנות מערכות אוטומטיות לעסקים ישראליים קטנים ובינוניים. המערכות שאני בונה מחליפות עבודה ידנית חוזרת — כל ליד מקבל מענה תוך 2 דקות, תזכורות יוצאות לבד, ומסמכים מסתדרים אוטומטית. 7+ שנות ניסיון.',
-  },
-  {
-    question: 'האם אני צריך לדעת טכנולוגיה?',
-    answer:
-      'לא. המערכת עובדת עם הכלים שכבר יש לך — WhatsApp, Google Drive, Gmail. לא צריך ללמוד שום תוכנה חדשה. אני מלווה אותך עד שהכל עובד, ומדריך אותך בפשטות.',
-  },
-  {
-    question: 'מה קורה אם משהו לא עובד אחרי ההקמה?',
-    answer:
-      'כל מערכת כוללת 45 ימי תמיכה ותיקונים ללא עלות נוספת. אם יש בעיה — שולחים הודעה ב-WhatsApp ומקבלים מענה תוך שעות. לרוב תקלות מתוקנות תוך יום עסקים.',
-  },
-  {
-    question: 'האם זה מתאים לעסק קטן?',
-    answer:
-      'כן — במיוחד לעסק קטן. עסק עם 1-10 עובדים מרוויח הכי הרבה מאוטומציה כי כל שעה שנחסכת שווה יותר. עסקים קטנים שבניתי להם מערכות חוסכים בממוצע 15 שעות עבודה בשבוע.',
-  },
-]
+const faqsForSchema = HOMEPAGE_FAQS.map((f) => ({ question: f.q, answer: f.a }))
 
 export default function HomePage() {
   return (
@@ -70,7 +53,7 @@ export default function HomePage() {
       <JsonLd data={organizationSchema()} />
       <JsonLd data={personSchema()} />
       <JsonLd data={webSiteSchema()} />
-      <JsonLd data={faqSchema(homepageFAQs)} />
+      <JsonLd data={faqSchema(faqsForSchema)} />
 
       <Header />
       <main>
@@ -78,13 +61,10 @@ export default function HomePage() {
         <PainPoints />
         <Services />
         <Stats />
-
-        {/* Phase 2 Part B placeholders — will be replaced by LiveDemo, Testimonials, Story, FAQSection */}
-        <div id="demo" />
-        <div id="testimonials" />
-        <div id="story" />
-        <div id="faq" />
-
+        <LiveDemo />
+        <Testimonials />
+        <Story />
+        <FAQSection />
         <CTA />
       </main>
       <Footer />
