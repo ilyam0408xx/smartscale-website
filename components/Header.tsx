@@ -163,17 +163,17 @@ export default function Header() {
         <Link href="/#testimonials" onClick={closeDrawer}>המלצות</Link>
         <Link href="/#faq" onClick={closeDrawer}>שאלות</Link>
 
+        <div className="drawer-section-h mono">עוד</div>
+        <Link href="/about" onClick={closeDrawer}>עליי</Link>
+        <Link href="/blog" onClick={closeDrawer}>בלוג</Link>
+        <Link href="/faq" onClick={closeDrawer}>שאלות של לקוחות</Link>
+
         <div className="drawer-section-h mono">שירותים</div>
         {SERVICE_LINKS.map((s) => (
           <Link key={s.href} href={s.href} onClick={closeDrawer}>
             {s.label}
           </Link>
         ))}
-
-        <div className="drawer-section-h mono">עוד</div>
-        <Link href="/about" onClick={closeDrawer}>עליי</Link>
-        <Link href="/blog" onClick={closeDrawer}>בלוג</Link>
-        <Link href="/faq" onClick={closeDrawer}>שאלות של לקוחות</Link>
 
         <a
           href={WA_LINK}

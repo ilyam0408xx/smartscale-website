@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 export const metadata: Metadata = {
   title: 'תנאי שימוש',
@@ -13,14 +14,10 @@ export default function TermsPage() {
   return (
     <>
       <Header />
-      <main style={{ paddingTop: 100, paddingBottom: 80 }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 40px' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 8, color: '#0a0a0a' }}>
-            תנאי שימוש
-          </h1>
-          <p style={{ color: '#aaaaaa', fontSize: 13, marginBottom: 40 }}>
-            עודכן לאחרונה: אפריל 2025
-          </p>
+      <main className="legal-page">
+        <div className="container">
+          <h1>תנאי שימוש</h1>
+          <p className="legal-updated mono">עודכן לאחרונה: אפריל 2025</p>
 
           <div className="prose">
             <h2>1. הסכמה לתנאים</h2>
@@ -82,14 +79,14 @@ export default function TermsPage() {
 
             <h2>9. יצירת קשר</h2>
             <p>
-              לשאלות בנוגע לתנאים אלה:{' '}
-              <a href="mailto:ilya@ilyamaltsev.com">ilya@ilyamaltsev.com</a>
+              לשאלות בנוגע לתנאים אלה: <a href="mailto:ilya@ilyamaltsev.com">ilya@ilyamaltsev.com</a>
               {' '}| טלפון: <span dir="ltr">050-261-1165</span>
             </p>
           </div>
         </div>
       </main>
       <Footer />
+      <WhatsAppFloat />
     </>
   )
 }

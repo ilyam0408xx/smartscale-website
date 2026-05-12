@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import WhatsAppFloat from '@/components/WhatsAppFloat'
 
 export const metadata: Metadata = {
   title: 'מדיניות פרטיות',
@@ -13,14 +14,10 @@ export default function PrivacyPage() {
   return (
     <>
       <Header />
-      <main style={{ paddingTop: 100, paddingBottom: 80 }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 40px' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 8, color: '#0a0a0a' }}>
-            מדיניות פרטיות
-          </h1>
-          <p style={{ color: '#aaaaaa', fontSize: 13, marginBottom: 40 }}>
-            עודכן לאחרונה: אפריל 2025
-          </p>
+      <main className="legal-page">
+        <div className="container">
+          <h1>מדיניות פרטיות</h1>
+          <p className="legal-updated mono">עודכן לאחרונה: אפריל 2025</p>
 
           <div className="prose">
             <h2>1. מי אנחנו</h2>
@@ -47,9 +44,7 @@ export default function PrivacyPage() {
             </ul>
 
             <h2>4. שיתוף מידע עם צדדים שלישיים</h2>
-            <p>
-              אנחנו לא מוכרים או מעבירים את המידע האישי שלך לצדדים שלישיים, למעט:
-            </p>
+            <p>אנחנו לא מוכרים או מעבירים את המידע האישי שלך לצדדים שלישיים, למעט:</p>
             <ul>
               <li><strong>Meta (Facebook):</strong> נתוני Pixel לצרכי פרסום — בהסכמה בלבד.</li>
               <li><strong>Vercel:</strong> שירות אחסון האתר — נתוני log בסיסיים.</li>
@@ -81,6 +76,7 @@ export default function PrivacyPage() {
         </div>
       </main>
       <Footer />
+      <WhatsAppFloat />
     </>
   )
 }
