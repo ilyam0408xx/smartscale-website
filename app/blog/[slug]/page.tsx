@@ -6,7 +6,14 @@ import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
 import { articleSchema, breadcrumbSchema, personSchema, WA_LINK } from '@/lib/schema'
-import { getAllPosts, getPostBySlug } from '@/lib/blog'
+import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/blog'
+
+const PLACEHOLDER_CATEGORIES = [
+  'CRM · ניהול',
+  'OCR · אוטומציה',
+  'לידים · שיווק',
+  'WhatsApp · בוטים',
+]
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -46,6 +53,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound()
 
   const { meta, content } = post
+  const relatedPosts = await getRelatedPosts(slug, 3)
 
   return (
     <>
@@ -118,24 +126,20 @@ export default async function BlogPostPage({ params }: Props) {
               <Link href="/blog" className="related-all">כל הכתבות ←</Link>
             </div>
             <div className="related-grid">
-              <a href="#" className="related-card">
-                <div className="related-thumb">[ תמונה ]</div>
-                <span className="related-cat">CRM · ניהול</span>
-                <div className="related-title">איך CRM פשוט יכול לחסוך לעסק שלך 10 שעות בשבוע</div>
-                <div className="related-meta">5 דק׳ קריאה</div>
-              </a>
-              <a href="#" className="related-card">
-                <div className="related-thumb">[ תמונה ]</div>
-                <span className="related-cat">OCR · אוטומציה</span>
-                <div className="related-title">זיהוי מסמכים אוטומטי: מחשבונית ל-Drive בלי לגעת</div>
-                <div className="related-meta">4 דק׳ קריאה</div>
-              </a>
-              <a href="#" className="related-card">
-                <div className="related-thumb">[ תמונה ]</div>
-                <span className="related-cat">לידים · שיווק</span>
-                <div className="related-title">למה רוב הלידים שלך הולכים לפח (ואיך לתקן את זה)</div>
-                <div className="related-meta">7 דק׳ קריאה</div>
-              </a>
+              {relatedPosts.map((p, i) => (
+                <Link
+                  key={p.slug}
+                  href={`/blog/${p.slug}`}
+                  className="related-card"
+                >
+                  <div className="related-thumb">[ תמונה ]</div>
+                  <span className="related-cat">
+                    {PLACEHOLDER_CATEGORIES[i % PLACEHOLDER_CATEGORIES.length]}
+                  </span>
+                  <div className="related-title">{p.title}</div>
+                  <div className="related-meta">{p.readingTime} דק׳ קריאה</div>
+                </Link>
+              ))}
             </div>
           </section>
         </article>

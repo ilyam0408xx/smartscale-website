@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>דמו 2 — Dropdown מתחת ל-Header</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Heebo', system-ui, sans-serif;
+  background: #ffffff;
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #0b1220;
+  --fg-muted: #4a5468;
+  --fg-dim: #8892a6;
+  --surface: #f6f9ff;
+  --line: #e3e8f1;
+  --accent: #2547e5;
+  --accent-soft: #eef2ff;
+  --t: 260ms cubic-bezier(.2,.7,.3,1);
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* HEADER */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+}
+.nav-bar { padding: 14px 0; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.brand-logo {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #5a7eff);
+  display: grid; place-items: center; color: white; font-weight: 800;
+  flex-shrink: 0;
+}
+.brand-text { line-height: 1.1; }
+.brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
+.brand-sub { font-size: 11px; color: var(--fg-muted); margin-top: 2px; }
+
+.hamburger {
+  background: none; border: 1px solid var(--line);
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--t), border-color var(--t);
+}
+.hamburger:hover { background: var(--surface); border-color: var(--fg-dim); }
+
+.hamburger-lines, .hamburger-lines::before, .hamburger-lines::after {
+  display: block; width: 20px; height: 2px;
+  background: var(--fg); border-radius: 2px;
+  transition: transform var(--t), opacity var(--t);
+}
+.hamburger-lines { position: relative; }
+.hamburger-lines::before, .hamburger-lines::after {
+  content: ""; position: absolute; left: 0;
+}
+.hamburger-lines::before { top: -6px; }
+.hamburger-lines::after { top: 6px; }
+
+.hamburger[aria-expanded="true"] .hamburger-lines { background: transparent; }
+.hamburger[aria-expanded="true"] .hamburger-lines::before { transform: translateY(6px) rotate(45deg); }
+.hamburger[aria-expanded="true"] .hamburger-lines::after  { transform: translateY(-6px) rotate(-45deg); }
+
+/* DROPDOWN PANEL */
+.dropdown {
+  max-height: 0; overflow: hidden;
+  transition: max-height var(--t);
+  border-top: 1px solid transparent;
+}
+.dropdown.is-open {
+  max-height: 720px;
+  border-top-color: var(--line);
+}
+.dropdown-inner {
+  padding: 18px 20px 28px;
+  display: grid; grid-template-columns: 1fr; gap: 4px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.dropdown-section-h {
+  font-size: 11px; font-weight: 500;
+  color: var(--fg-dim);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 16px 0 4px;
+  margin-top: 6px;
+}
+.dropdown-section-h:first-of-type { margin-top: 0; padding-top: 6px; }
+
+.dropdown a {
+  display: block; padding: 12px 0;
+  color: var(--fg); text-decoration: none;
+  font-size: 16px; font-weight: 500;
+  border-bottom: 1px solid var(--surface);
+}
+.dropdown a:hover { color: var(--accent); }
+
+.dropdown-cta {
+  margin-top: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent); color: white !important;
+  padding: 14px 18px !important;
+  border-radius: 12px;
+  font-weight: 600 !important; font-size: 15px !important;
+  text-align: center;
+  border-bottom: none !important;
+  transition: background var(--t);
+}
+.dropdown-cta:hover { background: #1e3bc7; color: white !important; }
+
+/* PAGE CONTENT */
+main { padding: 60px 0 100px; }
+.hero {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+  text-align: center; line-height: 1.2;
+}
+.hero-sub { font-size: 16px; color: var(--fg-muted); text-align: center; margin-top: 16px; }
+.note {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-right: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 14px; line-height: 1.7;
+}
+.note strong { color: var(--accent); }
+
+/* DEMO MODE: hamburger always visible regardless of viewport */
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-bar">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <div class="brand-logo" aria-hidden="true">S</div>
+        <div class="brand-text">
+          <div class="brand-name">Smart Scale</div>
+          <div class="brand-sub">איליה מלצב</div>
+        </div>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="dropdown">
+        <span class="hamburger-lines"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dropdown" aria-label="תפריט ראשי">
+    <div class="dropdown-inner">
+      <div class="dropdown-section-h">דף הבית</div>
+      <a href="/#services">שירותים</a>
+      <a href="/#demo">הדגמה חיה</a>
+      <a href="/#testimonials">המלצות</a>
+      <a href="/#faq">שאלות</a>
+
+      <div class="dropdown-section-h">שירותים</div>
+      <a href="/crm">מערכת ניהול לקוחות</a>
+      <a href="/whatsapp-bot">בוט WhatsApp</a>
+      <a href="/automation">אוטומציה</a>
+      <a href="/lead-gen">מציאת לקוחות</a>
+
+      <div class="dropdown-section-h">עוד</div>
+      <a href="/about">עליי</a>
+      <a href="/blog">בלוג</a>
+      <a href="/faq">שאלות של לקוחות</a>
+
+      <a class="dropdown-cta" href="https://wa.me/9720502611165">
+        <span>שיחת ייעוץ חינם</span>
+        <span aria-hidden="true">←</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <h1 class="hero">דמו 2 — Dropdown מתחת ל-Header</h1>
+  <p class="hero-sub">תפריט יורד מתחת לכותרת — אקורדיון, ללא overlay</p>
+
+  <div class="note">
+    <strong>איך לבחון:</strong> פתח בדפדפן. אם המסך רחב מ-880px לא תראה את ה-hamburger.
+    כדי לבחון במובייל: <code>F12</code> ← Toggle device toolbar (Ctrl+Shift+M) ← iPhone או Pixel.
+    <br><br>
+    <strong>תכונות:</strong> hamburger מתחלף ל-X באנימציה, התפריט יורד מתחת לכותרת, אין רקע כהה, התוכן של הדף נראה ברקע.
+    <br><br>
+    <strong>סקציות:</strong> דף הבית, שירותים (4 דפים), עוד, CTA כפתור.
+  </div>
+</main>
+
+<script>
+(function () {
+  const hamburger = document.getElementById('hamburger');
+  const dropdown = document.getElementById('dropdown');
+
+  function toggle() {
+    const open = dropdown.classList.toggle('is-open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function shut() {
+    dropdown.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburger.addEventListener('click', toggle);
+  dropdown.querySelectorAll('a').forEach(a => a.addEventListener('click', shut));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') shut(); });
+})();
+</script>
+
+</body>
+</html>

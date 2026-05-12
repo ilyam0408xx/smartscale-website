@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>דמו 1 — Drawer מימין</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Heebo', system-ui, sans-serif;
+  background: #ffffff;
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #0b1220;
+  --fg-muted: #4a5468;
+  --fg-dim: #8892a6;
+  --surface: #f6f9ff;
+  --line: #e3e8f1;
+  --accent: #2547e5;
+  --accent-soft: #eef2ff;
+  --t: 220ms cubic-bezier(.2,.7,.3,1);
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* HEADER */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  padding: 14px 0;
+  background: color-mix(in oklab, #ffffff 80%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.brand-logo {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #5a7eff);
+  display: grid; place-items: center; color: white; font-weight: 800;
+  flex-shrink: 0;
+}
+.brand-text { line-height: 1.1; }
+.brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
+.brand-sub { font-size: 11px; color: var(--fg-muted); margin-top: 2px; }
+
+.hamburger {
+  background: none; border: 1px solid var(--line);
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background var(--t), border-color var(--t);
+}
+.hamburger:hover { background: var(--surface); border-color: var(--fg-dim); }
+.hamburger-lines {
+  width: 20px; height: 14px; position: relative;
+}
+.hamburger-lines::before,
+.hamburger-lines::after,
+.hamburger-lines span {
+  content: ""; position: absolute; left: 0; right: 0;
+  height: 2px; background: var(--fg); border-radius: 2px;
+  transition: transform var(--t), opacity var(--t), top var(--t);
+}
+.hamburger-lines::before { top: 0; }
+.hamburger-lines span { top: 6px; }
+.hamburger-lines::after { top: 12px; }
+
+/* DRAWER */
+.drawer-overlay {
+  position: fixed; inset: 0;
+  background: rgba(11, 18, 32, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--t);
+  z-index: 100;
+}
+.drawer-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 320px; max-width: 88vw;
+  background: #ffffff;
+  border-left: 1px solid var(--line);
+  padding: 24px 24px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+  transform: translateX(100%);
+  transition: transform var(--t);
+  z-index: 101;
+  box-shadow: -8px 0 32px -8px rgba(11, 18, 32, 0.18);
+  overflow-y: auto;
+}
+.drawer.is-open { transform: translateX(0); }
+
+.drawer-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.drawer-close {
+  background: none; border: 1px solid var(--line);
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  font-size: 22px; line-height: 1;
+  color: var(--fg-muted);
+  transition: background var(--t), color var(--t);
+}
+.drawer-close:hover { background: var(--surface); color: var(--fg); }
+
+.drawer-section-h {
+  font-size: 11px; font-weight: 500;
+  color: var(--fg-dim);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 18px 0 4px;
+  border-top: 1px solid var(--line);
+  margin-top: 10px;
+}
+.drawer-section-h:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+
+.drawer a {
+  display: block; padding: 12px 0;
+  color: var(--fg); text-decoration: none;
+  font-size: 16px; font-weight: 500;
+  border-bottom: 1px solid var(--surface);
+}
+.drawer a:hover { color: var(--accent); }
+.drawer a:last-of-type { border-bottom: none; }
+
+.drawer-cta {
+  margin-top: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent); color: white !important;
+  padding: 14px 18px !important;
+  border-radius: 12px;
+  font-weight: 600 !important; font-size: 15px !important;
+  text-align: center;
+  border-bottom: none !important;
+  transition: background var(--t);
+}
+.drawer-cta:hover { background: #1e3bc7; color: white !important; }
+
+/* PAGE CONTENT */
+main { padding: 60px 0 100px; }
+.hero {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+  text-align: center; line-height: 1.2;
+}
+.hero-sub { font-size: 16px; color: var(--fg-muted); text-align: center; margin-top: 16px; }
+.note {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-right: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 14px; line-height: 1.7;
+}
+.note strong { color: var(--accent); }
+
+/* DEMO MODE: hamburger always visible regardless of viewport */
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#">
+      <div class="brand-logo" aria-hidden="true">S</div>
+      <div class="brand-text">
+        <div class="brand-name">Smart Scale</div>
+        <div class="brand-sub">איליה מלצב</div>
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="drawer">
+      <span class="hamburger-lines"><span></span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="drawer-overlay" id="overlay" aria-hidden="true"></div>
+
+<aside class="drawer" id="drawer" aria-label="תפריט ראשי" role="dialog">
+  <div class="drawer-head">
+    <div style="font-weight:700;font-size:14px;color:var(--fg-muted)">תפריט</div>
+    <button class="drawer-close" id="drawerClose" aria-label="סגור תפריט">×</button>
+  </div>
+
+  <div class="drawer-section-h">דף הבית</div>
+  <a href="/#services">שירותים</a>
+  <a href="/#demo">הדגמה חיה</a>
+  <a href="/#testimonials">המלצות</a>
+  <a href="/#faq">שאלות</a>
+
+  <div class="drawer-section-h">שירותים</div>
+  <a href="/crm">מערכת ניהול לקוחות</a>
+  <a href="/whatsapp-bot">בוט WhatsApp</a>
+  <a href="/automation">אוטומציה</a>
+  <a href="/lead-gen">מציאת לקוחות</a>
+
+  <div class="drawer-section-h">עוד</div>
+  <a href="/about">עליי</a>
+  <a href="/blog">בלוג</a>
+  <a href="/faq">שאלות של לקוחות</a>
+
+  <a class="drawer-cta" href="https://wa.me/9720502611165">
+    <span>שיחת ייעוץ חינם</span>
+    <span aria-hidden="true">←</span>
+  </a>
+</aside>
+
+<main class="container">
+  <h1 class="hero">דמו 1 — Drawer מימין</h1>
+  <p class="hero-sub">פנל החלקה צידי + רקע כהה — סטנדרט מודרני</p>
+
+  <div class="note">
+    <strong>איך לבחון:</strong> פתח את הדף בדפדפן. אם המסך רחב מ-880px לא תראה את ה-hamburger.
+    כדי לבחון במובייל: <code>F12</code> ← Toggle device toolbar (Ctrl+Shift+M) ← iPhone או Pixel.
+    <br><br>
+    <strong>תכונות:</strong> לחיצה על hamburger פותחת פנל מימין, רקע כהה ב-overlay, X לסגירה, Esc סוגר, לחיצה על overlay סוגר.
+    <br><br>
+    <strong>סקציות:</strong> דף הבית (anchors), שירותים (4 דפים), עוד (about/blog/faq), CTA כפתור.
+  </div>
+</main>
+
+<script>
+(function () {
+  const hamburger = document.getElementById('hamburger');
+  const overlay = document.getElementById('overlay');
+  const drawer = document.getElementById('drawer');
+  const close = document.getElementById('drawerClose');
+
+  function open() {
+    drawer.classList.add('is-open');
+    overlay.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function shut() {
+    drawer.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', open);
+  close.addEventListener('click', shut);
+  overlay.addEventListener('click', shut);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', shut));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') shut(); });
+})();
+</script>
+
+</body>
+</html>

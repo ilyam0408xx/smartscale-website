@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>דמו 3 — מסך מלא</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Heebo', system-ui, sans-serif;
+  background: #ffffff;
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #0b1220;
+  --fg-muted: #4a5468;
+  --fg-dim: #8892a6;
+  --surface: #f6f9ff;
+  --line: #e3e8f1;
+  --accent: #2547e5;
+  --accent-soft: #eef2ff;
+  --t: 300ms cubic-bezier(.2,.7,.3,1);
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* HEADER */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  padding: 14px 0;
+  background: color-mix(in oklab, #ffffff 80%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.brand-logo {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #5a7eff);
+  display: grid; place-items: center; color: white; font-weight: 800;
+  flex-shrink: 0;
+}
+.brand-text { line-height: 1.1; }
+.brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
+.brand-sub { font-size: 11px; color: var(--fg-muted); margin-top: 2px; }
+
+.hamburger {
+  background: none; border: 1px solid var(--line);
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background var(--t), border-color var(--t);
+  z-index: 110;
+  position: relative;
+}
+.hamburger:hover { background: var(--surface); border-color: var(--fg-dim); }
+.hamburger-lines, .hamburger-lines::before, .hamburger-lines::after {
+  display: block; width: 20px; height: 2px;
+  background: var(--fg); border-radius: 2px;
+  transition: transform var(--t), opacity var(--t), background var(--t);
+}
+.hamburger-lines { position: relative; }
+.hamburger-lines::before, .hamburger-lines::after {
+  content: ""; position: absolute; left: 0;
+}
+.hamburger-lines::before { top: -6px; }
+.hamburger-lines::after { top: 6px; }
+
+/* FULLSCREEN MENU */
+.fullscreen {
+  position: fixed; inset: 0;
+  background: #ffffff;
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transform: translateY(-12px);
+  transition: opacity var(--t), transform var(--t);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.fullscreen.is-open {
+  opacity: 1; pointer-events: auto;
+  transform: translateY(0);
+}
+
+.fullscreen-head {
+  padding: 14px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line);
+  min-height: 70px;
+}
+.fullscreen-head .brand-logo { width: 40px; height: 40px; }
+.fullscreen-close {
+  background: none; border: 1px solid var(--line);
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  font-size: 26px; line-height: 1;
+  color: var(--fg);
+  transition: background var(--t);
+}
+.fullscreen-close:hover { background: var(--surface); }
+
+.fullscreen-body {
+  flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 32px 28px 48px;
+  gap: 4px;
+  max-width: 480px; margin: 0 auto; width: 100%;
+}
+
+.fullscreen-section-h {
+  font-size: 11px; font-weight: 500;
+  color: var(--fg-dim);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-top: 22px; margin-bottom: 4px;
+}
+.fullscreen-section-h:first-of-type { margin-top: 0; }
+
+.fullscreen a {
+  display: block; padding: 12px 0;
+  color: var(--fg); text-decoration: none;
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: color var(--t), padding-right var(--t);
+  border-bottom: 1px solid var(--surface);
+}
+.fullscreen a:hover { color: var(--accent); padding-right: 6px; }
+
+.fullscreen-cta {
+  margin-top: 28px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--accent); color: white !important;
+  padding: 18px 22px !important;
+  border-radius: 14px;
+  font-weight: 700 !important; font-size: 18px !important;
+  text-align: center;
+  border-bottom: none !important;
+  transition: background var(--t);
+}
+.fullscreen-cta:hover { background: #1e3bc7; color: white !important; padding-right: 22px !important; }
+
+/* PAGE CONTENT */
+main { padding: 60px 0 100px; }
+.hero {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+  text-align: center; line-height: 1.2;
+}
+.hero-sub { font-size: 16px; color: var(--fg-muted); text-align: center; margin-top: 16px; }
+.note {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-right: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 14px; line-height: 1.7;
+}
+.note strong { color: var(--accent); }
+
+/* DEMO MODE: hamburger always visible regardless of viewport */
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#">
+      <div class="brand-logo" aria-hidden="true">S</div>
+      <div class="brand-text">
+        <div class="brand-name">Smart Scale</div>
+        <div class="brand-sub">איליה מלצב</div>
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="fullscreen">
+      <span class="hamburger-lines"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="fullscreen" id="fullscreen" aria-label="תפריט ראשי" role="dialog">
+  <div class="fullscreen-head">
+    <a class="brand" href="#">
+      <div class="brand-logo" aria-hidden="true">S</div>
+      <div class="brand-text">
+        <div class="brand-name">Smart Scale</div>
+        <div class="brand-sub">איליה מלצב</div>
+      </div>
+    </a>
+    <button class="fullscreen-close" id="fullscreenClose" aria-label="סגור תפריט">×</button>
+  </div>
+
+  <div class="fullscreen-body">
+    <div class="fullscreen-section-h">דף הבית</div>
+    <a href="/#services">שירותים</a>
+    <a href="/#demo">הדגמה חיה</a>
+    <a href="/#testimonials">המלצות</a>
+    <a href="/#faq">שאלות</a>
+
+    <div class="fullscreen-section-h">שירותים</div>
+    <a href="/crm">מערכת ניהול לקוחות</a>
+    <a href="/whatsapp-bot">בוט WhatsApp</a>
+    <a href="/automation">אוטומציה</a>
+    <a href="/lead-gen">מציאת לקוחות</a>
+
+    <div class="fullscreen-section-h">עוד</div>
+    <a href="/about">עליי</a>
+    <a href="/blog">בלוג</a>
+    <a href="/faq">שאלות של לקוחות</a>
+
+    <a class="fullscreen-cta" href="https://wa.me/9720502611165">
+      <span>שיחת ייעוץ חינם</span>
+      <span aria-hidden="true">←</span>
+    </a>
+  </div>
+</div>
+
+<main class="container">
+  <h1 class="hero">דמו 3 — מסך מלא</h1>
+  <p class="hero-sub">תפריט עולה על כל המסך, טקסט גדול, חוויה מינימליסטית</p>
+
+  <div class="note">
+    <strong>איך לבחון:</strong> פתח בדפדפן. אם המסך רחב מ-880px לא תראה את ה-hamburger.
+    כדי לבחון במובייל: <code>F12</code> ← Toggle device toolbar (Ctrl+Shift+M) ← iPhone או Pixel.
+    <br><br>
+    <strong>תכונות:</strong> hamburger פותח מסך לבן שמכסה את כל הדף, טקסט גדול וברור, מתאים לעיצוב מינימליסטי. X לסגירה בצד שמאל-עליון.
+    <br><br>
+    <strong>סקציות:</strong> דף הבית, שירותים (4 דפים), עוד, CTA כפתור גדול בתחתית.
+  </div>
+</main>
+
+<script>
+(function () {
+  const hamburger = document.getElementById('hamburger');
+  const fullscreen = document.getElementById('fullscreen');
+  const close = document.getElementById('fullscreenClose');
+
+  function open() {
+    fullscreen.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function shut() {
+    fullscreen.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', open);
+  close.addEventListener('click', shut);
+  fullscreen.querySelectorAll('a').forEach(a => a.addEventListener('click', shut));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') shut(); });
+})();
+</script>
+
+</body>
+</html>

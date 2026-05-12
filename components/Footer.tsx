@@ -32,6 +32,14 @@ export default function Footer() {
             <Link href="/#faq">שאלות</Link>
             <Link href="/about">עליי</Link>
             <Link href="/blog">בלוג</Link>
+            <Link href="/faq">שאלות של לקוחות</Link>
+          </div>
+          <div className="footer-col">
+            <div className="footer-col-h mono">שירותים</div>
+            <Link href="/crm">מערכת ניהול לקוחות</Link>
+            <Link href="/whatsapp-bot">בוט WhatsApp</Link>
+            <Link href="/automation">אוטומציה</Link>
+            <Link href="/lead-gen">מציאת לקוחות</Link>
           </div>
           <div className="footer-col">
             <div className="footer-col-h mono">יצירת קשר</div>

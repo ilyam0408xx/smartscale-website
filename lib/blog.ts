@@ -59,6 +59,14 @@ export async function getAllPosts(): Promise<PostMeta[]> {
   )
 }
 
+export async function getRelatedPosts(
+  currentSlug: string,
+  limit = 3
+): Promise<PostMeta[]> {
+  const all = await getAllPosts()
+  return all.filter((p) => p.slug !== currentSlug).slice(0, limit)
+}
+
 const MID_FIGURE = `
 <figure class="article-figure">
   <div class="article-image" aria-label="תמונה תוטמע כאן">
