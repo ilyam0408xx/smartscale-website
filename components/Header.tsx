@@ -64,6 +64,13 @@ export default function Header() {
     router.push('/#' + id)
   }
 
+  function handleHomeClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (onHomepage) {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   function closeDrawer() {
     setMobileOpen(false)
   }
@@ -72,7 +79,12 @@ export default function Header() {
     <>
       <nav className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav-inner">
-          <Link href="/" className="brand" aria-label="Smart Scale — דף הבית">
+          <Link
+            href="/"
+            className="brand"
+            aria-label="Smart Scale — דף הבית"
+            onClick={handleHomeClick}
+          >
             <div className="brand-mark" aria-hidden="true">
               <Image
                 src="/images/logo.png"
@@ -99,7 +111,11 @@ export default function Header() {
                   {link.label}
                 </a>
               ) : (
-                <Link key={link.href} href={link.href}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={link.href === '/' ? handleHomeClick : undefined}
+                >
                   {link.label}
                 </Link>
               )
