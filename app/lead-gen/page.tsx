@@ -10,7 +10,7 @@ import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schem
 export const metadata: Metadata = {
   title: 'גנרציית לידים לעסקים — 100 לידים ב-6 דקות | Smart Scale',
   description:
-    'Reacherful — מערכת גנרציית לידים שמוצאת 100+ לקוחות פוטנציאליים מאומתים תוך 6 דקות. מותאמת לנישה שלך. בלי רשימות מיושנות, בלי הגרלות. מ-2,500 ש"ח.',
+    'Reacherful — מערכת גנרציית לידים שמוצאת 100+ לקוחות פוטנציאליים מאומתים תוך 6 דקות. מותאמת לנישה שלך. בלי רשימות מיושנות, בלי הגרלות.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/lead-gen',
     languages: { he: 'https://ilyamaltsev.com/lead-gen' },
@@ -33,7 +33,6 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
-  { q: 'כמה עולה מערכת גנרציית לידים?', a: 'מ-2,500 ש"ח להגדרה ראשונה. מחיר סופי תלוי בנישה, בכמות הלידים הנדרשת ובאוטומציית המעקב. נקבע בשיחת ייעוץ.' },
   { q: 'מה זה "ליד מאומת"?', a: 'ליד שעבר אימות: מייל פעיל, טלפון תקין, ואיש הקשר באמת עובד בחברה. לא רשימה שנקנתה מלפני שנתיים — פרטים שנאספו ונאומתו בזמן אמת.' },
   { q: 'לאיזה עסקים מתאים?', a: 'לסוכנויות שיווק ופרסום, חברות B2B, נדל"ן מסחרי, ספקי שירות לעסקים, וכל עסק שמוכר לחברות אחרות. לא מתאים לעסקי B2C עם לקוחות פרטיים בלבד.' },
   { q: 'כמה זמן לוקח?', a: 'ריצה ראשונה — 6 דקות עד 100 לידים. הגדרת המערכת + אוטומציית מעקב — שבוע עד שבועיים. לאחר מכן — מייצרים לידים חדשים בלחיצת כפתור.' },
@@ -57,7 +56,7 @@ const STEPS = [
 export default function LeadGenPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: 'גנרציית לידים לעסקים — Reacherful', description: 'מערכת גנרציית לידים שמוצאת 100+ לידים מאומתים לעסקים ישראליים תוך 6 דקות. מותאמת לנישה, תחום וגודל החברה.', url: '/lead-gen', price: '2500' })} />
+      <JsonLd data={serviceSchema({ name: 'גנרציית לידים לעסקים — Reacherful', description: 'מערכת גנרציית לידים שמוצאת 100+ לידים מאומתים לעסקים ישראליים תוך 6 דקות. מותאמת לנישה, תחום וגודל החברה.', url: '/lead-gen' })} />
       <JsonLd data={faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'גנרציית לידים', url: '/lead-gen' }])} />
       <Header />
@@ -150,7 +149,7 @@ export default function LeadGenPage() {
           <div className="container">
             <h2 className="page-section-title">שאלות נפוצות</h2>
             <p className="page-section-lead">
-              Reacherful מתחיל מ-2,500 ש"ח, מייצר 100+ לידים מאומתים תוך 6 דקות, ומותאם לנישה ולקהל היעד שלך.
+              Reacherful מייצר 100+ לידים מאומתים תוך 6 דקות, מותאם לנישה ולקהל היעד שלך.
               מתאים לסוכנויות ועסקי B2B.
             </p>
             <FaqAccordion items={faqs} />

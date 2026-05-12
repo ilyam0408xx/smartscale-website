@@ -46,9 +46,6 @@ export default function Footer() {
             <a href="https://wa.me/9720502611165" target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>
-            <a href="https://www.instagram.com/ilyamaltsev.im" target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>
             <a
               href="https://www.linkedin.com/in/ilya-maltsev-15238a19a/"
               target="_blank"

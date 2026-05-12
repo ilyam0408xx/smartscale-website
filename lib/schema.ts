@@ -28,7 +28,6 @@ export function organizationSchema() {
       availableLanguage: 'Hebrew',
     },
     sameAs: [
-      'https://www.instagram.com/ilyamaltsev.im',
       'https://www.linkedin.com/in/ilya-maltsev-15238a19a',
     ],
   }
@@ -56,7 +55,6 @@ export function personSchema() {
       name: 'Smart Scale',
     },
     sameAs: [
-      'https://www.instagram.com/ilyamaltsev.im',
       'https://www.linkedin.com/in/ilya-maltsev-15238a19a',
     ],
   }
@@ -115,7 +113,6 @@ interface ServiceSchemaProps {
   name: string
   description: string
   url: string
-  price?: string
 }
 
 export function serviceSchema(props: ServiceSchemaProps) {
@@ -128,9 +125,6 @@ export function serviceSchema(props: ServiceSchemaProps) {
     provider: { '@type': 'Organization', name: 'Smart Scale', url: BASE_URL },
     areaServed: { '@type': 'Country', name: 'IL' },
     inLanguage: 'he',
-    ...(props.price && {
-      offers: { '@type': 'Offer', price: props.price, priceCurrency: 'ILS' },
-    }),
   }
 }
 

@@ -11,6 +11,7 @@ type NavLink =
   | { kind: 'page'; href: string; label: string }
 
 const NAV_LINKS: NavLink[] = [
+  { kind: 'page', href: '/', label: 'דף הבית' },
   { kind: 'anchor', id: 'services', label: 'שירותים' },
   { kind: 'anchor', id: 'demo', label: 'הדגמה חיה' },
   { kind: 'anchor', id: 'testimonials', label: 'המלצות' },

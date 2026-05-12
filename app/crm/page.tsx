@@ -10,7 +10,7 @@ import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schem
 export const metadata: Metadata = {
   title: 'מערכת ניהול לקוחות לעסקים — לא תאבד לקוח אחד',
   description:
-    'מערכת CRM מותאמת אישית לעסקים ישראליים. כל הלקוחות במקום אחד, תזכורות אוטומטיות, ופולואפ שקורה לבד. מ-2,500 ש"ח. שיחת ייעוץ חינם.',
+    'מערכת CRM מותאמת אישית לעסקים ישראליים. כל הלקוחות במקום אחד, תזכורות אוטומטיות, ופולואפ שקורה לבד. שיחת ייעוץ חינם.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/crm',
     languages: { he: 'https://ilyamaltsev.com/crm' },
@@ -33,11 +33,10 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
-  { q: 'כמה עולה מערכת ניהול לקוחות?', a: 'מ-2,500 ש"ח למערכת בסיסית. מערכת מלאה עם אוטומציות — 4,000-6,000 ש"ח. ללא תשלום חודשי. מחיר סופי נקבע בשיחת ייעוץ.' },
   { q: 'כמה זמן לוקח להקים?', a: 'שבוע עד שלושה שבועות, תלוי במורכבות. לאחר מכן — עובדת לבד.' },
   { q: 'האם אני צריך לדעת טכנולוגיה?', a: 'לא. המערכת עובדת עם WhatsApp, Gmail, וגוגל שיטס שכבר יש לך. לא צריך ללמוד שום תוכנה חדשה.' },
   { q: 'מה עם הנתונים הקיימים שלי?', a: 'מייבאים את כל הנתונים מ-Excel, WhatsApp, ומגוגל שיטס. לא מתחילים מאפס.' },
-  { q: 'מה קורה אם משהו לא עובד?', a: 'כל מערכת כוללת 45 ימי תמיכה ותיקונים. אם יש בעיה — שולח הודעה ב-WhatsApp ומקבל מענה תוך שעות.' },
+  { q: 'ממה המערכת מרכזת לידים?', a: 'WhatsApp, אתר, פייסבוק, אינסטגרם, טלפון — הכל נכנס למקום אחד אוטומטית.' },
 ]
 
 const PROBLEMS = [
@@ -57,7 +56,7 @@ const STEPS = [
 export default function CRMPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: 'מערכת ניהול לקוחות לעסקים', description: 'מערכת CRM מותאמת אישית לעסקים ישראליים — ריכוז לידים, פולואפ אוטומטי, ותזכורות. עסקים חוסכים 15 שעות בשבוע.', url: '/crm', price: '2500' })} />
+      <JsonLd data={serviceSchema({ name: 'מערכת ניהול לקוחות לעסקים', description: 'מערכת CRM מותאמת אישית לעסקים ישראליים — ריכוז לידים, פולואפ אוטומטי, ותזכורות. עסקים חוסכים 15 שעות בשבוע.', url: '/crm' })} />
       <JsonLd data={faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'מערכת ניהול לקוחות', url: '/crm' }])} />
       <Header />
@@ -85,7 +84,7 @@ export default function CRMPage() {
                 <ul>
                   <li>כל ליד נכנס למערכת ומקבל מענה תוך 2 דקות — גם בלילה</li>
                   <li>עסק שבניתי לו CRM חוסך בממוצע 15 שעות עבודה ידנית בשבוע</li>
-                  <li>מחיר: מ-2,500 ש"ח. ללא תשלום חודשי. מוכן תוך שבועיים.</li>
+                  <li>מוכן תוך שבועיים. עובד עם הכלים שכבר יש לך.</li>
                 </ul>
               </div>
             </div>
@@ -149,8 +148,8 @@ export default function CRMPage() {
           <div className="container">
             <h2 className="page-section-title">שאלות נפוצות</h2>
             <p className="page-section-lead">
-              מערכת CRM שאני בונה מתחילה מ-2,500 ש"ח, נבנית תוך שבועיים, ועובדת עם הכלים שכבר יש לך —
-              WhatsApp, Gmail, גוגל שיטס. ללא תשלום חודשי.
+              המערכת נבנית תוך שבועיים, ועובדת עם הכלים שכבר יש לך — WhatsApp, Gmail, גוגל שיטס.
+              ללא צורך ללמוד תוכנה חדשה.
             </p>
             <FaqAccordion items={faqs} />
           </div>

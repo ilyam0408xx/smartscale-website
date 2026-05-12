@@ -10,7 +10,7 @@ import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schem
 export const metadata: Metadata = {
   title: 'אוטומציה לעסקים — 15 שעות בשבוע שחוזרות אליך',
   description:
-    'אוטומציה עסקית לעסקים ישראליים. לידים, תזכורות, מסמכים, דוחות — הכל קורה לבד. מ-2,500 ש"ח. שיחת ייעוץ חינם.',
+    'אוטומציה עסקית לעסקים ישראליים. לידים, תזכורות, מסמכים, דוחות — הכל קורה לבד. שיחת ייעוץ חינם.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/automation',
     languages: { he: 'https://ilyamaltsev.com/automation' },
@@ -27,9 +27,8 @@ export const metadata: Metadata = {
 const faqs = [
   { q: 'מאיפה מתחילים?', a: 'מהתהליך שמבזבז לך הכי הרבה זמן. לרוב — מענה ללידים או תזכורות. בשיחת ייעוץ מזהים ביחד מה הכי כדאי לאוטמט קודם.' },
   { q: 'האם זה עובד עם הכלים שכבר יש לי?', a: 'כן. כל האוטומציות עובדות עם WhatsApp, Gmail, גוגל שיטס, ו-Drive. לא צריך לשנות כלים.' },
-  { q: 'כמה עולה?', a: 'אוטומציה בודדת — 2,500-3,500 ש"ח. מספר אוטומציות יחד — 4,000-7,000 ש"ח. ללא תשלום חודשי קבוע.' },
   { q: 'כמה זמן לוקח?', a: 'שבוע עד שלושה שבועות, תלוי במורכבות. לאחר ההקמה — עובדת לבד ללא תחזוקה שוטפת.' },
-  { q: 'מה קורה אם משהו מפסיק לעבוד?', a: '45 ימי תמיכה כלולים בכל פרויקט. לאחר מכן — תמיכה שנתית זמינה.' },
+  { q: 'מה אפשר לאוטמט?', a: 'כל תהליך שחוזר על עצמו: מענה ללידים, תזכורות לתורים, ניהול מסמכים, דוחות שבועיים, פולואפ אחרי שירות. אם זה חוזר — אפשר לאוטמט.' },
 ]
 
 const AUTOMATIONS = [
@@ -43,7 +42,7 @@ const AUTOMATIONS = [
 export default function AutomationPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: 'אוטומציה עסקית לעסקים ישראליים', description: 'אוטומציה עסקית לעסקים ישראליים — לידים, תזכורות, מסמכים, דוחות. עסקים חוסכים 12-18 שעות שבועיות.', url: '/automation', price: '2500' })} />
+      <JsonLd data={serviceSchema({ name: 'אוטומציה עסקית לעסקים ישראליים', description: 'אוטומציה עסקית לעסקים ישראליים — לידים, תזכורות, מסמכים, דוחות. עסקים חוסכים 12-18 שעות שבועיות.', url: '/automation' })} />
       <JsonLd data={faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'אוטומציה לעסקים', url: '/automation' }])} />
       <Header />
@@ -72,7 +71,7 @@ export default function AutomationPage() {
                 <ul>
                   <li>עסקים שבונים 5 אוטומציות בסיסיות חוסכים 12-18 שעות שבועיות</li>
                   <li>עובד עם WhatsApp, Gmail, גוגל שיטס — ללא שינוי כלים</li>
-                  <li>מחיר: מ-2,500 ש"ח. תוצאות — תוך שבוע ראשון.</li>
+                  <li>תוצאות — תוך שבוע ראשון מההקמה</li>
                 </ul>
               </div>
             </div>
@@ -107,8 +106,7 @@ export default function AutomationPage() {
           <div className="container">
             <h2 className="page-section-title">שאלות נפוצות</h2>
             <p className="page-section-lead">
-              האוטומציה שאני בונה עובדת עם הכלים שכבר יש לך, מתחילה מ-2,500 ש"ח,
-              ועובדת לבד תוך שבוע מההקמה.
+              האוטומציה שאני בונה עובדת עם הכלים שכבר יש לך, ועובדת לבד תוך שבוע מההקמה.
             </p>
             <FaqAccordion items={faqs} />
           </div>

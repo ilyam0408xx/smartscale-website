@@ -10,7 +10,7 @@ import { faqSchema, breadcrumbSchema, serviceSchema, WA_LINK } from '@/lib/schem
 export const metadata: Metadata = {
   title: 'בוט WhatsApp לעסקים — תגובה תוך 2 דקות',
   description:
-    'בוט WhatsApp שעונה ללידים 24/7, מתאם תורים, ושולח תזכורות אוטומטיות. לא מאבדים לידים בשעה 2 לילה. מ-2,500 ש"ח. שיחת ייעוץ חינם.',
+    'בוט WhatsApp שעונה ללידים 24/7, מתאם תורים, ושולח תזכורות אוטומטיות. לא מאבדים לידים בשעה 2 לילה. שיחת ייעוץ חינם.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/whatsapp-bot',
     languages: { he: 'https://ilyamaltsev.com/whatsapp-bot' },
@@ -26,9 +26,8 @@ export const metadata: Metadata = {
 
 const faqs = [
   { q: 'האם הלקוחות מרגישים שמדברים עם בוט?', a: 'בוט שכתוב נכון עם שפה טבעית — רוב הלקוחות לא מרגישים. כשהשיחה מורכבת מדי, הבוט מעביר לאדם אמיתי עם כל הפרטים.' },
-  { q: 'כמה עולה בוט WhatsApp?', a: 'בוט בסיסי — 2,500-3,500 ש"ח. מערכת מלאה עם CRM ותזכורות — 4,000-5,500 ש"ח. עלות תפעול חודשית: 50-200 ש"ח בלבד.' },
   { q: 'צריך WhatsApp Business?', a: 'כן — WhatsApp Business API. אני מסדיר את כל ההתחברות. לא צריך לעשות כלום לבד.' },
-  { q: 'כמה זמן לוקח להקים?', a: 'בוט בסיסי — שבוע. מערכת מלאה — שבועיים עד שלושה. כולל הדרכה ו-45 ימי תמיכה.' },
+  { q: 'כמה זמן לוקח להקים?', a: 'בוט בסיסי — שבוע. מערכת מלאה — שבועיים עד שלושה. כולל הדרכה והעברת ידע מלאה.' },
   { q: 'מה קורה אם הבוט לא יודע לענות?', a: 'הבוט מזהה שאלות מחוץ לתחום שלו ומעביר לאדם אמיתי עם כל הפרטים — שם, שאלה, והיסטוריה.' },
 ]
 
@@ -42,7 +41,7 @@ const USE_CASES = [
 export default function WhatsAppBotPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: 'בוט WhatsApp לעסקים', description: 'בוט WhatsApp שעונה ללידים 24/7 תוך 2 דקות — תיאום תורים, תזכורות, מיון לידים. מסיר 80% מהעומס.', url: '/whatsapp-bot', price: '2500' })} />
+      <JsonLd data={serviceSchema({ name: 'בוט WhatsApp לעסקים', description: 'בוט WhatsApp שעונה ללידים 24/7 תוך 2 דקות — תיאום תורים, תזכורות, מיון לידים. מסיר 80% מהעומס.', url: '/whatsapp-bot' })} />
       <JsonLd data={faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
       <JsonLd data={breadcrumbSchema([{ name: 'דף הבית', url: '/' }, { name: 'בוט WhatsApp', url: '/whatsapp-bot' }])} />
       <Header />
@@ -70,7 +69,7 @@ export default function WhatsAppBotPage() {
                 <ul>
                   <li>עונה ללידים תוך 2 דקות — כולל שבתות, חגים, ו-23:00 בלילה</li>
                   <li>מסיר 80% מהעומס: תזכורות, שאלות נפוצות, תיאום תורים</li>
-                  <li>מחיר: מ-2,500 ש"ח. תפעול: 50-200 ש"ח לחודש.</li>
+                  <li>מוכן תוך שבוע. עובד דרך WhatsApp Business API.</li>
                 </ul>
               </div>
             </div>
@@ -112,8 +111,7 @@ export default function WhatsAppBotPage() {
           <div className="container">
             <h2 className="page-section-title">שאלות נפוצות</h2>
             <p className="page-section-lead">
-              בוט WhatsApp לעסקים מתחיל מ-2,500 ש"ח להקמה, עם תפעול חודשי של 50-200 ש"ח בלבד.
-              נבנה תוך שבוע, כולל 45 ימי תמיכה.
+              בוט WhatsApp לעסקים נבנה תוך שבוע, מותאם לעסק שלך, ועובד דרך WhatsApp Business API.
             </p>
             <FaqAccordion items={faqs} />
           </div>

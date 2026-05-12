@@ -24,5 +24,4 @@
 ## יצירת קשר
 - WhatsApp: https://wa.me/9720502611165
 - טלפון: 050-261-1165
-- Instagram: https://www.instagram.com/ilyamaltsev.im
 - LinkedIn: https://www.linkedin.com/in/ilya-maltsev-15238a19a
