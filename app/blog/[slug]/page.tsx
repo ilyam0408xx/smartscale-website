@@ -87,7 +87,11 @@ export default async function BlogPostPage({ params }: Props) {
           </nav>
 
           <div className="article-hero" aria-label="תמונה ראשית">
-            [ תמונה תוטמע כאן ]
+            {meta.cover ? (
+              <img src={meta.cover} alt={meta.coverAlt || meta.title} />
+            ) : (
+              '[ תמונה תוטמע כאן ]'
+            )}
           </div>
 
           <header className="article-header">

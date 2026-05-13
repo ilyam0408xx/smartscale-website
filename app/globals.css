@@ -1066,6 +1066,14 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   height: 100%;
   object-fit: cover;
 }
+.blog-article .article-image--diagram {
+  aspect-ratio: auto;
+  background: #fff;
+}
+.blog-article .article-image--diagram img {
+  height: auto;
+  object-fit: contain;
+}
 .blog-article .article-caption {
   margin-top: 14px;
   padding-inline: 28px;

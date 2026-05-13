@@ -13,6 +13,8 @@ export interface PostMeta {
   author: string
   tags: string[]
   readingTime: number
+  cover?: string
+  coverAlt?: string
 }
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog')
@@ -38,6 +40,8 @@ function buildMeta(slug: string, data: Record<string, unknown>, content: string)
     author: (data.author as string) || 'איליה מלצב',
     tags: (data.tags as string[]) || [],
     readingTime: calcReadingTime(content),
+    cover: (data.cover as string) || undefined,
+    coverAlt: (data.coverAlt as string) || undefined,
   }
 }
 
@@ -79,6 +83,7 @@ const MID_FIGURE = `
 `
 
 function injectMidFigure(html: string): string {
+  if (/<img\b/i.test(html) || /<figure\b/i.test(html)) return html
   // Split by closing </p> tags; inject the figure after the paragraph at ~50%.
   const parts = html.split(/<\/p>/i)
   if (parts.length < 4) return html // too short to bother
