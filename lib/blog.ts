@@ -99,6 +99,53 @@ function injectMidFigure(html: string): string {
     .join('')
 }
 
+// Turns the markdown FAQ (## שאלות נפוצות + **Q** / A pairs) into the
+// two-column appendix layout. Idempotent — no-op if heading not found.
+// Heading text may have a suffix (e.g. "שאלות נפוצות לקליניקות"); we keep it.
+function transformFaqSection(html: string): string {
+  const heading = html.match(/<h2>(שאלות נפוצות[^<]*)<\/h2>/)
+  if (!heading) return html
+
+  const headingText = heading[1]
+  const headingIdx = heading.index!
+  const before = html.slice(0, headingIdx)
+  const after = html.slice(headingIdx + heading[0].length)
+
+  // FAQ section ends at the next heading, the next <section>, or EOF.
+  const endMatch = after.match(/<h[1-6]\b|<section\b/i)
+  const sectionEnd = endMatch ? endMatch.index! : after.length
+  const body = after.slice(0, sectionEnd)
+  const tail = after.slice(sectionEnd)
+
+  // Each Q/A is one <p><strong>Q</strong>...A</p>.
+  const qaRe = /<p>\s*<strong>([\s\S]+?)<\/strong>\s*([\s\S]+?)<\/p>/g
+  const items: { q: string; a: string }[] = []
+  let m: RegExpExecArray | null
+  while ((m = qaRe.exec(body)) !== null) {
+    items.push({ q: m[1].trim(), a: m[2].trim() })
+  }
+  if (items.length === 0) return html
+
+  const grid = items
+    .map(
+      ({ q, a }) =>
+        `    <div class="faq__item">\n` +
+        `      <p class="faq__q">${q}</p>\n` +
+        `      <p class="faq__a">${a}</p>\n` +
+        `    </div>`
+    )
+    .join('\n')
+
+  const section =
+    `<section class="faq" aria-labelledby="faq-heading">\n` +
+    `  <p class="faq__kicker">FAQ</p>\n` +
+    `  <h2 id="faq-heading" class="faq__heading">${headingText}</h2>\n` +
+    `  <div class="faq__grid">\n${grid}\n  </div>\n` +
+    `</section>\n`
+
+  return before + section + tail
+}
+
 export async function getPostBySlug(
   slug: string
 ): Promise<{ meta: PostMeta; content: string } | null> {
@@ -114,7 +161,8 @@ export async function getPostBySlug(
     .use(remarkHtml, { sanitize: false })
     .process(content)
 
-  const htmlWithFigure = injectMidFigure(processed.toString())
+  const withFigure = injectMidFigure(processed.toString())
+  const withFaq = transformFaqSection(withFigure)
 
-  return { meta, content: htmlWithFigure }
+  return { meta, content: withFaq }
 }
