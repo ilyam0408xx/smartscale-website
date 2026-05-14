@@ -146,7 +146,9 @@ export function articleSchema(props: ArticleSchemaProps) {
     url: `${BASE_URL}${props.url}`,
     datePublished: props.datePublished,
     dateModified: props.dateModified || props.datePublished,
-    image: props.image || `${BASE_URL}/og/homepage.webp`,
+    image: props.image
+      ? (props.image.startsWith('http') ? props.image : `${BASE_URL}${props.image}`)
+      : `${BASE_URL}/og/homepage.webp`,
     author: {
       '@type': 'Person',
       name: 'Ilya Maltsev',

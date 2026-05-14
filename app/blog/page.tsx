@@ -67,7 +67,13 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="related-card"
               >
-                <div className="related-thumb">[ תמונה ]</div>
+                <div className="related-thumb">
+                  {post.cover ? (
+                    <img src={post.cover} alt={post.coverAlt || post.title} />
+                  ) : (
+                    '[ תמונה ]'
+                  )}
+                </div>
                 <span className="related-cat">
                   {PLACEHOLDER_CATEGORIES[i % PLACEHOLDER_CATEGORIES.length]}
                 </span>

@@ -43,6 +43,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: 'he_IL',
       type: 'article',
       publishedTime: post.meta.datePublished,
+      images: post.meta.cover
+        ? [{
+            url: `https://ilyamaltsev.com${post.meta.cover}`,
+            alt: post.meta.coverAlt || post.meta.title,
+          }]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.meta.title,
+      description: post.meta.description,
+      images: post.meta.cover
+        ? [`https://ilyamaltsev.com${post.meta.cover}`]
+        : undefined,
     },
   }
 }
@@ -64,6 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
           url: `/blog/${slug}`,
           datePublished: meta.datePublished,
           dateModified: meta.datePublished,
+          image: meta.cover,
         })}
       />
       <JsonLd data={personSchema()} />
@@ -136,7 +151,13 @@ export default async function BlogPostPage({ params }: Props) {
                   href={`/blog/${p.slug}`}
                   className="related-card"
                 >
-                  <div className="related-thumb">[ תמונה ]</div>
+                  <div className="related-thumb">
+                    {p.cover ? (
+                      <img src={p.cover} alt={p.coverAlt || p.title} />
+                    ) : (
+                      '[ תמונה ]'
+                    )}
+                  </div>
                   <span className="related-cat">
                     {PLACEHOLDER_CATEGORIES[i % PLACEHOLDER_CATEGORIES.length]}
                   </span>
