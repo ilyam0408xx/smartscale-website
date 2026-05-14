@@ -3,6 +3,7 @@ import { Heebo, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import CookieBanner from '@/components/CookieBanner'
 import PixelLoader from '@/components/PixelLoader'
+import OutbrainPixel from '@/components/OutbrainPixel'
 import AiWidget from '@/components/AiWidget'
 
 const heebo = Heebo({
@@ -63,6 +64,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.youtube.com" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://amplify.outbrain.com" />
       </head>
       <body
         className={`${heebo.className} antialiased`}
@@ -70,6 +72,7 @@ export default function RootLayout({
       >
         {children}
         <PixelLoader />
+        <OutbrainPixel />
         <CookieBanner />
         <AiWidget />
       </body>

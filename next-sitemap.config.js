@@ -5,7 +5,7 @@ module.exports = {
   changefreq: 'weekly',
   priority: 0.7,
   sitemapSize: 1000,
-  exclude: ['/404'],
+  exclude: ['/404', '/promo/*'],
   additionalPaths: async () => [
     {
       loc: '/',

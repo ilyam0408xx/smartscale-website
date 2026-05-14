@@ -2012,3 +2012,132 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
 .aiw-thankyou-title { font-weight: 700; font-size: 16px; color: #0a0a0a; margin-bottom: 6px; }
 .aiw-thankyou-text { font-size: 14px; color: #6b6b6b; line-height: 1.6; }
 
+
+/* ═════════════════════════════════════════════════════════════════════
+   PROMO (Outbrain advertorials) — minimal layout, mobile-first
+   ═════════════════════════════════════════════════════════════════════ */
+
+.promo-article {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 120px;
+}
+
+.promo-prose {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--fg);
+}
+
+.promo-prose h1 {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 16px 0 12px;
+  color: #0a0a0a;
+}
+
+.promo-prose .lead,
+.promo-prose p.lead {
+  font-size: 19px;
+  color: #444;
+  margin: 8px 0 24px;
+  line-height: 1.55;
+}
+
+.promo-prose h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  color: #0a0a0a;
+}
+
+.promo-prose p {
+  margin: 0 0 16px;
+}
+
+.promo-prose ul,
+.promo-prose ol {
+  margin: 0 0 16px;
+  padding-inline-start: 24px;
+}
+
+.promo-prose li { margin-bottom: 6px; }
+
+.promo-footer {
+  margin-top: 48px;
+  padding: 24px 20px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.7;
+}
+
+.promo-footer__brand {
+  font-size: 14px;
+  color: var(--fg);
+  margin-bottom: 6px;
+}
+
+.promo-footer__brand strong { color: #0a0a0a; font-weight: 700; }
+.promo-footer__brand a { color: var(--accent); text-decoration: none; }
+
+.promo-footer__links { font-size: 13px; margin-bottom: 8px; }
+
+.promo-footer__links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.promo-footer__links a:hover { color: var(--accent); }
+
+.promo-footer__sep {
+  display: inline-block;
+  margin: 0 8px;
+  color: var(--fg-dim);
+}
+
+.promo-disclosure {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* sticky bottom CTA — mobile only */
+.promo-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+}
+
+.promo-sticky-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 20px;
+  background: var(--wa, #25D366);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .promo-sticky-cta { display: none; }
+  .promo-article { padding-bottom: 64px; }
+  .promo-prose h1 { font-size: 38px; }
+  .promo-prose .lead { font-size: 21px; }
+}
