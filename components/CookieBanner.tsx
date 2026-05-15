@@ -88,7 +88,8 @@ const SECTIONS: Array<{
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false)
-  const [draft, setDraft] = useState<ConsentState>(DEFAULT_DECLINED)
+  // Default state: all toggles ON. User can opt OUT of categories before clicking מאשר.
+  const [draft, setDraft] = useState<ConsentState>(DEFAULT_ACCEPTED)
   const [openSection, setOpenSection] = useState<SectionKey | null>(null)
 
   useEffect(() => {
@@ -203,10 +204,8 @@ export default function CookieBanner() {
         <button
           type="button"
           onClick={() => {
-            // If user opened a section and toggled anything, use draft; else accept all.
-            const anyDraftChange =
-              draft.preferences || draft.statistics || draft.marketing
-            writeConsent(anyDraftChange ? draft : DEFAULT_ACCEPTED)
+            // Save whatever the user has in the draft (default is all-on; user may have toggled some off).
+            writeConsent(draft)
             setVisible(false)
           }}
           className="cookie-btn cookie-btn--primary"

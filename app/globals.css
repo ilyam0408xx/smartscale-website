@@ -2149,7 +2149,7 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
 .cookie-modal {
   position: fixed;
   bottom: 24px;
-  inset-inline-end: 24px;
+  inset-inline-start: 24px;
   width: min(420px, calc(100vw - 32px));
   max-height: calc(100vh - 48px);
   overflow-y: auto;
