@@ -1,6 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
+import { getConsent } from '@/components/CookieBanner'
+
+// Meta Pixel — loads only when user has consented to "marketing" category.
+// Listens for the `cookie-accepted` event so the pixel loads instantly when
+// the user toggles marketing on, without needing a page refresh.
 
 export default function PixelLoader() {
   useEffect(() => {
@@ -23,14 +28,18 @@ export default function PixelLoader() {
       }
     }
 
-    if (localStorage.getItem('cookie_consent') === 'accepted') {
+    if (getConsent().marketing) {
       loadPixel()
       return
     }
 
-    // Load immediately when user clicks "accept" — no page refresh needed.
-    window.addEventListener('cookie-accepted', loadPixel)
-    return () => window.removeEventListener('cookie-accepted', loadPixel)
+    const onConsent = (e: Event) => {
+      const detail = (e as CustomEvent).detail
+      if (detail && detail.marketing) loadPixel()
+    }
+
+    window.addEventListener('cookie-accepted', onConsent)
+    return () => window.removeEventListener('cookie-accepted', onConsent)
   }, [])
 
   return null

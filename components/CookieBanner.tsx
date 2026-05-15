@@ -1,98 +1,234 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+// GDPR-style granular consent. localStorage stores a JSON object with one
+// boolean per category. Backward compat: legacy values "accepted"/"declined"
+// are migrated on first read.
+
+type ConsentState = {
+  functional: true // always on
+  preferences: boolean
+  statistics: boolean
+  marketing: boolean
+}
+
+const DEFAULT_DECLINED: ConsentState = {
+  functional: true,
+  preferences: false,
+  statistics: false,
+  marketing: false,
+}
+
+const DEFAULT_ACCEPTED: ConsentState = {
+  functional: true,
+  preferences: true,
+  statistics: true,
+  marketing: true,
+}
+
+function readConsent(): ConsentState | null {
+  if (typeof window === 'undefined') return null
+  const raw = localStorage.getItem('cookie_consent')
+  if (!raw) return null
+  if (raw === 'accepted') return DEFAULT_ACCEPTED
+  if (raw === 'declined') return DEFAULT_DECLINED
+  try {
+    const parsed = JSON.parse(raw)
+    return {
+      functional: true,
+      preferences: !!parsed.preferences,
+      statistics: !!parsed.statistics,
+      marketing: !!parsed.marketing,
+    }
+  } catch {
+    return null
+  }
+}
+
+function writeConsent(state: ConsentState) {
+  localStorage.setItem('cookie_consent', JSON.stringify(state))
+  window.dispatchEvent(new CustomEvent('cookie-accepted', { detail: state }))
+}
+
+type SectionKey = 'functional' | 'preferences' | 'statistics' | 'marketing'
+
+const SECTIONS: Array<{
+  key: SectionKey
+  title: string
+  body: string
+  alwaysActive?: boolean
+}> = [
+  {
+    key: 'functional',
+    title: 'Functional',
+    alwaysActive: true,
+    body:
+      'The technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.',
+  },
+  {
+    key: 'preferences',
+    title: 'Preferences',
+    body:
+      'The technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user.',
+  },
+  {
+    key: 'statistics',
+    title: 'Statistics',
+    body:
+      'The technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this sole purpose cannot usually be used to identify you.',
+  },
+  {
+    key: 'marketing',
+    title: 'Marketing',
+    body:
+      'The technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.',
+  },
+]
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false)
+  const [draft, setDraft] = useState<ConsentState>(DEFAULT_DECLINED)
+  const [openSection, setOpenSection] = useState<SectionKey | null>(null)
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie_consent')
-    if (!consent) setVisible(true)
+    const existing = readConsent()
+    if (!existing) setVisible(true)
   }, [])
 
-  function accept() {
-    localStorage.setItem('cookie_consent', 'accepted')
+  function close() {
     setVisible(false)
-    // Trigger pixel load without full reload
-    window.dispatchEvent(new Event('cookie-accepted'))
   }
 
-  function decline() {
-    localStorage.setItem('cookie_consent', 'declined')
+  function acceptAll() {
+    writeConsent(DEFAULT_ACCEPTED)
     setVisible(false)
+  }
+
+  function declineAll() {
+    writeConsent(DEFAULT_DECLINED)
+    setVisible(false)
+  }
+
+  function toggle(key: SectionKey) {
+    if (key === 'functional') return
+    setDraft((d) => ({ ...d, [key]: !d[key] }))
   }
 
   if (!visible) return null
 
   return (
-    <div
-      role="dialog"
-      aria-label="הסכמה לעוגיות"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        insetInlineStart: 0,
-        insetInlineEnd: 0,
-        zIndex: 999,
-        background: '#0a0a0a',
-        color: '#fff',
-        padding: '16px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: 16,
-        boxShadow: '0 -4px 24px rgba(0,0,0,0.3)',
-        animation: 'slideUp 0.35s ease',
-      }}
-    >
-      <style>{`
-        @keyframes slideUp {
-          from { transform: translateY(100%); opacity: 0; }
-          to   { transform: translateY(0);    opacity: 1; }
-        }
-      `}</style>
+    <div className="cookie-modal" role="dialog" aria-label="הגדרות עוגיות">
+      <button
+        type="button"
+        className="cookie-modal__close"
+        aria-label="סגור"
+        onClick={close}
+      >
+        ✕
+      </button>
 
-      <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, flex: '1 1 280px', color: '#e5e5e5' }}>
-        האתר משתמש בעוגיות לשיפור חווית השימוש ולניתוח תנועה (Facebook Pixel).{' '}
-        <a href="/privacy" style={{ color: '#0ea5e9', textDecoration: 'underline' }}>
-          מדיניות פרטיות
-        </a>
+      <p className="cookie-modal__intro">
+        אנחנו משתמשים בעוגיות (Cookies) כדי להבטיח לך את החוויה הכי טובה באתר שלנו.
+        אישור השימוש בטכנולוגיות אלו יאפשר לנו לנתח נתונים כמו הרגלי גלישה כדי
+        להשתפר. שימו לב שאי-מתן הסכמה עלול להשפיע על חלק מהאפשרויות והתפקודים
+        באתר.
       </p>
 
-      <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-        <button
-          onClick={decline}
-          style={{
-            padding: '8px 18px',
-            border: '1px solid #6b6b6b',
-            borderRadius: 6,
-            background: 'transparent',
-            color: '#aaaaaa',
-            fontSize: 13,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
+      <div className="cookie-modal__sections">
+        {SECTIONS.map((s) => {
+          const isOpen = openSection === s.key
+          const isOn = s.alwaysActive ? true : draft[s.key]
+          return (
+            <div key={s.key} className="cookie-section">
+              <button
+                type="button"
+                className="cookie-section__head"
+                onClick={() => setOpenSection(isOpen ? null : s.key)}
+                aria-expanded={isOpen}
+              >
+                <span
+                  className={`cookie-section__chevron${isOpen ? ' is-open' : ''}`}
+                  aria-hidden="true"
+                >
+                  ›
+                </span>
+                {s.alwaysActive ? (
+                  <span className="cookie-section__always">Always active</span>
+                ) : (
+                  <span
+                    role="switch"
+                    aria-checked={isOn}
+                    tabIndex={0}
+                    className={`cookie-toggle${isOn ? ' is-on' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggle(s.key)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        toggle(s.key)
+                      }
+                    }}
+                  >
+                    <span className="cookie-toggle__dot" />
+                  </span>
+                )}
+                <span className="cookie-section__title">{s.title}</span>
+              </button>
+              {isOpen && (
+                <p className="cookie-section__body" dir="ltr">
+                  {s.body}
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="cookie-modal__actions">
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener"
+          className="cookie-btn cookie-btn--ghost"
         >
-          המשך ללא עוגיות
+          רוצה לקרוא
+        </a>
+        <button type="button" onClick={declineAll} className="cookie-btn cookie-btn--ghost">
+          דוחה
         </button>
         <button
-          onClick={accept}
-          style={{
-            padding: '8px 20px',
-            borderRadius: 6,
-            background: '#0ea5e9',
-            color: '#fff',
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: 'pointer',
-            border: 'none',
-            fontFamily: 'inherit',
+          type="button"
+          onClick={() => {
+            // If user opened a section and toggled anything, use draft; else accept all.
+            const anyDraftChange =
+              draft.preferences || draft.statistics || draft.marketing
+            writeConsent(anyDraftChange ? draft : DEFAULT_ACCEPTED)
+            setVisible(false)
           }}
+          className="cookie-btn cookie-btn--primary"
         >
-          אישור
+          מאשר
         </button>
+      </div>
+
+      <div className="cookie-modal__links">
+        <a href="/privacy" target="_blank" rel="noopener">
+          Privacy Statement
+        </a>
+        <a href="/privacy" target="_blank" rel="noopener">
+          Cookie Policy
+        </a>
       </div>
     </div>
   )
+}
+
+// Public helper for other components (PixelLoader, OutbrainPixel, etc.)
+// to check whether a given category was consented to.
+export function getConsent(): ConsentState {
+  return readConsent() ?? DEFAULT_DECLINED
 }
