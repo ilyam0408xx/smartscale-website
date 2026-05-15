@@ -91,6 +91,8 @@ export default function CookieBanner() {
   // Default state: all toggles ON. User can opt OUT of categories before clicking מאשר.
   const [draft, setDraft] = useState<ConsentState>(DEFAULT_ACCEPTED)
   const [openSection, setOpenSection] = useState<SectionKey | null>(null)
+  // Categories accordion is hidden by default; revealed on "רוצה לקרוא" click.
+  const [showSections, setShowSections] = useState(false)
 
   useEffect(() => {
     const existing = readConsent()
@@ -136,6 +138,7 @@ export default function CookieBanner() {
         באתר.
       </p>
 
+      {showSections && (
       <div className="cookie-modal__sections">
         {SECTIONS.map((s) => {
           const isOpen = openSection === s.key
@@ -188,16 +191,18 @@ export default function CookieBanner() {
           )
         })}
       </div>
+      )}
 
       <div className="cookie-modal__actions">
-        <a
-          href="/privacy"
-          target="_blank"
-          rel="noopener"
+        <button
+          type="button"
+          onClick={() => setShowSections(true)}
           className="cookie-btn cookie-btn--ghost"
+          aria-expanded={showSections}
+          disabled={showSections}
         >
           רוצה לקרוא
-        </a>
+        </button>
         <button type="button" onClick={declineAll} className="cookie-btn cookie-btn--ghost">
           דוחה
         </button>

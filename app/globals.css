@@ -2323,6 +2323,12 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   border-color: var(--fg-muted);
 }
 
+.cookie-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
 .cookie-btn--primary {
   background: var(--accent);
   color: var(--on-accent);
