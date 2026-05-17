@@ -2136,11 +2136,14 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   color: #888;
 }
 
-/* Copyable prompt — flat inline text, no box. Just a tiny "העתק" link.
-   Triggered by ```copyable in MDX. CopyButtonEnhancer adds the button. */
+/* Copyable prompt — Google-Docs-style code block: subtle gray bg,
+   monospace, SMALL font so it doesn't dominate the article. */
 .copyable-wrapper {
   margin: 20px 0;
   position: relative;
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 14px 18px;
 }
 .promo-prose pre:has(> code.language-copyable),
 .copyable-wrapper > pre {
@@ -2149,10 +2152,10 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   max-height: none;
   overflow: visible;
   background: transparent;
-  font-family: inherit;
-  font-size: 15px;
+  font-family: "Consolas", "Menlo", "DejaVu Sans Mono", monospace;
+  font-size: 12px;
   line-height: 1.7;
-  color: #6b7280;
+  color: #444;
   direction: rtl;
   text-align: right;
   white-space: pre-wrap;
@@ -2166,20 +2169,25 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   font-family: inherit;
 }
 .copyable-btn {
-  display: inline-block;
-  margin: 0 0 10px 0;
-  padding: 0;
-  background: transparent;
-  border: none;
-  color: var(--accent, #0ea5e9);
-  font-size: 13px;
-  font-weight: 500;
+  position: absolute;
+  top: 6px;
+  inset-inline-end: 8px;
+  margin: 0;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  font-size: 11px;
   cursor: pointer;
   font-family: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  z-index: 2;
 }
-.copyable-btn:hover { color: #0284c7; }
+.copyable-btn:hover {
+  background: #fff;
+  color: #111827;
+  border-color: #9ca3af;
+}
 
 /* sticky bottom CTA — mobile only */
 .promo-sticky-cta {
