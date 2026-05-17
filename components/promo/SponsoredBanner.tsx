@@ -13,12 +13,11 @@ export default function SponsoredBanner({ label }: SponsoredBannerProps) {
       aria-label="גילוי תוכן ממומן"
       style={{
         background: '#f5f5f5',
-        color: '#666',
-        fontSize: '13px',
+        color: '#888',
+        fontSize: '12px',
         fontWeight: 400,
         textAlign: 'center',
-        padding: '8px 16px',
-        borderBottom: '1px solid #e5e5e5',
+        padding: '6px 16px',
         letterSpacing: '0.02em',
       }}
     >
