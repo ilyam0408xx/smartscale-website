@@ -51,6 +51,20 @@ export default async function PromoPage({ params }: Props) {
 
       <main className="promo-article">
         <article className="promo-body">
+          <div className="promo-hero" aria-label="תמונה ראשית">
+            {meta.cover ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={meta.cover} alt={meta.coverAlt || meta.title} />
+            ) : (
+              '[ תמונה תוטמע כאן ]'
+            )}
+          </div>
+
+          <header className="promo-header">
+            <h1 className="promo-title">{meta.title}</h1>
+            {meta.subhead && <p className="promo-subhead">{meta.subhead}</p>}
+          </header>
+
           <div
             className="prose promo-prose"
             dangerouslySetInnerHTML={{ __html: sections.beforeAboveFold }}

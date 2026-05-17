@@ -15,11 +15,14 @@ import remarkHtml from 'remark-html'
 export interface PromoMeta {
   slug: string
   title: string
+  subhead: string
   description: string
   date: string
   campaign: string
   tier: number
   sponsoredLabel: string
+  cover: string
+  coverAlt: string
   ctaAboveFold: string
   ctaMid: string
   ctaEnd: string
@@ -40,20 +43,26 @@ const MARKER_ABOVE_FOLD = '<!--cta:above-fold-->'
 const MARKER_MID = '<!--cta:mid-->'
 const MARKER_END = '<!--cta:end-->'
 
+function strField(data: Record<string, unknown>, key: string, fallback: string): string {
+  // Explicit empty string in frontmatter ('') stays empty; only undefined falls back.
+  return typeof data[key] === 'string' ? (data[key] as string) : fallback
+}
+
 function buildMeta(slug: string, data: Record<string, unknown>): PromoMeta {
   return {
     slug,
-    title: (data.title as string) || '',
-    description: (data.description as string) || '',
-    date: (data.date as string) || '',
-    campaign: (data.campaign as string) || slug,
+    title: strField(data, 'title', ''),
+    subhead: strField(data, 'subhead', ''),
+    description: strField(data, 'description', ''),
+    date: strField(data, 'date', ''),
+    campaign: strField(data, 'campaign', slug),
     tier: (data.tier as number) || 2,
-    sponsoredLabel:
-      (data.sponsored_label as string) || 'כתבה פרסומית מטעם Smart Scale',
-    ctaAboveFold:
-      (data.cta_above_fold as string) || 'בואו נראה איך זה עובד אצלכם',
-    ctaMid: (data.cta_mid as string) || 'זה נשמע רלוונטי? בואו נדבר',
-    ctaEnd: (data.cta_end as string) || 'שיחה בוואטסאפ',
+    sponsoredLabel: strField(data, 'sponsored_label', 'תוכן שיווקי'),
+    cover: strField(data, 'cover', ''),
+    coverAlt: strField(data, 'cover_alt', ''),
+    ctaAboveFold: strField(data, 'cta_above_fold', 'בואו נראה איך זה עובד אצלכם'),
+    ctaMid: strField(data, 'cta_mid', 'זה נשמע רלוונטי? בואו נדבר'),
+    ctaEnd: strField(data, 'cta_end', 'שיחה בוואטסאפ'),
   }
 }
 
