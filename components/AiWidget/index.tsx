@@ -65,6 +65,10 @@ export default function AiWidget() {
     setState('capture')
   }, [])
 
+  // Promo (advertorial) pages should give value first and avoid distracting
+  // sales widgets. Hide AiWidget entirely on /promo/* routes.
+  if (pathname.startsWith('/promo/')) return null
+
   if (state === 'closed') {
     return (
       <button type="button" className="aiw-trigger" onClick={() => setState('chatting')}>

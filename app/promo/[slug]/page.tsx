@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import SponsoredBanner from '@/components/promo/SponsoredBanner'
 import WhatsAppCTA from '@/components/promo/WhatsAppCTA'
-import StickyMobileCTA from '@/components/promo/StickyMobileCTA'
 import CopyButtonEnhancer from '@/components/promo/CopyButtonEnhancer'
 import { getAllPromoSlugs, getPromoBySlug } from '@/lib/promo'
 
@@ -115,7 +114,6 @@ export default async function PromoPage({ params }: Props) {
         </footer>
       </main>
 
-      <StickyMobileCTA label={meta.ctaEnd} slug={slug} />
       <CopyButtonEnhancer />
     </>
   )
