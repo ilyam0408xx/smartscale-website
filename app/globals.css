@@ -2136,28 +2136,26 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   color: #888;
 }
 
-/* Copyable prompt block — used inside promo articles for embedded prompts.
+/* Copyable prompt block — minimal Google-Docs-like styling.
    Triggered by ```copyable in MDX. CopyButtonEnhancer adds the העתק button. */
 .copyable-wrapper {
-  margin: 24px auto;
-  max-width: 480px;
+  margin: 28px 0;
   position: relative;
-  border: 1px solid rgba(14, 165, 233, 0.25);
-  border-radius: 10px;
-  background: #f8fafc;
-  overflow: hidden;
+  background: #fafafa;
+  border-inline-start: 3px solid #e5e7eb;
+  border-radius: 0;
 }
 .promo-prose pre:has(> code.language-copyable),
 .copyable-wrapper > pre {
   margin: 0;
-  padding: 16px 18px;
-  max-height: 280px;
+  padding: 18px 22px 18px 22px;
+  max-height: 380px;
   overflow-y: auto;
   background: transparent;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #1f2937;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #374151;
   direction: rtl;
   text-align: right;
   white-space: pre-wrap;
@@ -2168,22 +2166,31 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   padding: 0;
   color: inherit;
   font-size: inherit;
+  font-family: inherit;
 }
+/* Small unobtrusive copy button — top-left in RTL view */
 .copyable-btn {
-  display: block;
-  width: 100%;
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
   margin: 0;
-  padding: 10px 14px;
-  background: var(--accent, #0ea5e9);
-  color: #fff;
-  border: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 14px;
-  font-weight: 600;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s;
+  z-index: 2;
+  font-family: inherit;
 }
-.copyable-btn:hover { background: #0284c7; }
+.copyable-btn:hover {
+  background: #fff;
+  color: #111827;
+  border-color: #9ca3af;
+}
 .copyable-btn:active { transform: translateY(1px); }
 
 /* sticky bottom CTA — mobile only */
