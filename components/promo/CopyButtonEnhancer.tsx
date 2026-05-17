@@ -44,8 +44,8 @@ export default function CopyButtonEnhancer() {
       const wrapper = document.createElement('div')
       wrapper.className = 'copyable-wrapper'
       pre.parentNode?.insertBefore(wrapper, pre)
-      wrapper.appendChild(pre)
       wrapper.appendChild(btn)
+      wrapper.appendChild(pre)
     })
   }, [])
 
