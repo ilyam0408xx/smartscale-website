@@ -13,6 +13,9 @@ interface WhatsAppCTAProps {
 }
 
 export default function WhatsAppCTA({ position, label, primary = false }: WhatsAppCTAProps) {
+  // Allow optional CTA: render nothing if no label provided.
+  if (!label || !label.trim()) return null
+
   const handleClick = () => {
     trackLead(position)
     // Meta Pixel also fires; the anchor href handles navigation.

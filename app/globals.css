@@ -2105,6 +2105,56 @@ html[dir="rtl"] .flow-dot { animation-name: travelR; }
   color: #888;
 }
 
+/* Copyable prompt block — used inside promo articles for embedded prompts.
+   Triggered by ```copyable in MDX. CopyButtonEnhancer adds the העתק button. */
+.copyable-wrapper {
+  margin: 24px auto;
+  max-width: 480px;
+  position: relative;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  border-radius: 10px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+.promo-prose pre:has(> code.language-copyable),
+.copyable-wrapper > pre {
+  margin: 0;
+  padding: 16px 18px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: transparent;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #1f2937;
+  direction: rtl;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.copyable-wrapper > pre code.language-copyable {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.copyable-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 10px 14px;
+  background: var(--accent, #0ea5e9);
+  color: #fff;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.copyable-btn:hover { background: #0284c7; }
+.copyable-btn:active { transform: translateY(1px); }
+
 /* sticky bottom CTA — mobile only */
 .promo-sticky-cta {
   position: fixed;
