@@ -74,6 +74,15 @@ export default function RootLayout({
       >
         {children}
         <PixelLoader />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
         <OutbrainPixel />
         <TaboolaPixel />
         <CookieBanner />
