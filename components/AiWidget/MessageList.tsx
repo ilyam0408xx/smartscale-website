@@ -14,17 +14,15 @@ type Props = {
   onChipSelect: (chip: string) => void
   onRetry: () => void
   onCta: () => void
-  chatLocked: boolean
 }
 
-export default function MessageList({ messages, onChipSelect, onRetry, onCta, chatLocked }: Props) {
+export default function MessageList({ messages, onChipSelect, onRetry, onCta }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages])
 
-  // First assistant index — for showing "Smart Scale" label only once at the top
   const firstAssistantIdx = messages.findIndex((m) => m.role === 'assistant')
 
   return (
@@ -66,30 +64,25 @@ export default function MessageList({ messages, onChipSelect, onRetry, onCta, ch
           )
         }
 
-        if (m.phase === 'question') {
-          // chips only show on the most recent question, and only if chat is not locked
-          const isLatest = i === messages.length - 1
-          return (
-            <div key={m.id}>
-              <MessageBubble role="assistant" showAvatar showSenderName={showSenderName}>
-                {m.text}
-              </MessageBubble>
-              {isLatest && !chatLocked && (
-                <QuickReplyChips chips={m.chips} onSelect={onChipSelect} />
-              )}
-            </div>
-          )
-        }
+        // reply — unified bubble: text + optional chips + optional cards
+        const isLatest = i === messages.length - 1
+        const hasCards = !!m.cards && m.cards.length > 0
+        const hasChips = isLatest && !!m.chips && m.chips.length > 0
 
-        // recommendation
         return (
           <div key={m.id}>
             <MessageBubble role="assistant" showAvatar showSenderName={showSenderName}>
-              <Cards greeting={m.greeting} cards={m.cards} />
-              <button type="button" className="aiw-cta" onClick={onCta}>
-                {m.cta} ←
-              </button>
+              {m.text}
             </MessageBubble>
+            {hasCards && (
+              <>
+                <Cards cards={m.cards!} />
+                <button type="button" className="aiw-cta" onClick={onCta}>
+                  {m.cta || 'בוא נדבר ב-WhatsApp'} ←
+                </button>
+              </>
+            )}
+            {hasChips && <QuickReplyChips chips={m.chips!} onSelect={onChipSelect} />}
           </div>
         )
       })}

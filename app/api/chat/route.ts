@@ -1,11 +1,8 @@
 import Anthropic from '@anthropic-ai/sdk'
 import {
-  getOpeningPrompt,
-  QUESTION_PROMPT,
-  DECISION_PROMPT,
-  RECOMMENDATION_PROMPT,
+  buildAdvisorPrompt,
   SEND_MESSAGE_TOOL,
-  type ChatPayload,
+  type ReplyPayload,
 } from '@/lib/ai-widget-prompt'
 
 const client = new Anthropic()
@@ -15,32 +12,28 @@ type RequestMessage = {
   content: string
 }
 
-function pickSystemPrompt(userTurns: number, pathname: string): string {
-  if (userTurns === 0) return getOpeningPrompt(pathname)
-  if (userTurns <= 2) return QUESTION_PROMPT
-  if (userTurns === 3) return DECISION_PROMPT
-  return RECOMMENDATION_PROMPT
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json()
     const messages: RequestMessage[] = Array.isArray(body?.messages) ? body.messages : []
     const pathname: string = typeof body?.pathname === 'string' ? body.pathname : '/'
 
-    const userTurns = messages.filter((m) => m.role === 'user').length
-    const system = pickSystemPrompt(userTurns, pathname)
+    const system = buildAdvisorPrompt(pathname)
 
-    // For the opening message, Anthropic API requires at least one message.
-    // Use a placeholder user message that the system prompt accounts for.
+    // Anthropic API requires the first message to be role: user. The widget's history
+    // begins with the assistant's opening, so prepend a synthetic user marker whenever
+    // the first message we'd send is the assistant.
+    const mapped = messages.map((m) => ({ role: m.role, content: m.content }))
     const apiMessages =
-      messages.length === 0
+      mapped.length === 0
         ? [{ role: 'user' as const, content: 'התחל את השיחה.' }]
-        : messages.map((m) => ({ role: m.role, content: m.content }))
+        : mapped[0].role === 'assistant'
+          ? [{ role: 'user' as const, content: 'התחל את השיחה.' }, ...mapped]
+          : mapped
 
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
+      max_tokens: 2048,
       system,
       tools: [SEND_MESSAGE_TOOL],
       tool_choice: { type: 'tool', name: 'send_message' },
@@ -51,24 +44,35 @@ export async function POST(req: Request) {
       (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use',
     )
 
-    if (!toolBlock || toolBlock.name !== 'send_message') {
-      return Response.json(
-        { error: 'no_tool_use', userMessage: 'משהו השתבש. נסה שוב.' },
-        { status: 500 },
-      )
+    if (toolBlock && toolBlock.name === 'send_message') {
+      const input = (toolBlock.input ?? {}) as Partial<ReplyPayload>
+      const payload: ReplyPayload = {
+        text: typeof input.text === 'string' && input.text.trim() ? input.text : '...',
+        ...(Array.isArray(input.chips) && input.chips.length > 0
+          ? { chips: input.chips.filter((c) => typeof c === 'string') }
+          : {}),
+        ...(Array.isArray(input.cards) && input.cards.length > 0
+          ? { cards: input.cards as ReplyPayload['cards'] }
+          : {}),
+        ...(typeof input.cta === 'string' && input.cta.trim() ? { cta: input.cta } : {}),
+      }
+      return Response.json(payload)
     }
 
-    const payload = toolBlock.input as ChatPayload
-
-    // Server-side enforcement: if userTurns >= 4 and the model still returned a question, force recommendation.
-    if (userTurns >= 4 && payload.phase !== 'recommendation') {
-      return Response.json(
-        { error: 'turn_limit_violation', userMessage: 'משהו השתבש. נסה שוב.' },
-        { status: 500 },
-      )
+    // Fallback: model returned a plain text block without using the tool. Wrap and continue.
+    const textBlock = response.content.find(
+      (block): block is Anthropic.TextBlock => block.type === 'text',
+    )
+    const fallbackText = textBlock?.text?.trim()
+    if (fallbackText) {
+      return Response.json({ text: fallbackText } satisfies ReplyPayload)
     }
 
-    return Response.json(payload)
+    // True empty response — extremely rare.
+    return Response.json(
+      { error: 'empty_response', userMessage: 'בעיית חיבור. נסה שוב.' },
+      { status: 502 },
+    )
   } catch (err) {
     console.error('AI Widget error:', err)
     return Response.json(

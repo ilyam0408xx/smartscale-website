@@ -10,13 +10,13 @@ function buildTranscript(messages: ChatMessage[]): string {
   for (const m of messages) {
     if (m.role === 'user') {
       lines.push(`אני: ${m.content}`)
-    } else if (m.role === 'assistant') {
-      if (m.phase === 'question') {
-        lines.push(`Smart Scale: ${m.text}`)
-      } else if (m.phase === 'recommendation') {
+    } else if (m.role === 'assistant' && m.phase === 'reply') {
+      let line = `Smart Scale: ${m.text}`
+      if (m.cards && m.cards.length > 0) {
         const cardSummary = m.cards.map((c) => `• ${c.title}`).join('\n')
-        lines.push(`Smart Scale: ${m.greeting}\n${cardSummary}`)
+        line += `\n${cardSummary}`
       }
+      lines.push(line)
     }
   }
   return lines.join('\n')

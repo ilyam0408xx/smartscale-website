@@ -13,7 +13,7 @@ function nextId(): string {
 
 function isPersistable(m: ChatMessage): boolean {
   if (m.role === 'user') return true
-  return m.phase === 'question' || m.phase === 'recommendation'
+  return m.phase === 'reply'
 }
 
 function loadFromStorage(): ChatMessage[] {
@@ -49,19 +49,25 @@ function clearStorage() {
 
 type ApiRequestMessage = { role: 'user' | 'assistant'; content: string }
 
+/**
+ * Convert local chat messages to the format the API expects.
+ * Assistant replies preserve the full text plus a brief marker when cards were shown,
+ * so the model can see what UI artifacts it produced previously.
+ */
 function toApiMessages(messages: ChatMessage[]): ApiRequestMessage[] {
   const out: ApiRequestMessage[] = []
   for (const m of messages) {
     if (m.role === 'user') {
       out.push({ role: 'user', content: m.content })
-    } else if (m.role === 'assistant') {
-      if (m.phase === 'question') {
-        out.push({ role: 'assistant', content: m.text })
-      } else if (m.phase === 'recommendation') {
-        const cardsText = m.cards.map((c) => `${c.title}: ${c.result}`).join(' | ')
-        out.push({ role: 'assistant', content: `${m.greeting} ${cardsText}` })
+    } else if (m.role === 'assistant' && m.phase === 'reply') {
+      let content = m.text
+      if (m.cards && m.cards.length > 0) {
+        const titles = m.cards.map((c) => c.title).join(', ')
+        content += `\n[הצגתי כרטיסיות שירות: ${titles}]`
       }
+      out.push({ role: 'assistant', content })
     }
+    // typing / thinking / error are transient — not sent to the model
   }
   return out
 }
@@ -87,15 +93,10 @@ export function useChat(pathname: string) {
 
   const callApi = useCallback(
     async (priorMessages: ChatMessage[]): Promise<void> => {
-      const userTurns = priorMessages.filter((m) => m.role === 'user').length
-      const expectsRecommendation = userTurns >= 4
-      // userTurns === 3 may or may not be recommendation — model decides via DECISION_PROMPT
-
-      // Insert appropriate placeholder
+      // Insert placeholder. We start with 'typing' and upgrade to 'thinking' if the
+      // response turns out to include cards (slower, weightier moment).
       const placeholderId = nextId()
-      const placeholder: ChatMessage = expectsRecommendation
-        ? { id: placeholderId, role: 'assistant', phase: 'thinking' }
-        : { id: placeholderId, role: 'assistant', phase: 'typing' }
+      const placeholder: ChatMessage = { id: placeholderId, role: 'assistant', phase: 'typing' }
       const placeholderStartedAt = Date.now()
       setMessages((m) => [...m, placeholder])
 
@@ -111,55 +112,58 @@ export function useChat(pathname: string) {
 
         const data = await res.json()
 
-        if (!res.ok || data?.error || !data?.phase) {
+        if (!res.ok || data?.error || typeof data?.text !== 'string') {
           throw new Error(data?.error || 'api_error')
         }
 
-        // If the response is recommendation but we were showing typing (turn 3 surprise),
-        // upgrade the placeholder to thinking and wait for minimum stages duration.
-        let finalPlaceholderPhase = placeholder.phase as 'typing' | 'thinking'
-        if (data.phase === 'recommendation' && finalPlaceholderPhase === 'typing') {
+        const hasCards = Array.isArray(data.cards) && data.cards.length > 0
+
+        // If recommendation incoming, upgrade indicator and let it breathe.
+        let finalPlaceholderPhase: 'typing' | 'thinking' = 'typing'
+        if (hasCards) {
           setMessages((m) =>
-            m.map((msg) => (msg.id === placeholderId ? { ...msg, phase: 'thinking' as const } : msg)),
+            m.map((msg) =>
+              msg.id === placeholderId ? { ...msg, phase: 'thinking' as const } : msg,
+            ),
           )
           finalPlaceholderPhase = 'thinking'
         }
 
-        // Enforce minimum display duration so the indicator doesn't pop in/out
         const minMs = finalPlaceholderPhase === 'thinking' ? THINKING_MIN_MS : TYPING_MIN_MS
         const elapsed = Date.now() - placeholderStartedAt
         if (elapsed < minMs) {
           await new Promise((r) => setTimeout(r, minMs - elapsed))
         }
 
-        // Replace placeholder with the real response
         setMessages((m) =>
           m.map((msg) => {
             if (msg.id !== placeholderId) return msg
-            if (data.phase === 'question') {
-              return {
-                id: placeholderId,
-                role: 'assistant',
-                phase: 'question',
-                text: String(data.text || ''),
-                chips: Array.isArray(data.chips) ? data.chips.filter((c: unknown) => typeof c === 'string') : [],
-              }
-            }
-            // recommendation
-            return {
+            const reply: ChatMessage = {
               id: placeholderId,
               role: 'assistant',
-              phase: 'recommendation',
-              greeting: String(data.greeting || ''),
-              cards: Array.isArray(data.cards) ? data.cards : [],
-              cta: String(data.cta || 'בוא נדבר ב-WhatsApp'),
+              phase: 'reply',
+              text: String(data.text),
             }
+            if (Array.isArray(data.chips) && data.chips.length > 0) {
+              reply.chips = data.chips.filter((c: unknown) => typeof c === 'string')
+            }
+            if (hasCards) {
+              reply.cards = data.cards
+            }
+            if (typeof data.cta === 'string' && data.cta.trim()) {
+              reply.cta = data.cta
+            }
+            return reply
           }),
         )
       } catch (err) {
         console.error('chat fetch error', err)
         setMessages((m) =>
-          m.map((msg) => (msg.id === placeholderId ? { id: placeholderId, role: 'assistant' as const, phase: 'error' as const } : msg)),
+          m.map((msg) =>
+            msg.id === placeholderId
+              ? { id: placeholderId, role: 'assistant' as const, phase: 'error' as const }
+              : msg,
+          ),
         )
       }
     },
@@ -185,8 +189,12 @@ export function useChat(pathname: string) {
       if (inflightRef.current) return
       inflightRef.current = true
       const userMsg: ChatMessage = { id: nextId(), role: 'user', content: trimmed }
-      // Capture previous (excluding any transient placeholder) for API
-      const prior = messages.filter((m) => m.role !== 'assistant' || (m.phase !== 'typing' && m.phase !== 'thinking' && m.phase !== 'error'))
+      // Drop any transient placeholders before sending
+      const prior = messages.filter(
+        (m) =>
+          m.role !== 'assistant' ||
+          (m.phase !== 'typing' && m.phase !== 'thinking' && m.phase !== 'error'),
+      )
       const nextMessages = [...prior, userMsg]
       setMessages(nextMessages)
       try {
@@ -201,7 +209,6 @@ export function useChat(pathname: string) {
   const retry = useCallback(async () => {
     if (inflightRef.current) return
     inflightRef.current = true
-    // Remove the error bubble and re-fetch with the same prior context
     const withoutError = messages.filter(
       (m) => !(m.role === 'assistant' && m.phase === 'error'),
     )
@@ -218,16 +225,12 @@ export function useChat(pathname: string) {
     clearStorage()
   }, [])
 
-  const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant')
-  const chatLocked = lastAssistant?.role === 'assistant' && lastAssistant.phase === 'recommendation'
-
   const userTurns = messages.filter((m) => m.role === 'user').length
 
   return {
     messages,
     hydrated,
     userTurns,
-    chatLocked,
     startConversation,
     send,
     retry,

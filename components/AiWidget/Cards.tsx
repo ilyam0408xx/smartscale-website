@@ -1,11 +1,11 @@
 import type { Card } from './types'
 
-type Props = { greeting: string; cards: Card[] }
+type Props = { greeting?: string; cards: Card[] }
 
 export default function Cards({ greeting, cards }: Props) {
   return (
     <div>
-      <p className="aiw-greeting">{greeting}</p>
+      {greeting && <p className="aiw-greeting">{greeting}</p>}
       <div className="aiw-cards">
         {cards.map((card, i) => (
           <div

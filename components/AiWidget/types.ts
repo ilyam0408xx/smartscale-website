@@ -2,10 +2,19 @@ import type { Card } from '@/lib/ai-widget-prompt'
 
 export type { Card }
 
+export type AssistantReply = {
+  id: string
+  role: 'assistant'
+  phase: 'reply'
+  text: string
+  chips?: string[]
+  cards?: Card[]
+  cta?: string
+}
+
 export type ChatMessage =
   | { id: string; role: 'user'; content: string }
-  | { id: string; role: 'assistant'; phase: 'question'; text: string; chips: string[] }
-  | { id: string; role: 'assistant'; phase: 'recommendation'; greeting: string; cards: Card[]; cta: string }
+  | AssistantReply
   | { id: string; role: 'assistant'; phase: 'typing' }
   | { id: string; role: 'assistant'; phase: 'thinking' }
   | { id: string; role: 'assistant'; phase: 'error' }

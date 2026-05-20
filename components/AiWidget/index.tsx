@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import MessageList from './MessageList'
 import LeadForm from './LeadForm'
-import ProgressDots from './ProgressDots'
 import { useChat } from './useChat'
 import type { WidgetState } from './types'
 
@@ -14,7 +13,7 @@ export default function AiWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const pathname = usePathname() ?? '/'
 
-  const { messages, hydrated, userTurns, chatLocked, startConversation, send, retry, reset } = useChat(pathname)
+  const { messages, hydrated, startConversation, send, retry, reset } = useChat(pathname)
 
   // Auto-open the conversation when widget opens and there's no history yet
   useEffect(() => {
@@ -25,13 +24,13 @@ export default function AiWidget() {
     }
   }, [state, hydrated, messages.length, startConversation])
 
-  // Focus input when chat is active (and not locked)
+  // Focus input when chat is active
   useEffect(() => {
-    if (state === 'chatting' && !chatLocked) {
+    if (state === 'chatting') {
       const t = setTimeout(() => inputRef.current?.focus(), 300)
       return () => clearTimeout(t)
     }
-  }, [state, chatLocked])
+  }, [state])
 
   const handleSend = useCallback(() => {
     const text = draft.trim()
@@ -90,8 +89,6 @@ export default function AiWidget() {
         </button>
       </div>
 
-      {state === 'chatting' && <ProgressDots userTurns={userTurns} />}
-
       {state === 'chatting' && (
         <>
           <MessageList
@@ -99,32 +96,29 @@ export default function AiWidget() {
             onChipSelect={handleChipSelect}
             onRetry={retry}
             onCta={handleCta}
-            chatLocked={chatLocked}
           />
-          {!chatLocked && (
-            <div className="aiw-footer">
-              <div className="aiw-input-row">
-                <textarea
-                  ref={inputRef}
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="כתוב תשובה משלך…"
-                  className="aiw-input"
-                  rows={1}
-                />
-                <button
-                  type="button"
-                  onClick={handleSend}
-                  disabled={!draft.trim()}
-                  className="aiw-send"
-                  aria-label="שלח"
-                >
-                  ←
-                </button>
-              </div>
+          <div className="aiw-footer">
+            <div className="aiw-input-row">
+              <textarea
+                ref={inputRef}
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="כתוב תשובה משלך…"
+                className="aiw-input"
+                rows={1}
+              />
+              <button
+                type="button"
+                onClick={handleSend}
+                disabled={!draft.trim()}
+                className="aiw-send"
+                aria-label="שלח"
+              >
+                ←
+              </button>
             </div>
-          )}
+          </div>
         </>
       )}
 
