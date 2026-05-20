@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
@@ -163,10 +162,6 @@ export default function CRMPage() {
               <span>שיחת ייעוץ חינם</span>
               <span className="btn-arrow" aria-hidden="true">←</span>
             </a>
-            <br />
-            <Link href="/blog/crm-letaskim-ktanim" className="page-cta-extra">
-              קרא עוד: מה זה CRM ולמה כל עסק קטן צריך אחד ←
-            </Link>
           </div>
         </section>
       </main>

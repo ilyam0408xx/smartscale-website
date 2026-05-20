@@ -6,7 +6,7 @@ import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import JsonLd from '@/components/JsonLd'
 import { articleSchema, breadcrumbSchema, personSchema, WA_LINK } from '@/lib/schema'
-import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/blog'
+import { getAllPostSlugs, getPostBySlug, getRelatedPosts } from '@/lib/blog'
 
 const PLACEHOLDER_CATEGORIES = [
   'CRM · ניהול',
@@ -20,14 +20,16 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts()
-  return posts.map((p) => ({ slug: p.slug }))
+  const slugs = await getAllPostSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {}
+
+  const isPlaceholder = !post.meta.cover
 
   return {
     title: post.meta.title,
@@ -36,6 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://ilyamaltsev.com/blog/${slug}`,
       languages: { he: `https://ilyamaltsev.com/blog/${slug}` },
     },
+    robots: isPlaceholder
+      ? { index: false, follow: false }
+      : undefined,
     openGraph: {
       title: post.meta.title,
       description: post.meta.description,

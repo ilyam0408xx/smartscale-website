@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
@@ -164,10 +163,6 @@ export default function LeadGenPage() {
               <span>שיחת ייעוץ חינם</span>
               <span className="btn-arrow" aria-hidden="true">←</span>
             </a>
-            <br />
-            <Link href="/blog/reacherful-100-lids" className="page-cta-extra">
-              קרא עוד: איך Reacherful מייצרת 100 לידים ב-6 דקות ←
-            </Link>
           </div>
         </section>
       </main>

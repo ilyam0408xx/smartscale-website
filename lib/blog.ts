@@ -45,22 +45,39 @@ function buildMeta(slug: string, data: Record<string, unknown>, content: string)
   }
 }
 
-export async function getAllPosts(): Promise<PostMeta[]> {
+// A post is "published" (visible in blog index, related, sitemap) once it has
+// a cover image. Posts without cover are placeholders — still reachable by
+// direct URL but hidden from any listing.
+export function isPublished(meta: PostMeta): boolean {
+  return Boolean(meta.cover)
+}
+
+function readAllPostsRaw(): PostMeta[] {
   if (!fs.existsSync(BLOG_DIR)) return []
 
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'))
 
-  const posts = files.map((filename) => {
+  return files.map((filename) => {
     const slug = filename.replace('.mdx', '')
     const raw = fs.readFileSync(path.join(BLOG_DIR, filename), 'utf-8')
     const { data, content } = matter(raw)
     return buildMeta(slug, data, content)
   })
+}
 
-  return posts.sort(
-    (a, b) =>
-      new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime()
-  )
+export async function getAllPosts(): Promise<PostMeta[]> {
+  return readAllPostsRaw()
+    .filter(isPublished)
+    .sort(
+      (a, b) =>
+        new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime()
+    )
+}
+
+// Returns slugs for every MDX file, including unpublished placeholders.
+// Used by generateStaticParams so direct URLs keep rendering.
+export async function getAllPostSlugs(): Promise<string[]> {
+  return readAllPostsRaw().map((p) => p.slug)
 }
 
 export async function getRelatedPosts(
