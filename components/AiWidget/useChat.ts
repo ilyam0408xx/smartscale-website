@@ -7,6 +7,9 @@ const STORAGE_KEY = 'smartscale_chat'
 const TYPING_MIN_MS = 500
 const THINKING_MIN_MS = 3000
 
+const OPENING_TEXT =
+  'היי! אני היועץ של Smart Scale 👋\nאנחנו עוזרים לעסקים לייצר יותר כסף ולחסוך זמן באמצעות מערכות אוטומציה חכמות ו-AI.\nאיך אפשר לעזור לך?'
+
 function nextId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36)
 }
@@ -170,17 +173,14 @@ export function useChat(pathname: string) {
     [pathname],
   )
 
-  // Initial opening — fire only once when widget hydrated and messages are empty
+  // Initial opening — hardcoded fixed message, no API call needed
   const startConversation = useCallback(async () => {
     if (inflightRef.current) return
     if (messages.length > 0) return
-    inflightRef.current = true
-    try {
-      await callApi([])
-    } finally {
-      inflightRef.current = false
-    }
-  }, [messages.length, callApi])
+    setMessages([
+      { id: nextId(), role: 'assistant', phase: 'reply', text: OPENING_TEXT },
+    ])
+  }, [messages.length])
 
   const send: Send = useCallback(
     async (content) => {
