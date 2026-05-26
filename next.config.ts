@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
       { source: '/business-card', destination: '/', permanent: true },
     ]
   },
+  async rewrites() {
+    return [
+      { source: '/refael-QUOTATION', destination: '/refael-QUOTATION.html' },
+    ]
+  },
 }
 
 export default withMDX(nextConfig)
