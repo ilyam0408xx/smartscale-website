@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Scale — מערכות AI ואוטומציה למשרדי עורכי דין</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-dark: #08102A;
+    --bg-soft: #F4F6FC;
+    --ink: #0B1430;
+    --ink-soft: #3A4467;
+    --muted: #6B7390;
+    --line: #E4E7EF;
+    --line-dark: #1B2547;
+    --accent: #1E9CE0;
+    --accent-hover: #1281C2;
+    --accent-bright: #38B6FF;
+    --accent-2: #38B6FF;
+    --accent-soft: #E2F1FB;
+    --highlight: #C9E6F7;
+    --success: #1E9B5C;
+    --danger: #D63A4F;
+    --max: 720px;
+    --max-wide: 980px;
+    --font: "Assistant", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .wrap-wide { max-width: var(--max-wide); margin: 0 auto; padding: 0 24px; }
+
+  /* Sections */
+  section { padding: 72px 0; position: relative; }
+  section.tight { padding: 48px 0; }
+  section.hero { padding: 60px 0 72px; }
+
+  /* Dark sections */
+  section.dark {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(42, 77, 255, 0.20), transparent 70%),
+      radial-gradient(ellipse 100% 60% at 50% 100%, rgba(56, 182, 255, 0.10), transparent 60%),
+      var(--bg-dark);
+    color: #fff;
+  }
+  section.dark h1, section.dark h2, section.dark h3, section.dark h4 { color: #fff; }
+  section.dark .lede, section.dark .lede-lg, section.dark .text-body, section.dark p { color: rgba(255,255,255,0.86); }
+  section.dark strong, section.dark b { color: #fff; }
+  section.dark .detail-row { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+  section.dark .detail-row p { color: rgba(255,255,255,0.88); }
+  section.dark .detail-row.accent-fill { background: var(--accent); border-color: var(--accent); }
+  section.dark .detail-row.accent-fill p { color: #fff; }
+
+  /* Typography */
+  h1, h2, h3, h4 {
+    font-family: var(--font);
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(40px, 5.6vw, 64px); font-weight: 900; line-height: 1.05; }
+  h2 { font-size: clamp(32px, 4.2vw, 52px); font-weight: 900; line-height: 1.1; }
+  h3 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 800; }
+  h4 { font-size: 20px; font-weight: 800; }
+  p { margin: 0; text-wrap: pretty; }
+  strong, b { font-weight: 700; color: var(--ink); }
+
+  .centered { text-align: center; }
+  .centered * { margin-inline: auto; }
+
+  .stack > * + * { margin-top: 18px; }
+  .stack-lg > * + * { margin-top: 28px; }
+  .stack-xl > * + * { margin-top: 44px; }
+
+  /* === EYEBROW PILL === */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    padding: 7px 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(30, 156, 224, 0.20);
+  }
+  .eyebrow .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  section.dark .eyebrow {
+    background: var(--accent);
+    color: #fff;
+    border-color: transparent;
+  }
+  section.dark .eyebrow .dot { background: #fff; }
+
+  /* === HIGHLIGHTS === */
+  .mark {
+    background: linear-gradient(180deg, transparent 55%, var(--highlight) 55%, var(--highlight) 92%, transparent 92%);
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+  section.dark .mark {
+    background: linear-gradient(180deg, transparent 55%, rgba(56, 182, 255, 0.35) 55%, rgba(56, 182, 255, 0.35) 92%, transparent 92%);
+    color: #fff;
+  }
+  .pen {
+    background-image: linear-gradient(to right, var(--accent), var(--accent));
+    background-position: 0 100%;
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+  }
+  section.dark .pen {
+    background-image: linear-gradient(to right, var(--accent-2), var(--accent-2));
+  }
+  .accent { color: var(--accent); }
+  section.dark .accent { color: var(--accent-2); }
+
+  /* Lede */
+  .lede {
+    font-size: clamp(17px, 1.4vw, 19px);
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .lede-lg {
+    font-size: clamp(19px, 1.6vw, 22px);
+    color: var(--ink);
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  /* Center list */
+  .center-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-size: clamp(18px, 1.6vw, 21px);
+    color: var(--ink);
+    font-weight: 500;
+    text-align: center;
+  }
+  section.dark .center-list { color: rgba(255,255,255,0.92); }
+
+  /* === CTA === */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 6px;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    min-width: 320px;
+    box-shadow: 0 16px 30px -10px rgba(30, 156, 224, 0.40);
+    transition: transform .15s ease, background .15s ease, box-shadow .2s ease;
+  }
+  .cta:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 36px -10px rgba(30, 156, 224, 0.50);
+  }
+  section.dark .cta {
+    box-shadow: 0 16px 32px -8px rgba(30, 156, 224, 0.55);
+  }
+  .cta-row {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .cta-meta {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  section.dark .cta-meta { color: rgba(255,255,255,0.6); }
+
+  /* === VIDEO / VSL === */
+  .video {
+    aspect-ratio: 16 / 9;
+    max-width: 720px;
+    margin-inline: auto;
+    background: #000;
+    background-image:
+      radial-gradient(circle at 30% 40%, rgba(56, 182, 255, 0.20), transparent 45%),
+      radial-gradient(circle at 70% 65%, rgba(42, 77, 255, 0.25), transparent 50%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.7);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.5);
+  }
+  .video .play {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s ease;
+  }
+  .video .play::before {
+    content: "";
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 14px 22px 14px 0;
+    border-color: transparent var(--accent) transparent transparent;
+    margin-right: 6px;
+  }
+  .video:hover .play { transform: scale(1.07); }
+  .video .tag {
+    position: absolute; bottom: 18px; left: 18px;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(6px);
+    padding: 5px 12px; border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* Image placeholder */
+  .imgph {
+    aspect-ratio: 16 / 10;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-align: center;
+    padding: 28px;
+    gap: 10px;
+  }
+  section.dark .imgph {
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.55);
+  }
+  .imgph .icon { width: 32px; height: 32px; opacity: 0.7; }
+  .imgph .caption { font-size: 13px; line-height: 1.5; max-width: 38ch; }
+
+  /* === DETAIL ROW (מה אפשר לבנות / התוצאה) === */
+  .detail-row {
+    background: var(--bg-soft);
+    border-radius: 8px;
+    padding: 24px 28px;
+    text-align: right;
+    line-height: 1.7;
+    color: var(--ink);
+    font-size: 17px;
+  }
+  .detail-row .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .detail-row.accent-fill {
+    background: var(--accent);
+    color: #fff;
+  }
+  .detail-row.accent-fill .label {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+  }
+  .detail-row.accent-fill p { color: #fff; }
+
+  /* === NUMBERED RISK PILLS === */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    text-align: right;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .risk-grid .pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    color: #fff;
+    text-align: right;
+  }
+  .risk-grid .pill > * { margin-inline: 0; }
+  .risk-grid .pill > span:not(.x) {
+    flex: 1;
+    text-align: right;
+  }
+  .risk-grid .pill .x {
+    width: 24px; height: 24px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .risk-grid .pill .x svg { width: 14px; height: 14px; }
+
+  /* === RISKS: fear treatment === */
+  section.dark.risks {
+    background:
+      radial-gradient(ellipse 85% 55% at 50% 0%, rgba(214, 58, 79, 0.30), transparent 62%),
+      radial-gradient(ellipse 110% 65% at 50% 115%, rgba(120, 18, 32, 0.30), transparent 60%),
+      #07091A;
+  }
+  section.risks .accent { color: #FF5366; }
+  section.risks .risk-grid .pill {
+    background: linear-gradient(180deg, rgba(214, 58, 79, 0.07), rgba(255, 255, 255, 0.015));
+    border: 1px solid rgba(214, 58, 79, 0.22);
+    transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  section.risks .risk-grid .pill:hover {
+    border-color: rgba(255, 83, 102, 0.55);
+    background: linear-gradient(180deg, rgba(214, 58, 79, 0.14), rgba(255, 255, 255, 0.02));
+    box-shadow: 0 0 0 1px rgba(255, 83, 102, 0.12), 0 14px 34px -18px rgba(214, 58, 79, 0.55);
+  }
+  section.risks .risk-grid .pill .x {
+    width: 28px; height: 28px;
+    background: transparent;
+    color: #FF6173;
+    border-radius: 0;
+  }
+  section.risks .risk-grid .pill .x svg { width: 24px; height: 24px; }
+  section.risks .risk-grid .pill.feature {
+    background: linear-gradient(180deg, #C71F33, #7E1320);
+    border: 1px solid rgba(255, 95, 113, 0.55);
+    color: #fff;
+    box-shadow:
+      0 0 0 1px rgba(255, 95, 113, 0.18),
+      0 22px 60px -18px rgba(214, 58, 79, 0.70);
+  }
+  section.risks .risk-grid .pill.feature .x {
+    color: #fff;
+  }
+  section.risks .risk-grid .pill.feature .x svg { width: 27px; height: 27px; }
+  .risk-grid .pill.feature {
+    grid-column: 1 / -1;
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 700;
+    font-size: 18px;
+    padding: 18px 22px;
+  }
+  .risk-grid .pill.feature .x {
+    background: rgba(255,255,255,0.22);
+  }
+
+  /* === CHECK LIST (white sections) === */
+  .promise-list {
+    list-style: none; padding: 0; margin: 0;
+    text-align: right;
+  }
+  .promise-list li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    text-align: right;
+  }
+  .promise-list li > * { margin-inline: 0; }
+  .promise-list li > span:not(.check) { flex: 1; text-align: right; }
+  .promise-list li .check {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .promise-list li .check svg { width: 14px; height: 14px; }
+  section.dark .promise-list li { color: rgba(255,255,255,0.92); }
+
+  /* ROI list: these are money-leaks (problems), not benefits */
+  section.dark .promise-list li .check {
+    background: rgba(214, 58, 79, 0.14);
+    color: #E8718A;
+    border: 1px solid rgba(214, 58, 79, 0.30);
+  }
+  section.dark .promise-list li .check svg { width: 16px; height: 16px; }
+
+  /* === NUMBERED SOLUTION CARDS === */
+  .sol-grid {
+    display: grid;
+    gap: 14px;
+  }
+  .sol-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 26px 28px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 22px;
+    text-align: right;
+    align-items: start;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  section.dark .sol-card {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .sol-card .num {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 900;
+    font-size: 18px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .sol-card h4 {
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .sol-card .sub {
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  section.dark .sol-card .sub { color: rgba(255,255,255,0.78); }
+
+  /* === ABOUT PORTRAIT === */
+  .about-portrait {
+    width: 168px; height: 168px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 1px var(--line), 0 24px 50px -16px rgba(11, 20, 48, 0.22);
+    margin: 0 auto;
+    display: block;
+  }
+  section.dark .about-portrait {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 24px 50px -10px rgba(0,0,0,0.5);
+  }
+
+  /* === BIG LINES === */
+  .big-line {
+    font-size: clamp(24px, 2.8vw, 32px);
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  section.dark .big-line { color: #fff; }
+  .mega-line {
+    font-size: clamp(30px, 3.8vw, 46px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.022em;
+  }
+  section.dark .mega-line { color: #fff; }
+
+  /* === WARNING BANNER === */
+  .warning-banner {
+    display: inline-flex;
+    align-items: stretch;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    font-weight: 900;
+    box-shadow: 0 20px 40px -16px rgba(11, 20, 48, 0.25);
+  }
+  .warning-banner .label {
+    background: var(--ink);
+    color: var(--accent-2);
+    font-size: clamp(24px, 3vw, 36px);
+    letter-spacing: 0.08em;
+    padding: 14px 24px;
+  }
+  .warning-banner .desc {
+    background: #fff;
+    color: var(--ink);
+    font-size: clamp(15px, 1.4vw, 18px);
+    padding: 14px 22px;
+    display: flex; align-items: center;
+    font-weight: 800;
+    border: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  /* === GUARANTEE === */
+  .guarantee-section {
+    background: var(--bg-soft);
+  }
+  .guarantee {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* === FIT / NOT FIT === */
+  .fit-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .fit-card {
+    border-radius: 10px;
+    padding: 32px 32px;
+    text-align: right;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+  .fit-card.yes { border-color: var(--accent); border-width: 2px; }
+  .fit-card.no { border-color: var(--line); }
+  .fit-card .head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .fit-card .ico {
+    width: 38px; height: 38px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .fit-card.yes .ico { background: var(--accent); color: #fff; }
+  .fit-card.no .ico { background: var(--ink); color: var(--accent-2); }
+  .fit-card h3 {
+    font-size: 26px;
+    font-weight: 900;
+    margin: 0;
+    color: var(--ink);
+  }
+  .fit-card p { color: var(--ink-soft); font-size: 16px; line-height: 1.7; }
+  .fit-card p + p { margin-top: 10px; }
+
+  /* === FORM === */
+  .form-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 40px 36px;
+    text-align: right;
+    box-shadow: 0 30px 60px -34px rgba(11, 20, 48, 0.25);
+  }
+  section.dark .form-card {
+    background: #fff;
+    color: var(--ink);
+  }
+  .form-card .field { display: flex; flex-direction: column; gap: 8px; }
+  .form-card label {
+    font-size: 14px; font-weight: 600; color: var(--ink-soft);
+  }
+  .form-card input, .form-card textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 16px;
+    background: #fff;
+    color: var(--ink);
+    transition: border-color .15s ease;
+  }
+  .form-card input:focus, .form-card textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .form-card textarea { min-height: 96px; resize: vertical; }
+  .form-card .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-card .submit { width: 100%; margin-top: 8px; min-width: 0; }
+  .form-card .placeholder-tag {
+    display: inline-block;
+    font-size: 11px; letter-spacing: 0.14em;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* === FAQ === */
+  details.faq {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+  details.faq summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    text-align: right;
+    padding: 20px 24px;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary .arrow {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .25s ease;
+  }
+  details.faq summary .arrow svg { width: 14px; height: 14px; }
+  details.faq[open] summary .arrow { transform: rotate(180deg); }
+  details.faq .answer {
+    padding: 0 24px 22px;
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+  details.faq .answer p + p { margin-top: 12px; }
+
+  /* === FOOTER === */
+  footer.site {
+    padding: 60px 24px;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    background: var(--bg-dark);
+  }
+  footer.site .brand-logo {
+    height: 36px;
+    width: auto;
+    border-radius: 8px;
+    margin: 0 auto 14px;
+    display: block;
+  }
+
+  /* === HELPERS === */
+  .small { font-size: 15px; color: var(--muted); }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 720px) {
+    body { font-size: 17px; }
+    section { padding: 52px 0; }
+    section.tight { padding: 36px 0; }
+    section.hero { padding: 44px 0 52px; }
+    .wrap, .wrap-wide { padding: 0 20px; }
+    .video { max-width: 100%; }
+    .video .play { width: 64px; height: 64px; }
+    .video .play::before { border-width: 11px 17px 11px 0; }
+    h1 { font-size: 34px; line-height: 1.08; }
+    h2 { font-size: 28px; }
+    .mega-line { font-size: 28px; }
+    .big-line { font-size: 22px; }
+    .center-list { font-size: 17px; }
+    .form-card { padding: 26px 22px; }
+    .form-card .row2 { grid-template-columns: 1fr; }
+    .cta { width: 100%; min-width: 0; padding: 18px 22px; font-size: 16px; }
+    .about-portrait { width: 132px; height: 132px; }
+    details.faq summary { font-size: 16px; padding: 18px 20px; }
+    details.faq .answer { padding: 0 20px 20px; }
+    .sol-card { padding: 22px; gap: 14px; grid-template-columns: 40px 1fr; }
+    .sol-card h4 { font-size: 19px; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .fit-card { padding: 24px; }
+    .fit-card h3 { font-size: 22px; }
+    .warning-banner { flex-direction: column; }
+    .warning-banner .desc { border-left: 1px solid var(--line); border-top: 0; }
+    .detail-row { padding: 20px 22px; font-size: 16px; }
+  }
+</style>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1305380584811353');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></noscript>
+</head>
+<body>
+
+<!-- ========= HERO (DARK) ========= -->
+<section class="hero dark">
+  <div class="wrap centered stack-lg" >
+    <span class="eyebrow"><span class="dot"></span>למשרדי עורכי דין</span>
+
+    <h1>
+      מערכות <span class="accent">AI</span> ואוטומציה<br/>
+      שמונעות מלידים ותיקים<br/>
+      <span class="mark">ליפול בין הכיסאות</span>
+    </h1>
+
+    <p class="lede-lg">
+      ברוב משרדי עריכת הדין, הבעיה היא לא חוסר מקצועיות.<br/>
+      אלא <strong>עומס</strong>.
+    </p>
+
+    <ul class="center-list">
+      <li>ליד שלא חזרו אליו בזמן,</li>
+      <li>מסמך שנשכח בווצאפ,</li>
+      <li>תיק שמחכה לאישור,</li>
+      <li>לקוח שרוצה סטטוס,</li>
+      <li><span class="pen">או דד-ליין חשוב שאסור לשכוח.</span></li>
+    </ul>
+
+    <p class="big-line">וככל שהזמן עובר.. <span class="accent">הבעיות גדלות</span></p>
+
+    <div class="wrap-wide" style="padding:0; width:100%; margin-top: 8px;">
+      <div class="video">
+        <div class="play" aria-hidden="true"></div>
+        <div class="tag">VSL · סרטון</div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <h2>אל תתן לעומס<br/><span class="mark">לגרום לך לקרוס</span></h2>
+      <p class="lede-lg">קבל פתרון מלא: מערכת אחת, מותאמת אישית, שעושה בשבילך הכל.</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">לחץ לתיאום שיחה עכשיו</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= PROBLEM (LIGHT) ========= -->
+<section>
+  <div class="wrap centered stack-lg" >
+    <span class="eyebrow"><span class="dot"></span>הבעיה</span>
+    <h2>אם המשרד גדל, אבל התפעול עדיין עובד כמו פעם
+זה מתחיל לעלות כסף</h2>
+
+    <p class="lede" >
+      בהתחלה אפשר להסתדר עם ווצאפ, אקסלים, מייל, קצת זיכרון והרבה אילתורים.
+      אבל כשכמות התיקים, הלידים והמסמכים גדלה, אותה שיטה מתחילה <span class="pen">ליצור צווארי בקבוק</span>.
+    </p>
+
+    <div class="stack" style="text-align: right;">
+      <p class="lede" style="text-align: right;">לידים נכנסים מכמה מקומות, לא תמיד ברור מי חזר אליהם.
+לקוחות שולחים מסמכים שלא תמיד הם מגיעים לתיקייה הנכונה.
+פאראליגל שואל שוב ושוב "מה חסר בתיק הזה?".
+ומנהלת המשרד הופכת להיות המערכת המרכזית שמחזיקה הכול בראש.</p>
+      <p class="lede" style="text-align:right;">
+</p>
+      <p class="lede" style="text-align:right;">
+</p>
+      <p class="lede" style="text-align:right;">
+</p>
+    </div>
+
+    <p class="big-line" >
+      אלה לא תמיד טעויות גדולות.<br/>
+      בדרך כלל אלה <span class="mark">טעויות קטנות שחוזרות על עצמן</span>.
+    </p>
+
+    <p class="lede">וככל שיש יותר תיקים, יותר לקוחות ויותר אנשי צוות - הסיכוי שזה יקרה גדל.</p>
+  </div>
+</section>
+
+
+<!-- ========= RISKS (DARK) ========= -->
+<section class="dark tight risks" style="padding: 26px 0px 48px">
+  <div class="wrap centered stack-lg">
+    <h3 style="font-size: clamp(24px, 2.6vw, 30px);">
+      יש לך יותר מדי<br/>
+      <span class="accent">סיכונים אפשריים</span>:
+    </h3>
+
+    <ul class="risk-grid">
+      <li class="pill feature">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span style="font-weight: 900; font-size: 32px; text-align: center">תביעה בגין רשלנות מקצועית</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>פאראליגל עזב</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>תיק כמעט נשכח</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>קמפיין לידים מצליח מדי</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>שינוי רגולטורי בביטוח לאומי</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>בוקר שמתחיל בכיבוי שרפות</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>איחור בהגשת מסמכים</span>
+      </li>
+      <li class="pill">
+        <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span>לקוח שכועס שלא חזרו אליו</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ========= SOLUTION 1 (LIGHT) ========= -->
+<section>
+  <div class="wrap centered stack-lg">
+    <span class="eyebrow"><span class="dot"></span>פתרון 01</span>
+    <h2>סריקת ותיוק מסמכים<br/>שנשלחים <span class="pen">בווצאפ ובמייל</span></h2>
+
+    <p class="lede">
+      לקוחות שולחים תעודות, מסמכים רפואיים, אישורי משטרה, תלושי שכר..
+      מישהו במשרד צריך לפתוח, להוריד, להבין מה זה, לשנות שם, להעלות לתיקייה, <strong>ולזכור מה עדיין חסר</strong>.
+    </p>
+
+    <p class="big-line">
+      זה נשמע <span class="accent">קטן</span>.<br/>
+      אבל כשזה קורה עשרות פעמים בשבוע,<br/>
+      זה הופך ל<span class="mark">שעות של עבודה טכנית</span>.
+    </p>
+
+    <div class="detail-row">
+      <span class="label">מה אפשר לבנות</span>
+      <p>מערכת שקולטת מסמכים מ<strong>ווצאפ</strong> או <strong>ג'מייל</strong>, מנתחת, מזהה את סוג המסמך, מסווגת אותו לפי קטגוריות שהמשרד קובע, שומרת אותו בתיקייה הנכונה, ומעדכנת סטטוס על מה התקבל ומה חסר.</p>
+    </div>
+
+    <div class="wrap-wide" style="padding:0; width:100%;">
+      <div class="imgph">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3v4a1 1 0 001 1h4M5 21V3h9l5 5v13H5z"/></svg>
+        <div class="caption">תמונת תוצאה — מסמך זימון בית משפט שמתויק אוטומטית</div>
+      </div>
+    </div>
+
+    <div class="detail-row accent-fill">
+      <span class="label">התוצאה</span>
+      <p><strong>פחות שעות מזכירה ופאראליגל על עבודה טכנית, פחות טעויות תיוק.</strong></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= SOLUTION 2 (DARK) ========= -->
+<section class="dark">
+  <div class="wrap centered stack-lg" >
+    <span class="eyebrow"><span class="dot"></span>פתרון 02</span>
+    <h2>תזכורות בווצאפ<br/>על <span class="mark">דד-ליינים חשובים</span></h2>
+
+    <p class="lede-lg">
+      הרבה דברים לא נופלים כי מישהו לא יודע לעבוד.<br/>
+      הם נופלים <strong>כי יש יותר מדי דברים לזכור</strong>.
+    </p>
+
+    <ul class="center-list" style="font-size: 18px;">
+      <li>לחזור לליד.</li>
+      <li>לבקש מסמך חסר.</li>
+      <li>לעדכן לקוח.</li>
+      <li>לבדוק אם התקבלה חוות דעת.</li>
+      <li><span class="pen">לוודא שתיק לא עומד במקום שבועיים</span> בלי שאף אחד שם לב.</li>
+    </ul>
+
+    <div class="detail-row">
+      <span class="label">מה אפשר לבנות</span>
+      <p>מערכת תזכורות אוטומטית ששולחת הודעות <strong>ווצאפ</strong> לצוות או לבעל המשרד לפי כללים שהוגדרו מראש: סטטוס שלא השתנה, ליד שלא קיבל מענה, מסמך חסר, מועד מתקרב, או תיק שלא הייתה בו פעילות תקופה מסוימת.</p>
+    </div>
+
+    <div class="wrap-wide" style="padding:0; width:100%;">
+      <div class="imgph">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6l4 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="caption">תמונת תוצאה — בוט Smart Scale ששלח תזכורת בווצאפ</div>
+      </div>
+    </div>
+
+    <div class="detail-row accent-fill">
+      <span class="label">התוצאה</span>
+      <p><strong>פחות תלות בזיכרון. פחות "חשבתי שמישהו אחר טיפל בזה". פחות תיקים שתקועים בשקט.</strong></p>
+    </div>
+
+    <p class="big-line">
+      ויותר עבודה <span class="mark">שמתקדמת בלי שאתה צריך</span><br/>
+      להזכיר לכולם כל הזמן.
+    </p>
+  </div>
+</section>
+
+
+<!-- ========= SOLUTION 3 (LIGHT) ========= -->
+<section>
+  <div class="wrap centered stack-lg" >
+    <span class="eyebrow"><span class="dot"></span>פתרון 03</span>
+    <h2>דשבורד ניהולי שמראה<br/><span class="mark">מה באמת קורה במשרד</span></h2>
+
+    <p class="lede" style="text-align: right">
+      ליד טוב יכול להגיע מטופס באתר, ווצאפ, טלפון, קמפיין, המלצה או פורום.
+      הבעיה מתחילה כשאין תהליך אחיד: <strong>מי ענה? מה הייתה ההתאמה? מתי נקבעה שיחה?</strong>
+      איך המערכת דואגת להכניס את הליד לפאנל?
+    </p>
+
+    <div class="detail-row">
+      <span class="label">מה אפשר לבנות</span>
+      <p>בוט ווצאפ לסינון ראשוני, שאלון התאמה, ציון ליד, פתיחת כרטיס במערכת, קביעת שיחה, תיעוד אוטומטי, <strong>והתראה לצוות כשהליד חם</strong>.</p>
+    </div>
+
+    <div class="wrap-wide" style="padding:0; width:100%;">
+      <div class="imgph">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <div class="caption">תמונת תוצאה — ה-CRM והדשבורד מתוך הסרטון</div>
+      </div>
+    </div>
+
+    <div class="detail-row accent-fill" style="background-color: rgb(18, 129, 194)">
+      <span class="label">התוצאה</span>
+      <p><strong>פחות לידים שנופלים בין הכיסאות, פחות חזרה ידנית על אותן שאלות, ויותר סדר בתהליך הקליטה.</strong></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= CTA BLOCK (DARK) ========= -->
+<section class="dark tight">
+  <div class="wrap centered stack-lg">
+    <span class="eyebrow"><span class="dot"></span>התאמה אישית אליך</span>
+    <h2 class="mega-line">
+      קבל <span class="mark">יתרון לא הוגן</span><br/>
+      על המתחרים שלך
+    </h2>
+    <p class="lede-lg">באמצעות אוטומציות חכמות ו-<span class="accent"><strong>AI</strong></span>.</p>
+    <div class="cta-row">
+      <a class="cta" href="#contact">לחץ כאן לתיאום שיחה עכשיו</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= CUSTOM FIT (LIGHT) ========= -->
+<section>
+  <div class="wrap centered stack-lg" >
+    <span class="eyebrow"><span class="dot"></span>איך אנחנו עובדים</span>
+    <h2>התאמה אישית במיוחד <span class="accent">למשרד שלך</span></h2>
+
+    <p class="lede">
+      אין מערכת אחת שמתאימה לכל משרד.<br/>
+      בגלל זה אנחנו לא מתחילים מ"איזו אוטומציה בא לך".<br/>
+      אלא <strong>מלהבין איפה המשרד שלך מאבד הכי הרבה <span class="pen">זמן, כסף או שליטה</span></strong>.<br/>
+      משם בונים את הדבר הראשון שבאמת שווה לבנות.
+    </p>
+
+    <div class="wrap-wide" style="padding:0; width:100%;">
+      <div class="imgph">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <div class="caption">תמונת תוצאה — ה-CRM והדשבורד מתוך הסרטון, עם אנימציה שדברים מתחלפים</div>
+      </div>
+    </div>
+
+    <p class="mega-line">
+      לא מחליפים לך את כל המשרד.<br/>
+      מתחילים מהמקום שבו <span class="mark">הכי כואב</span>.
+    </p>
+  </div>
+</section>
+
+
+<!-- ========= ROI / WARNING (DARK) ========= -->
+<section class="dark">
+  <div class="wrap centered stack-lg" >
+    <div class="warning-banner">
+      <span class="label">שים לב!</span>
+    </div>
+
+    <h2><span class="mark">החזר מיידי</span> על ההשקעה</h2>
+
+    <p class="lede-lg">
+      זו לא "עוד הוצאה על טכנולוגיה".<br/>
+      אוטומציה טובה אמורה להחזיר את עצמה דרך <strong>זמן שנחסך ולידים שנסגרו</strong>.
+    </p>
+
+    <p class="lede" >
+      במשרד עורכי דין, הכסף לא בורח רק במקום אחד.<br/>
+      הוא בורח <strong>בהרבה מקומות קטנים</strong>.
+    </p>
+
+    <ul class="promise-list" style="width: 100%;">
+      <li>
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
+        <span>ליד שלא חזרו אליו מספיק מהר.</span>
+      </li>
+      <li style="padding: 6px 0px 12px">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
+        <span>לקוח שהתעכב כי <strong>מסמך חסר</strong> לא נדרש בזמן.</span>
+      </li>
+      <li style="padding: 6px 0px 12px">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
+        <span>פאראליגל שמבזבז שעות על הורדה ותיוק של קבצים.</span>
+      </li>
+      <li style="padding: 6px 0px 12px">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
+        <span>מנהלת משרד שמחזיקה את כל הסטטוסים בראש.</span>
+      </li>
+      <li style="padding: 6px 0px 12px">
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
+        <span>עורך דין שמבזבז זמן ניהולי על "מה קורה עם התיק הזה?".</span>
+      </li>
+    </ul>
+
+    <p class="big-line">
+      כל אחד מהם נראה <span class="accent">קטן</span> לבד.<br/>
+      ביחד, זה <span class="mark">הרבה מאוד זמן וכסף</span>.
+    </p>
+
+    <p class="lede">אם היום יש לך משרד עם עומס אמיתי - כל חודש שבו הכול נשאר ידני
+הוא עוד חודש שבו אותם חורים ממשיכים לעלות כסף.</p>
+
+    <p class="big-line">רוצה להבין <span class="accent">איפה הכסף בורח?</span></p>
+
+    <div class="cta-row" >
+      <a class="cta" href="#contact">לחץ כאן לתיאום שיחה עכשיו</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= ABOUT (LIGHT) ========= -->
+<section>
+  <div class="wrap centered stack-lg">
+    <img class="about-portrait" src="/images/lp-law/ilya.jpg" alt="איליה" />
+    <h2 >אני <span class="accent">איליה</span>.</h2>
+
+    <p class="lede-lg">
+      אני עובד עם בעלי עסקים כמעט <strong>10 שנים</strong>, ובמהלך הזמן הזה הבנתי דבר פשוט:<br/>
+      כמעט לכל עסק שגדל יש את אותה בעיה.
+    </p>
+
+    <p class="mega-line">
+      העבודה גדלה,<br/>
+      אבל <span class="mark">התפעול נשאר ידני</span>.
+    </p>
+
+    <ul class="center-list" style="font-size: 19px;">
+      <li>יותר לידים.</li>
+      <li>יותר לקוחות.</li>
+      <li>יותר מסמכים.</li>
+      <li>יותר הודעות.</li>
+      <li>יותר משימות.</li>
+      <li><span class="pen">יותר דברים שצריך לזכור</span>.</li>
+    </ul>
+
+    <p class="lede" >אז הקמתי את Smart Scale. אני לא מוכר עוד כלי שצריך ללמוד להשתמש בו.</p>
+
+    <p class="big-line">אני בונה מערכות AI ואוטומציה
+שמתחברות לעסק שלך</p>
+
+    <p class="lede" >רצות ברקע, ועושות את העבודה הטכנית שאנשים לא באמת צריכים לעשות ידנית.</p>
+
+    <div class="stack">
+      <p class="big-line" >העיקרון שלי פשוט:</p>
+      <p class="mega-line"><span class="mark">או שזה עושה לך כסף,</span></p>
+      <p class="mega-line"><span class="mark">או שזה חוסך לך זמן.</span></p>
+      <p class="lede-lg"><strong>אין אוטומציות ליופי.</strong></p>
+    </div>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">לחץ כאן לתיאום שיחה עכשיו</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= FIT / NOT FIT (LIGHT) ========= -->
+<section class="guarantee-section">
+  <div class="wrap stack-lg">
+    <div class="centered" style="text-align:center;">
+      <h2 style="text-align: center;">למי זה מתאים, <span class="accent">ולמי לא</span></h2>
+    </div>
+
+    <div class="fit-grid">
+
+      <div class="fit-card no">
+        <div class="head">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+          <h3>למי זה <em style="font-style: normal;">לא</em> מתאים</h3>
+        </div>
+        <p><strong>לא כל משרד צריך אוטומציה עכשיו.</strong></p>
+        <p>אם אין לכם עדיין נפח עבודה משמעותי, אם רוב העבודה מתנהלת רק אצל אדם אחד בלי צוות, או אם אין לכם רצון לשנות אפילו תהליך קטן - כנראה שזה מוקדם מדי.</p>
+        <p>Smart Scale לא מתאים למי שמחפש "קסם AI" בלי אפיון ובלי נכונות להבין איך המשרד עובד באמת. המערכות הטובות ביותר נבנות מתוך הבנה מדויקת של התהליך הקיים: איפה נכנס ליד, מי מטפל, איפה המסמך נשמר, מי אחראי, ומה נחשב "תקוע".</p>
+        <p>אם יש כאב תפעולי ברור - אפשר לבנות פתרון חד. אם אין כאב ברור - עדיף לא לבנות מערכת רק כי AI נשמע מעניין.</p>
+      </div>
+
+      <div class="fit-card yes">
+        <div class="head">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <h3>למי זה <em style="font-style: normal;">כן</em> מתאים</h3>
+        </div>
+        <p><strong>למשרד שכבר מרגיש שהעומס התפעולי מפריע לצמיחה.</strong></p>
+        <p>במיוחד למשרדי עורכי דין עם <strong>1–10 עורכי דין</strong>, שעובדים בתחומים שבהם יש הרבה לידים, מסמכים, תיקים פעילים או מועדים.</p>
+        <p>גם אם יש לכם מזכירה, מנהלת משרד, פאראליגל או כמה אנשי צוות שמתעסקים כל יום במשימות חוזרות - כנראה שיש מה לשפר באוטומציות שלכם.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= CONTACT (LIGHT) ========= -->
+<section id="contact">
+  <div class="wrap centered stack-lg">
+    <span class="eyebrow"><span class="dot"></span>לתיאום שיחה בחינם</span>
+    <h2>מלא את הפרטים שלך <span class="mark">בטופס</span></h2>
+    <p class="lede-lg">ומיד תועבר לדף שבו תוכל לקבוע איתי שיחה ביומן.</p>
+
+    <form class="form-card" onsubmit="event.preventDefault(); alert('הטופס הוא placeholder — יחובר ל-CRM');">
+      <span class="placeholder-tag">טופס השארת פרטים · placeholder</span>
+      <div class="stack">
+        <div class="row2">
+          <div class="field">
+            <label for="fn">שם מלא</label>
+            <input id="fn" type="text" placeholder="ישראל ישראלי" />
+          </div>
+          <div class="field">
+            <label for="ph">טלפון</label>
+            <input id="ph" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="em">אימייל</label>
+          <input id="em" type="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" />
+        </div>
+        <div class="field">
+          <label for="of">שם המשרד</label>
+          <input id="of" type="text" placeholder="משרד עורכי דין..." />
+        </div>
+        <div class="field">
+          <label for="msg">משהו שאתה רוצה שאדע לפני השיחה <span class="small">(לא חובה)</span></label>
+          <textarea id="msg" placeholder="ספר/י בקצרה איפה הכי כואב..."></textarea>
+        </div>
+        <button class="cta submit" type="submit">שליחה וקביעת שיחה ביומן</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<!-- ========= FAQ (LIGHT) ========= -->
+<section class="guarantee-section">
+  <div class="wrap stack-lg">
+    <div class="centered" style="text-align:center;">
+      <h2 style="text-align:center;"><span class="accent">שאלות</span> נפוצות</h2>
+    </div>
+
+    <div>
+      <details class="faq">
+        <summary>
+          <span>האם זה מחליף את התוכנה המשפטית או ה-CRM שלנו?</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>לא בהכרח. ברוב המקרים המטרה היא לא להחליף את הכלים הקיימים, אלא לחבר ביניהם. אם אתם כבר עובדים עם CRM או כלי ניהול משרד - אפשר לבנות מעליהם תהליך חכם יותר.</p>
+          <p>המטרה היא לא להוסיף עוד מערכת שאף אחד לא פותח. המטרה היא לגרום לכלים שכבר קיימים לעבוד יותר טוב יחד.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>תן דוגמאות למערכות שאפשר לבנות</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>מערכת שקולטת מסמכים מוואצפ וממיינת אותם לתיקיות.</p>
+          <p style="margin: -2px 0px 0px">בוט ששואל ליד שאלות ראשוניות ומכניס אותו לתהליך קליטה.</p>
+          <p style="margin: -2px 0px 0px">תזכורות ווצאפ לצוות על תיקים תקועים, מסמכים חסרים או דד-ליינים.</p>
+          <p style="margin: -2px 0px 0px">דשבורד שמראה לבעל המשרד מה קורה עם לידים, תיקים, מסמכים ומשימות.</p>
+          <p style="margin: 16px 0px 0px">אפשר לבנות תהליך ששולח עדכוני סטטוס ללקוחות או מבקש מהם מסמכים חסרים בצורה מסודרת.</p>
+          <p>אבל הדבר החשוב הוא לא "איזה אוטומציות אפשר לבנות". <strong>הדבר החשוב הוא מה באמת שווה לבנות אצלך קודם.</strong></p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>למה דווקא Smart Scale?</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>כי אני לא מגיע למשרד שלך כדי למכור לך "AI". אני מגיע כדי להבין איפה העסק מאבד זמן, כסף ושליטה - ולבנות פתרון שעובד סביב זה.</p>
+          <p style="margin: 2px 0px 0px">אחרי כמעט 10 שנים של עבודה עם עסקים בתחום הדיגיטל, כולל עבודה עם עורכי דין, אני יודע לחבר בין הצד העסקי לצד הטכני: לא רק לבנות אוטומציה, אלא לבנות אוטומציה שיש לה סיבה.</p>
+          <p>העיקרון פשוט: <strong>או שזה עושה לך כסף, או שזה חוסך לך זמן.</strong> אם זה לא עושה אף אחד מהם - לא בונים.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>איפה הכסף חוזר אלי?</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>הכסף חוזר דרך שלושה מקומות עיקריים:</p>
+          <p><strong>הראשון</strong> הוא זמן צוות שנחסך: פחות הורדה, תיוק, שינוי שמות, חיפוש מסמכים, תזכורות ידניות ועדכונים חוזרים.</p>
+          <p><strong>השני</strong> הוא לידים שלא מתפספסים: כשכל ליד נכנס לתהליך ברור, מקבל סטטוס ומוצף לצוות בזמן, יש פחות סיכוי שהוא ייפול בין הכיסאות.</p>
+          <p><strong>השלישי</strong> הוא שליטה ניהולית: כשבעל המשרד רואה מה תקוע, מה חסר ומה דורש טיפול, פחות דברים מתגלים מאוחר מדי.</p>
+          <p>לא כל אוטומציה מחזירה כסף באותה צורה. לכן מתחילים מהתהליך שבו יש את הפוטנציאל הכי ברור להחזר.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="centered" >
+      <a class="cta" href="#contact">לחץ כאן לתיאום שיחה בחינם</a>
+    </div>
+  </div>
+</section>
+
+
+<footer class="site">
+  <img class="brand-logo" src="/images/lp-law/logo.png" alt="Smart Scale" />
+  <div>מערכות AI ואוטומציה לעסקים שצומחים · © 2026</div>
+</footer>
+
+</body>
+</html>

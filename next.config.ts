@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: '/refael-QUOTATION', destination: '/refael-QUOTATION.html' },
+      { source: '/lp-law', destination: '/lp-law.html' },
     ]
   },
 }
