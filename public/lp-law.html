@@ -777,22 +777,23 @@
     user-select: none;
   }
   @keyframes chairFall {
-    /* Upright */
-    0%    { transform: rotate(0deg) translateY(0);         animation-timing-function: cubic-bezier(.2,0,.4,1); }
-    /* Sudden push */
-    3.3%  { transform: rotate(-22deg) translateY(0);       animation-timing-function: cubic-bezier(.6,0,.4,1); }
-    /* Uncontrolled wobbles — big amplitude, sinks slightly */
-    8.3%  { transform: rotate(20deg)  translateY(3px);     animation-timing-function: cubic-bezier(.6,0,.4,1); }
-    12.2% { transform: rotate(-24deg) translateY(6px);     animation-timing-function: cubic-bezier(.6,0,.4,1); }
-    15.6% { transform: rotate(16deg)  translateY(9px);     animation-timing-function: cubic-bezier(.6,0,.4,1); }
-    18.9% { transform: rotate(-20deg) translateY(12px);    animation-timing-function: cubic-bezier(.7,0,.3,1); }
-    22.2% { transform: rotate(6deg)   translateY(16px);    animation-timing-function: ease-in; }
-    /* FAST FALL DOWN */
-    25.6% { transform: rotate(-12deg) translateY(20px);    animation-timing-function: cubic-bezier(.4,0,1,1); }
-    44.4% { transform: rotate(-20deg) translateY(180px); }
-    /* Snap back invisible position, wait 5s */
-    44.5% { transform: rotate(0deg)   translateY(0); }
-    100%  { transform: rotate(0deg)   translateY(0); }
+    /* translateY תמיד לפני rotate — כדי שהנפילה תהיה ישר למטה */
+    0%    { transform: translateY(0px)  rotate(0deg);   opacity: 1; }
+    3.3%  { transform: translateY(0px)  rotate(-22deg); animation-timing-function: cubic-bezier(.6,0,.4,1); }
+    8.3%  { transform: translateY(2px)  rotate(20deg);  animation-timing-function: cubic-bezier(.6,0,.4,1); }
+    12.2% { transform: translateY(5px)  rotate(-23deg); animation-timing-function: cubic-bezier(.6,0,.4,1); }
+    15.6% { transform: translateY(8px)  rotate(16deg);  animation-timing-function: cubic-bezier(.6,0,.4,1); }
+    18.9% { transform: translateY(11px) rotate(-19deg); animation-timing-function: cubic-bezier(.7,0,.3,1); }
+    22.2% { transform: translateY(14px) rotate(5deg);   animation-timing-function: ease-in; }
+    /* נפילה מהירה ישר למטה */
+    25.6% { transform: translateY(18px) rotate(-4deg);  animation-timing-function: cubic-bezier(.2,0,1,1); }
+    40%   { transform: translateY(240px) rotate(-6deg); opacity: 1; }
+    /* חיתוך מיידי — לא fade */
+    41%   { transform: translateY(260px) rotate(-6deg); opacity: 0; }
+    /* חזרה בזמן שבלתי נראה */
+    42%   { transform: translateY(0px)  rotate(0deg);   opacity: 0; }
+    99%   { transform: translateY(0px)  rotate(0deg);   opacity: 0; }
+    100%  { transform: translateY(0px)  rotate(0deg);   opacity: 1; }
   }
   @media (prefers-reduced-motion: reduce) {
     .kise-host::after { animation: none; }
