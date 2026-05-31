@@ -757,6 +757,41 @@
     .warning-banner .desc { border-left: 1px solid var(--line); border-top: 0; }
     .detail-row { padding: 20px 22px; font-size: 16px; }
   }
+
+  /* === CHAIR ANIMATION === */
+  .kise-host {
+    position: relative;
+    display: inline-block;
+  }
+  .kise-host::after {
+    content: '🪑';
+    position: absolute;
+    right: calc(100% + 5px);
+    top: 0.05em;
+    font-size: 0.78em;
+    line-height: 1;
+    display: inline-block;
+    transform-origin: 80% 95%;
+    animation: chairFall 9s ease-in-out infinite;
+    pointer-events: none;
+    user-select: none;
+  }
+  @keyframes chairFall {
+    0%    { transform: rotate(0deg);             opacity: 1; animation-timing-function: ease-out; }
+    5.5%  { transform: rotate(-15deg);           animation-timing-function: ease-in-out; }
+    11.1% { transform: rotate(8deg);             animation-timing-function: ease-in-out; }
+    16.7% { transform: rotate(-13deg);           animation-timing-function: ease-in-out; }
+    22.2% { transform: rotate(4deg);             animation-timing-function: ease-in-out; }
+    27.8% { transform: rotate(-13deg);           animation-timing-function: ease-in; }
+    33.3% { transform: rotate(-55deg);           animation-timing-function: ease-in; }
+    44.4% { transform: rotate(-95deg) translateX(-6px); opacity: 0; }
+    44.5% { transform: rotate(0deg);             opacity: 0; }
+    94.4% { transform: rotate(0deg);             opacity: 0; }
+    100%  { transform: rotate(0deg);             opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kise-host::after { animation: none; }
+  }
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -779,7 +814,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     <h1>
       מערכות <span class="accent">AI</span> ואוטומציה<br/>
       שמונעות מלידים ותיקים<br/>
-      <span class="mark">ליפול בין הכיסאות</span>
+      <span class="mark">ליפול בין <span class="kise-host">הכיסאות</span></span>
     </h1>
 
     <p class="lede-lg">
