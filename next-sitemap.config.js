@@ -8,6 +8,8 @@ module.exports = {
   exclude: [
     '/404',
     '/promo/*',
+    '/portfolio', // תיק עבודות טכני — noindex, קישור-בלבד
+
     // Placeholder blog posts — direct URL still works, but hidden from
     // sitemap. Combined with noindex meta in app/blog/[slug]/page.tsx.
     // Remove a slug from this list once its post gets a real cover image.
