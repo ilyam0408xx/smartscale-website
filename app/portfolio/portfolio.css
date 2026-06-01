@@ -223,11 +223,21 @@
 .pf-reacher-metric-val { font-size: clamp(32px, 5vw, 48px); font-weight: 800; color: var(--accent); line-height: 1; }
 .pf-reacher-metric-label { font-size: 13px; color: var(--fg-muted); margin-top: 10px; line-height: 1.4; }
 
-.pf-reacher-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; align-items: start; }
+/* full-width flagship screenshot */
+.pf-reacher-shot { margin: 0 0 40px; }
+.pf-reacher-shot-img {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.35);
+}
+.pf-reacher-shot .pf-placeholder--video { min-height: 360px; }
+.pf-reacher-link { display: inline-block; margin-top: 14px; }
+
+.pf-reacher-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
 .pf-reacher-lead { font-size: 16.5px; line-height: 1.7; color: var(--fg); margin: 0 0 18px; font-weight: 500; }
 .pf-reacher-platforms { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
 
-.pf-reacher-flow { list-style: none; margin: 0 0 28px; padding: 0; }
+.pf-reacher-flow { list-style: none; margin: 0; padding: 0; }
 .pf-reacher-step { display: flex; gap: 14px; padding-bottom: 18px; position: relative; }
 .pf-reacher-step:not(:last-child)::before {
   content: ''; position: absolute; inset-inline-start: 15px; top: 34px; bottom: 0;
@@ -241,10 +251,7 @@
 .pf-reacher-step-title { font-size: 15px; font-weight: 700; }
 .pf-reacher-step-desc { font-size: 13.5px; color: var(--fg-muted); margin-top: 2px; line-height: 1.5; }
 
-.pf-reacher-shot { position: sticky; top: 24px; }
-.pf-reacher-shot-img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: var(--radius-lg); }
-.pf-reacher-shot .pf-placeholder--video { min-height: 380px; }
-.pf-reacher-shot .pf-link { display: inline-block; margin-top: 14px; }
+.pf-reacher-arch { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; }
 
 /* ─── FOOTER STRIP (identity only, NO CTA) ───────────────────────────── */
 .pf-foot { border-top: 1px solid var(--line); padding: 48px 0; }

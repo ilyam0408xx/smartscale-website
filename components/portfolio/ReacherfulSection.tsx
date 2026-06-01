@@ -22,8 +22,36 @@ export default function ReacherfulSection() {
           ))}
         </div>
 
+        {/* Full-width screenshot — the flagship visual */}
+        <figure className="pf-reacher-shot reveal">
+          {r.image ? (
+            <Image
+              src={r.image}
+              alt="הממשק של Reacherful — סקרייפר לידים"
+              width={1648}
+              height={868}
+              className="pf-reacher-shot-img"
+            />
+          ) : (
+            <div className="pf-placeholder pf-placeholder--video">
+              <span>סקרינשוט הפלטפורמה</span>
+              <span className="pf-placeholder-sub">להוספה</span>
+            </div>
+          )}
+          {r.link && (
+            <a
+              className="pf-link pf-reacher-link"
+              href={r.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              לאתר החי ↗
+            </a>
+          )}
+        </figure>
+
         <div className="pf-reacher-grid">
-          {/* Left: story + flow + architecture */}
+          {/* Left: story + flow */}
           <div className="pf-reacher-main reveal">
             <p className="pf-reacher-lead">{r.lead}</p>
 
@@ -46,43 +74,16 @@ export default function ReacherfulSection() {
                 </li>
               ))}
             </ol>
-
-            <div className="pf-reacher-arch">
-              <h4 className="pf-case-h">איך זה בנוי</h4>
-              <ul className="pf-breakdown">
-                {r.architecture.map((a, i) => (
-                  <li key={i}>{a}</li>
-                ))}
-              </ul>
-            </div>
           </div>
 
-          {/* Right: screenshot panel */}
-          <aside className="pf-reacher-shot reveal">
-            {r.image ? (
-              <Image
-                src={r.image}
-                alt="פלטפורמת Reacherful"
-                width={900}
-                height={1100}
-                className="pf-reacher-shot-img"
-              />
-            ) : (
-              <div className="pf-placeholder pf-placeholder--video">
-                <span>סקרינשוט הפלטפורמה</span>
-                <span className="pf-placeholder-sub">להוספה</span>
-              </div>
-            )}
-            {r.link && (
-              <a
-                className="pf-link"
-                href={r.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                לאתר החי ↗
-              </a>
-            )}
+          {/* Right: architecture */}
+          <aside className="pf-reacher-arch reveal">
+            <h4 className="pf-case-h">איך זה בנוי</h4>
+            <ul className="pf-breakdown">
+              {r.architecture.map((a, i) => (
+                <li key={i}>{a}</li>
+              ))}
+            </ul>
           </aside>
         </div>
       </div>
