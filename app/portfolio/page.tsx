@@ -36,7 +36,7 @@ export default function PortfolioPage() {
         <div className="container">
           <span className="section-eyebrow">{hero.eyebrow}</span>
           <h1 className="pf-hero-title">
-            מערכות שעובדות — <em>והמכונה שבונה אותן</em>
+            מערכות שעובדות <em>והמכונה שבונה אותן</em>
           </h1>
           <p className="pf-hero-lead">{hero.lead}</p>
         </div>
@@ -64,7 +64,7 @@ export default function PortfolioPage() {
             <span className="section-eyebrow">{caseStudy.eyebrow}</span>
             <h2 className="section-title">{caseStudy.title}</h2>
             <p className="section-lead">
-              מערכת חיה שמנהלת קליניקה מקצה לקצה — CRM, יומן, תזכורות, ו-35
+              מערכת חיה שמנהלת קליניקה מקצה לקצה: CRM, יומן, תזכורות, ו-35
               אוטומציות שרצות לבד. <strong>בלב המערכת סוכן AI</strong> שמתזמר את כל
               הזרימה.
             </p>
@@ -85,8 +85,8 @@ export default function PortfolioPage() {
               חברה שמנוהלת ע״י <em>סוכני AI</em>
             </h2>
             <p className="section-lead">
-              16 סוכני Claude ב-4 מחלקות מריצים את כל Smart Scale — שיווק, מכירות,
-              תפעול ומשפטי. <strong>זה לא רעיון — זה רץ.</strong> וככה זה שומר על
+              16 סוכני Claude ב-4 מחלקות מריצים את כל Smart Scale: שיווק, מכירות,
+              תפעול ומשפטי. <strong>זה לא רעיון, זה רץ.</strong> וככה זה שומר על
               עצמו מסודר ובטוח.
             </p>
           </div>
@@ -98,12 +98,7 @@ export default function PortfolioPage() {
       <section className="pf-section">
         <div className="container">
           <div className="section-head">
-            <span className="section-eyebrow">אוטומציות Make</span>
-            <h2 className="section-title">סנריו אמיתי, לא סלייד</h2>
-            <p className="section-lead">
-              לא ״שולח מייל״ — לוגיקה מותנית, OCR, סיווג, וטיפול בקצוות. הנה איך זה
-              בנוי מבפנים.
-            </p>
+            <h2 className="section-title">סנריואים ב-make.com שמנהלים עסקים ביומיום</h2>
           </div>
           <div className="pf-scenarios">
             {scenarios.map((s) => (
@@ -118,7 +113,7 @@ export default function PortfolioPage() {
         <div className="container">
           <div className="section-head">
             <span className="section-eyebrow">מוצרים מאפס</span>
-            <h2 className="section-title">לא רק לחבר כלים — לבנות אותם</h2>
+            <h2 className="section-title">לא רק לחבר כלים, לבנות אותם</h2>
             <p className="section-lead">
               פלטפורמת SaaS, CRM, בוט, ואתר עם ווידג׳ט AI. הנדסה end-to-end, לא
               הדבקה.

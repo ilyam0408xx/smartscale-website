@@ -27,7 +27,7 @@ export default function ReacherfulSection() {
           {r.image ? (
             <Image
               src={r.image}
-              alt="הממשק של Reacherful — סקרייפר לידים"
+              alt="הממשק של Reacherful · סקרייפר לידים"
               width={1648}
               height={868}
               className="pf-reacher-shot-img"
