@@ -57,7 +57,6 @@ export interface Scenario {
   summary: string
   result: string
   image: string | null // /portfolio/<file>
-  link: string | null // לינק תצוגה Make
   breakdown: string[] // modules / לוגיקה / edge case
 }
 
@@ -118,7 +117,7 @@ export const caseStudy: CaseStudy = {
     'בלב המערכת: סוכן AI שמתזמר את כל הזרימה ומחליט מה קורה בכל שלב — לא תסריט קשיח אלא היגיון שמסתגל.',
     'CRM כמקור-אמת + שכבת אוטומציות ב-Make מעל יומן גוגל ו-WhatsApp, רצה מתוזמנת בלי מגע יד.',
   ],
-  image: null, // ⚠️ סקרינשוט סנריו ה-Make של סוכן ה-AI המרכזי (/portfolio/erik-ai-agent.png — אחרי טשטוש PII)
+  image: '/portfolio/erik-ai-agent.png', // סנריו ה-Make של סוכן ה-AI המרכזי
   imageCaption: 'סנריו ה-Make של סוכן ה-AI המרכזי בעסק',
   testimonial: {
     videoId: 'GXDE6HlC8jw', // עדות אריק גרון (מתוך עמוד ההמלצות באתר)
@@ -186,49 +185,103 @@ export const scenarios: Scenario[] = [
   {
     title: 'קליטת מסמכים + OCR + תיוק',
     client: 'משרד עו״ד נזיקין',
-    approved: false, // אנונימי עד אישור (תום גיצה)
+    approved: false, // אנונימי
     summary:
       'קולט מסמכים שמגיעים ב-WhatsApp, מריץ OCR, מסווג ל-7-9 קטגוריות (תלושים, מסמכים רפואיים, יפויי-כוח) ומתייק אוטומטית בדרייב.',
     result: 'תיוק אוטומטי במקום סיווג ידני של כל מסמך נכנס.',
-    image: null, // ⚠️ /portfolio/ocr-tom.png (אחרי טשטוש PII)
-    link: null, // ⚠️ לינק תצוגה Make
+    image: '/images/blog/klitat-mismachim-orchei-din-system.webp',
     breakdown: [
       'טריגר WhatsApp → זיהוי סוג מסמך → OCR → סיווג לקטגוריה → תיוק בתיקיית דרייב נכונה.',
       'טיפול בקצוות: מסמך לא מזוהה עובר לתיקיית "לבדיקה ידנית" במקום ליפול.',
     ],
   },
   {
-    title: 'מנתח מסמכים — חילוץ שדות',
-    client: 'חברת שירות',
-    approved: false,
-    summary: 'מנתח מסמכים נכנסים, מחלץ שדות מובְנים ומעדכן את המערכת בלי הקלדה ידנית.',
-    result: 'הקלדה ידנית של נתונים מהמסמכים יורדת לאפס.',
-    image: null,
-    link: null,
-    breakdown: ['חילוץ מובנה עם בדיקת תקינות לפני כתיבה למערכת.'],
+    title: 'מערכת ניהול מייל מבוססת AI',
+    client: 'חברה B2B',
+    approved: false, // אנונימי
+    summary:
+      'חבילה של 4 סנריו שמנהלים תיבת מייל שלמה: כל מייל נכנס מסווג ע״י Claude, מנותב למצב הנכון, ונסגר אוטומטית — עם בריף מנהלים שבועי.',
+    result: 'תיבת מייל שמנהלת את עצמה — מסווגת, עונה ומתעדפת בלי יד אדם.',
+    image: '/portfolio/make-email-ai.png',
+    breakdown: [
+      'A — תיוג realtime: Claude מסווג כל מייל נכנס ומחליט label/פעולה (לא חוקים קשיחים).',
+      'C — מכונת מצבים על data stores: To-Respond / Awaiting-Them / Stuff — המייל זז בין מצבים אוטומטית.',
+      'B — סוגר לולאות outbound; D — בריף מנהלים שבועי שמרכז מה פתוח ומה תקוע.',
+    ],
   },
   {
-    title: 'AI Daily Brief',
-    client: 'Smart Scale (פנימי)',
+    title: 'אבחון לקוח אוטומטי על monday.com',
+    client: 'חברת שירות',
+    approved: false, // אנונימי
+    summary:
+      'עוקב אחרי לוח monday.com, מנתב פריטים חדשים, מאמת ומפענח מספרי טלפון, מנהל מנויים ושולח הודעות WhatsApp — ומארכב כל פריט שטופל.',
+    result: 'ליד שנכנס ללוח עובר אבחון, פנייה וארכוב — בלי נגיעה ידנית.',
+    image: '/portfolio/make-questionnaire.png',
+    breakdown: [
+      'Watch board → router → parse phone number → שליחת WhatsApp → הוספת מנוי → ארכוב.',
+      'Array aggregators לטיפול ב-batch + נתיב שגיאה ייעודי כשפריט נכשל.',
+    ],
+  },
+  {
+    title: 'ניתוח חשבוניות וקבלות',
+    client: 'Smart Scale · פנימי',
     approved: true,
-    summary: 'בריף יומי אוטומטי שמרכז את מה שצריך לדעת בבוקר — נבנה ורץ אצלי.',
-    result: 'בריף מוכן כל בוקר בלי מגע יד.',
-    image: null, // ⚠️ /portfolio/ai-daily-brief.png
-    link: null,
-    breakdown: ['בלופרינט קיים: _מטה/תיק-עבודות/AI Daily Brief/'],
+    summary:
+      'קולט מיילים עם חשבוניות וקבלות, מושך את הקובץ מ-Drive, מחלץ את השדות ב-AI, מתעד ב-Google Sheets ושולח סיכום ב-Telegram. נבנה ורץ אצלי.',
+    result: 'רץ אצלי כל יום — אפס הקלדה ידנית של חשבוניות.',
+    image: '/portfolio/make-invoices.png',
+    breakdown: [
+      'טריגר Gmail → שליפת הקובץ מ-Drive → חילוץ שדות ב-AI → רישום ל-Google Sheets → התראת Telegram.',
+      'מסמך שלא זוהה עובר לנתיב טיפול נפרד במקום ליפול בשקט.',
+    ],
   },
 ]
 
+// ─── מוצר דגל: Reacherful (סקשן ייעודי משלו) ─────────────────────────────
+export interface Reacherful {
+  eyebrow: string
+  title: string
+  tagline: string
+  lead: string
+  metrics: CaseMetric[]
+  platforms: string[]
+  flow: { step: string; desc: string }[]
+  architecture: string[]
+  image: string | null
+  link: string | null
+}
+
+export const reacherful: Reacherful = {
+  eyebrow: 'מוצר דגל · SaaS',
+  title: 'Reacherful',
+  tagline: 'פלטפורמת לידים שבניתי מאפס — מאתרת, מאמתת, וכותבת פנייה אישית לכל ליד',
+  lead: 'בניתי אותה לעצמי כדי למצוא לקוחות ל-Smart Scale, כי שום כלי בשוק לא עשה את זה כמו שצריך — והיא עובדת.',
+  metrics: [
+    { value: '100+', label: 'לידים מוכנים ב-6-8 דקות' },
+    { value: '85%+', label: 'עם טלפון מאומת' },
+    { value: '×4', label: 'שיעור מענה מול שיווק קר (12-18%)' },
+  ],
+  platforms: ['Instagram', 'Google Maps', 'Facebook', 'TikTok'],
+  flow: [
+    { step: 'הגדרת קריטריונים', desc: '״מאמני כושר בת״א, 500-5,000 עוקבים״' },
+    { step: 'סריקה', desc: 'סורק את הפלטפורמות הרלוונטיות ומוצא פרופילים' },
+    { step: 'סינון + אימות', desc: 'מסנן לפי פעילות ונוכחות, מאמת טלפון ומייל' },
+    { step: 'פרסונליזציה', desc: 'Claude כותב פנייה ייחודית לכל ליד לפי הפרופיל שלו' },
+    { step: 'פלט מוכן', desc: 'קובץ Excel עם שם, טלפון, מייל ופנייה — מוכן לשליחה' },
+  ],
+  architecture: [
+    'ארכיטקטורת SaaS מלאה — לא תסריט, מוצר שלם end-to-end',
+    'סקרייפינג רב-פלטפורמתי (IG · Maps · FB · TikTok)',
+    'שכבת אימות פרטי קשר — מסננת לידים מתים לפני שהם יוצאים',
+    'כתיבה אישית ב-Claude AI — 100 פניות שונות ל-100 לידים',
+    'פלט מובנה לשליחה, בלי שלב ידני באמצע',
+  ],
+  image: null, // ⚠️ סקרינשוט הפלטפורמה — ממתין מאיליה
+  link: null, // ⚠️ URL חי — ממתין מאיליה
+}
+
 // ─── מוצרים שבניתי מאפס ──────────────────────────────────────────────────
 export const products: Product[] = [
-  {
-    name: 'Reacherful',
-    tag: 'SaaS · לידים',
-    tagline: 'פלטפורמת לידים שנבנתה מאפס',
-    desc: 'מגדירים נישה → מקבלים לידים מאומתים → הודעות מותאמות אישית. 100+ לידים מאומתים ב-6 דקות.',
-    points: ['ארכיטקטורת SaaS מלאה', 'סקרייפינג + אימות', 'פרסונליזציה של פנייה'],
-    link: null, // ⚠️ URL חי + סקרינשוטים מאיליה
-  },
   {
     name: 'מערכת CRM',
     tag: 'תשתית',

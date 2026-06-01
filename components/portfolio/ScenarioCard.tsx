@@ -40,18 +40,6 @@ export default function ScenarioCard({ scenario }: { scenario: Scenario }) {
 
         <div className="pf-scn-foot">
           <span className="pf-scn-result">{s.result}</span>
-          {s.link ? (
-            <a
-              className="pf-link"
-              href={s.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              צפייה בסנריו ↗
-            </a>
-          ) : (
-            <span className="pf-link pf-link--off">לינק תצוגה · בקרוב</span>
-          )}
         </div>
       </div>
     </article>

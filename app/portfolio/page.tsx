@@ -2,6 +2,7 @@ import ScrollReveal from '@/components/ScrollReveal'
 import YouTubeEmbed from '@/components/YouTubeEmbed'
 import OrgTree from '@/components/portfolio/OrgTree'
 import CaseStudy from '@/components/portfolio/CaseStudy'
+import ReacherfulSection from '@/components/portfolio/ReacherfulSection'
 import ScenarioCard from '@/components/portfolio/ScenarioCard'
 import ProductCard from '@/components/portfolio/ProductCard'
 import ProofGrid from '@/components/portfolio/ProofGrid'
@@ -71,6 +72,9 @@ export default function PortfolioPage() {
           <CaseStudy />
         </div>
       </section>
+
+      {/* ─── REACHERFUL (flagship — right after Erik) ─────────────── */}
+      <ReacherfulSection />
 
       {/* ─── AGENT ARMY ──────────────────────────────────────────── */}
       <section className="pf-section">

@@ -210,6 +210,42 @@
 }
 .pf-case-shot-cap { font-size: 12.5px; color: var(--fg-muted); margin-top: 10px; text-align: center; }
 
+/* ─── REACHERFUL — flagship dedicated section ────────────────────────── */
+.pf-reacher { background: var(--surface); border-block: 1px solid var(--line); }
+.pf-reacher-title { font-size: clamp(36px, 7vw, 68px); letter-spacing: -0.02em; line-height: 1.02; }
+.pf-reacher-metrics {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0 40px;
+}
+.pf-reacher-metric {
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 24px 20px; text-align: center;
+}
+.pf-reacher-metric-val { font-size: clamp(32px, 5vw, 48px); font-weight: 800; color: var(--accent); line-height: 1; }
+.pf-reacher-metric-label { font-size: 13px; color: var(--fg-muted); margin-top: 10px; line-height: 1.4; }
+
+.pf-reacher-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; align-items: start; }
+.pf-reacher-lead { font-size: 16.5px; line-height: 1.7; color: var(--fg); margin: 0 0 18px; font-weight: 500; }
+.pf-reacher-platforms { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+
+.pf-reacher-flow { list-style: none; margin: 0 0 28px; padding: 0; }
+.pf-reacher-step { display: flex; gap: 14px; padding-bottom: 18px; position: relative; }
+.pf-reacher-step:not(:last-child)::before {
+  content: ''; position: absolute; inset-inline-start: 15px; top: 34px; bottom: 0;
+  width: 2px; background: var(--line-strong);
+}
+.pf-reacher-step-num {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800; font-size: 15px;
+  display: grid; place-items: center; position: relative; z-index: 1;
+}
+.pf-reacher-step-title { font-size: 15px; font-weight: 700; }
+.pf-reacher-step-desc { font-size: 13.5px; color: var(--fg-muted); margin-top: 2px; line-height: 1.5; }
+
+.pf-reacher-shot { position: sticky; top: 24px; }
+.pf-reacher-shot-img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: var(--radius-lg); }
+.pf-reacher-shot .pf-placeholder--video { min-height: 380px; }
+.pf-reacher-shot .pf-link { display: inline-block; margin-top: 14px; }
+
 /* ─── FOOTER STRIP (identity only, NO CTA) ───────────────────────────── */
 .pf-foot { border-top: 1px solid var(--line); padding: 48px 0; }
 .pf-foot-id { font-size: 15px; color: var(--fg); margin: 0; font-weight: 700; }
@@ -218,6 +254,8 @@
 @media (max-width: 980px) {
   .pf-case-grid { grid-template-columns: 1fr; gap: 28px; }
   .pf-case-side { position: static; }
+  .pf-reacher-grid { grid-template-columns: 1fr; gap: 28px; }
+  .pf-reacher-shot { position: static; }
 }
 @media (max-width: 880px) {
   .pf-depts { grid-template-columns: 1fr 1fr; }
@@ -230,6 +268,7 @@
 @media (max-width: 520px) {
   .pf-depts { grid-template-columns: 1fr; }
   .pf-metrics { grid-template-columns: 1fr 1fr; }
+  .pf-reacher-metrics { grid-template-columns: 1fr; }
   .pf-case-build { columns: 1; }
   .pf-proof { grid-template-columns: 1fr; }
   .pf-section { padding: 52px 0; }
