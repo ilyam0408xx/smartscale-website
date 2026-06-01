@@ -12,8 +12,8 @@ export default function ScenarioCard({ scenario }: { scenario: Scenario }) {
             src={s.image}
             alt={`סנריו Make: ${s.title}`}
             fill
-            sizes="(max-width: 880px) 100vw, 560px"
-            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 980px) 100vw, 1000px"
+            style={{ objectFit: 'contain', objectPosition: 'center' }}
           />
         ) : (
           <div className="pf-placeholder pf-placeholder--shot">

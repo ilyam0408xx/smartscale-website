@@ -166,10 +166,8 @@
 
 /* ─── SCENARIOS ──────────────────────────────────────────────────────── */
 .pf-scenarios { display: flex; flex-direction: column; gap: 20px; }
-.pf-scn { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
-.pf-scn:nth-child(even) { direction: ltr; }
-.pf-scn:nth-child(even) > * { direction: rtl; }
-.pf-scn-shot { position: relative; min-height: 260px; background: var(--surface-2); }
+.pf-scn { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.pf-scn-shot { position: relative; height: clamp(300px, 40vw, 520px); background: var(--surface-2); border-bottom: 1px solid var(--line); }
 .pf-scn-body { padding: 28px 30px; display: flex; flex-direction: column; }
 .pf-scn-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .pf-scn-title { font-size: 20px; font-weight: 800; margin: 0; line-height: 1.2; }
@@ -267,7 +265,6 @@
 @media (max-width: 880px) {
   .pf-depts { grid-template-columns: 1fr 1fr; }
   .pf-gov { grid-template-columns: 1fr; }
-  .pf-scn, .pf-scn:nth-child(even) { grid-template-columns: 1fr; direction: rtl; }
   .pf-products { grid-template-columns: 1fr; }
   .pf-proof { grid-template-columns: 1fr 1fr; }
   .pf-testi-grid { grid-template-columns: 1fr; }
