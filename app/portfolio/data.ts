@@ -332,3 +332,12 @@ export const testimonials: Testimonial[] = [
     portrait: true,
   },
 ]
+
+// ─── יצירת קשר (כפתור WhatsApp יחיד בתחתית) ──────────────────────────────
+// אותו מספר כמו WA_LINK הראשי (lib/schema), עם הודעה מותאמת להקשר התיק.
+export const whatsapp = {
+  href:
+    'https://wa.me/9720502611165?text=' +
+    encodeURIComponent('היי איליה, ראיתי את תיק העבודות שלך. אשמח לדבר.'),
+  label: 'שיחה ב-WhatsApp',
+}
