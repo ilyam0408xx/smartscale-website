@@ -12,7 +12,6 @@ import {
   scenarios,
   products,
   testimonials,
-  stack,
 } from './data'
 
 export default function PortfolioPage() {
@@ -50,7 +49,7 @@ export default function PortfolioPage() {
               <div className="stat reveal" key={s.label}>
                 <div className="stat-num mono">{s.num}</div>
                 <div className="stat-label">{s.label}</div>
-                <div className="stat-sub">{s.sub}</div>
+                {s.sub && <div className="stat-sub">{s.sub}</div>}
               </div>
             ))}
           </div>
@@ -64,8 +63,9 @@ export default function PortfolioPage() {
             <span className="section-eyebrow">{caseStudy.eyebrow}</span>
             <h2 className="section-title">{caseStudy.title}</h2>
             <p className="section-lead">
-              הלקוח הכי גדול של Smart Scale. <strong>עסקה ששולמה במלואה</strong> על
-              מערכת שעובדת בפועל — וזאת התשובה לשאלה ״תראה לי מה בנית״.
+              מערכת חיה שמנהלת קליניקה מקצה לקצה — CRM, יומן, תזכורות, ו-35
+              אוטומציות שרצות לבד. <strong>בלב המערכת סוכן AI</strong> שמתזמר את כל
+              הזרימה.
             </p>
           </div>
           <CaseStudy />
@@ -170,15 +170,6 @@ export default function PortfolioPage() {
       <footer className="pf-foot">
         <div className="container">
           <p className="pf-foot-id">איליה מלצב · Smart Scale</p>
-          <p className="pf-foot-sub">
-            בונה מערכות אוטומציה ו-AI לעסקים מ-2017. הכל מה שראית כאן נבנה ורץ
-            בפועל.
-          </p>
-          <div className="pf-foot-stack">
-            {stack.map((s) => (
-              <span key={s}>{s}</span>
-            ))}
-          </div>
         </div>
       </footer>
     </>

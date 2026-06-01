@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import YouTubeEmbed from '@/components/YouTubeEmbed'
 import { caseStudy } from '@/app/portfolio/data'
 
@@ -10,13 +11,15 @@ export default function CaseStudy() {
       <div className="pf-case-grid">
         {/* Left: narrative */}
         <div className="pf-case-main reveal">
-          <div className="pf-case-tags">
-            {c.tags.map((tag) => (
-              <span className="pf-chip" key={tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
+          {c.tags.length > 0 && (
+            <div className="pf-case-tags">
+              {c.tags.map((tag) => (
+                <span className="pf-chip" key={tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <p className="pf-case-client">{c.clientLabel}</p>
 
           <div className="pf-case-block">
@@ -43,6 +46,27 @@ export default function CaseStudy() {
               </ul>
             </div>
           )}
+
+          {/* סקרינשוט סנריו ה-Make של סוכן ה-AI המרכזי */}
+          <figure className="pf-case-shot">
+            {c.image ? (
+              <Image
+                src={c.image}
+                alt={c.imageCaption || 'סנריו Make'}
+                width={1200}
+                height={700}
+                className="pf-case-shot-img"
+              />
+            ) : (
+              <div className="pf-placeholder pf-placeholder--video">
+                <span>סנריו ה-Make של סוכן ה-AI</span>
+                <span className="pf-placeholder-sub">להוספה</span>
+              </div>
+            )}
+            {c.imageCaption && (
+              <figcaption className="pf-case-shot-cap">{c.imageCaption}</figcaption>
+            )}
+          </figure>
         </div>
 
         {/* Right: metrics + testimonial */}

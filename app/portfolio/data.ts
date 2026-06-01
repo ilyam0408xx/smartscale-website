@@ -40,6 +40,8 @@ export interface CaseStudy {
   metrics: CaseMetric[]
   build: string[] // חבילת האוטומציות שנבנתה
   techBreakdown: string[] // לקהל הטכני
+  image: string | null // סקרינשוט הסנריו של סוכן ה-AI המרכזי (/portfolio/<file>)
+  imageCaption?: string
   testimonial: Testimonial | null
 }
 
@@ -82,30 +84,27 @@ export const hero = {
 }
 
 export const stats: Stat[] = [
-  { num: '7+', label: 'שנות ניסיון', sub: 'התחלתי בגיל 14' },
+  { num: '7+', label: 'שנות ניסיון בעבודה עם בעלי עסקים', sub: '' },
   { num: '16', label: 'סוכני AI', sub: '4 מחלקות שמריצות את החברה' },
-  { num: '₪10K', label: 'העסקה המובילה', sub: 'שולמה במלואה' },
   { num: '100+', label: 'לידים ב-6 דקות', sub: 'Reacherful — נבנה מאפס' },
 ]
 
 // ─── CASE STUDY מרכזי: אריק ──────────────────────────────────────────────
 export const caseStudy: CaseStudy = {
-  eyebrow: 'Case study · הלקוח הכי גדול',
-  title: 'CRM + חבילת אוטומציות לקליניקה',
+  eyebrow: 'פרויקט נבחר',
+  title: 'מערכת שמנהלת את כל הצד הדיגיטלי של העסק',
   clientLabel: 'אריק · קליניקה',
-  approved: true, // ⚠️ לאמת עם איליה שאריק מאשר שם מלא + עדות
-  tags: ['Make', 'CRM', 'Google Calendar', 'WhatsApp'],
+  approved: true,
+  tags: [],
   problem:
     'ניהול קליניקה ידני — תיאום תורים, תזכורות, מעקב מטופלים והיסטוריית טיפולים, הכל בראש ובוואטסאפ. no-shows ואובדן מעקב אחרי טיפולים.',
   metrics: [
-    { value: '₪10,000', label: 'שולם במלואה' },
-    { value: '8', label: 'אזורי אוטומציה' },
+    { value: '35', label: 'אוטומציות שרצות בעסק' },
+    { value: 'סוכן AI', label: 'מנהל את כל הזרימה' },
     { value: 'נוב׳ 2025', label: 'פעיל מאז' },
-    // ⚠️ למלא עם איליה (Grok: case study בלי מספרים קשים = לא אמין):
-    // { value: '__ש׳/שבוע', label: 'זמן שנחסך' },
-    // { value: '__%', label: 'ירידה ב-no-shows' },
   ],
   build: [
+    'סוכן AI מרכזי שמנהל את כל הזרימה מקצה לקצה',
     'תזכורות אוטומטיות לתורים',
     'אישורי הגעה',
     'היסטוריית טיפולים מרוכזת',
@@ -113,18 +112,19 @@ export const caseStudy: CaseStudy = {
     'פולואפים אוטומטיים',
     'דיוור ללקוחות',
     'פעולות אוטומטיות לאחר טיפול',
-    'גיבוי',
   ],
   techBreakdown: [
-    // ⚠️ לחדד עם איליה — זה מה שמרשים קהל טכני:
-    'ארכיטקטורה: CRM כמקור-אמת + שכבת אוטומציות ב-Make מעל יומן גוגל ו-WhatsApp.',
-    'תזכורות ואישורי-הגעה רצים מתוזמנים מול היומן — בלי מגע יד.',
+    '35 אוטומציות שמנהלות את כל הצד הדיגיטלי של העסק — מהרגע שנכנס ליד ועד הפולואפ אחרי הטיפול.',
+    'בלב המערכת: סוכן AI שמתזמר את כל הזרימה ומחליט מה קורה בכל שלב — לא תסריט קשיח אלא היגיון שמסתגל.',
+    'CRM כמקור-אמת + שכבת אוטומציות ב-Make מעל יומן גוגל ו-WhatsApp, רצה מתוזמנת בלי מגע יד.',
   ],
+  image: null, // ⚠️ סקרינשוט סנריו ה-Make של סוכן ה-AI המרכזי (/portfolio/erik-ai-agent.png — אחרי טשטוש PII)
+  imageCaption: 'סנריו ה-Make של סוכן ה-AI המרכזי בעסק',
   testimonial: {
-    videoId: null, // ⚠️ צריך מאיליה: YouTube ID של עדות אריק
-    name: 'אריק',
+    videoId: 'GXDE6HlC8jw', // עדות אריק גרון (מתוך עמוד ההמלצות באתר)
+    name: 'אריק גרון',
     role: 'בעל קליניקה',
-    context: 'על מערכת ה-CRM והאוטומציות שנבנו לקליניקה שלו',
+    context: 'על המערכת והאוטומציות שנבנו לעסק שלו',
   },
 }
 
@@ -278,18 +278,4 @@ export const testimonials: Testimonial[] = [
     role: 'מנכ״ל growgen.ai',
     portrait: true,
   },
-]
-
-// ─── רצועת stack תחתונה ──────────────────────────────────────────────────
-export const stack = [
-  'Make',
-  'Claude',
-  'n8n',
-  'Next.js',
-  'Python',
-  'Apify',
-  'DataForSEO',
-  'Meta Ads API',
-  'GreenAPI',
-  'Google Calendar',
 ]
