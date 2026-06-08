@@ -1652,10 +1652,9 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
 </div>
 
 <script>
-// VSL video — shows a custom thumbnail, then autoplays (MUTED) the moment the
-// page is entered, at any time/state (browsers block autoplay WITH sound, so it
-// starts muted; the viewer taps the video to unmute via YouTube's controls).
-// Cookie consent is independent and no longer gates the video.
+// VSL video — shows a custom thumbnail. The video plays WITH sound when the
+// visitor accepts cookies, or when they click the thumbnail (both are user
+// gestures, which browsers require before allowing audio playback).
 (function () {
   var VSL_ID = '02x3nH66wKA';
   var box = document.getElementById('vsl');
@@ -1685,13 +1684,11 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
   }
 
   if (box) {
-    // A tap before autoplay kicks in → play WITH sound (user gesture present).
+    // Click the thumbnail → play WITH sound (user gesture present).
     box.addEventListener('click', function () { loadVSL(true); });
     box.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadVSL(true); }
     });
-    // Autoplay muted immediately on entry — works no matter when you arrived.
-    loadVSL(false);
   }
 
   var banner = document.getElementById('cookieBanner');
@@ -1703,6 +1700,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       try { localStorage.setItem('cookie_consent', 'accepted'); } catch (e) {}
       if (typeof fbq === 'function') { try { fbq('consent', 'grant'); } catch (e) {} }
       banner.setAttribute('hidden', '');
+      loadVSL(true); // accepting cookies plays the video automatically (with sound)
     });
     if (dec) dec.addEventListener('click', function () {
       try { localStorage.setItem('cookie_consent', 'declined'); } catch (e) {}
