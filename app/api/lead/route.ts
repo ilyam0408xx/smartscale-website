@@ -16,6 +16,10 @@ type LeadBody = {
 
 const WEBHOOK_TIMEOUT_MS = 8000
 
+// Make.com webhook. Overridable via env (Vercel); falls back to this URL so the
+// live form works without any dashboard step.
+const DEFAULT_MAKE_WEBHOOK = 'https://hook.us2.make.com/vkj4re1fk55h1maa8pxfl7rimpnel62m'
+
 function clean(v: unknown): string {
   return typeof v === 'string' ? v.trim() : ''
 }
@@ -62,7 +66,7 @@ export async function POST(req: Request) {
     )
   }
 
-  const webhookUrl = process.env.MAKE_LEAD_WEBHOOK_URL
+  const webhookUrl = process.env.MAKE_LEAD_WEBHOOK_URL || DEFAULT_MAKE_WEBHOOK
   if (!webhookUrl) {
     // Not configured yet — tell the client so it can fall back (e.g. WhatsApp).
     console.error('Lead intake: MAKE_LEAD_WEBHOOK_URL is not set')
