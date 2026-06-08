@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
       { source: '/refael-QUOTATION', destination: '/refael-QUOTATION.html' },
       { source: '/lp-law', destination: '/lp-law.html' },
       { source: '/lp-law-toda', destination: '/lp-law-toda.html' },
+      { source: '/lp-law-system', destination: '/lp-law-system.html' },
     ]
   },
 }
