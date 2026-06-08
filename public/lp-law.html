@@ -661,7 +661,7 @@
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 26px 26px;
-    text-align: left;
+    text-align: right;
     box-shadow: 0 30px 60px -34px rgba(11, 20, 48, 0.25);
   }
   .form-card .stack > * + * { margin-top: 12px; }
@@ -682,10 +682,10 @@
     font-size: 16px;
     background: #fff;
     color: var(--ink);
-    text-align: left;
+    text-align: right;
     transition: border-color .15s ease;
   }
-  .form-card .field label { display: block; width: 100%; text-align: left; }
+  .form-card .field label { display: block; width: 100%; text-align: right; }
   .form-card input:focus, .form-card textarea:focus {
     outline: none;
     border-color: var(--accent);
@@ -713,9 +713,9 @@
   .form-card .submit[disabled] { opacity: .65; cursor: default; }
   .form-card .consent {
     display: flex; align-items: flex-start; gap: 10px;
-    direction: ltr; cursor: pointer; margin-top: 4px;
+    cursor: pointer; margin-top: 4px;
   }
-  .form-card .consent-text { direction: rtl; text-align: left; }
+  .form-card .consent-text { text-align: right; }
   .form-card .consent input[type="checkbox"] {
     width: 18px; height: 18px; margin: 3px 0 0; flex: 0 0 auto;
     accent-color: var(--accent); cursor: pointer;
@@ -1331,7 +1331,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
           <input type="checkbox" id="consent" />
           <span class="consent-text">
             אני מאשר/ת קבלת דיוור ויצירת קשר
-            <span class="consent-sub">אל דאגה — לא שולחים ספאם.</span>
+            <span class="consent-sub">אל דאגה לא שולחים ספאם.</span>
           </span>
         </label>
         <!-- Honeypot: must stay empty. Hidden via .hp-field. -->
