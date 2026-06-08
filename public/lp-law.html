@@ -325,11 +325,13 @@
   /* Real screenshot inside a placeholder — centered phone capture */
   .imgph.has-img { aspect-ratio: auto; padding: 0; background: transparent; border: 0; }
   section.dark .imgph.has-img { background: transparent; border: 0; }
-  .imgph.has-img img {
+  .imgph.has-img img, .imgph.has-img video {
     max-height: 560px; width: auto; max-width: 100%;
     border-radius: 16px; display: block;
     box-shadow: 0 30px 60px -24px rgba(11,20,48,0.45);
   }
+  /* Landscape system media fills the content width */
+  .imgph.has-img.wide img, .imgph.has-img.wide video { width: 100%; height: auto; max-height: none; }
 
   /* === DETAIL ROW (מה אפשר לבנות / התוצאה) === */
   .detail-row {
@@ -1103,9 +1105,8 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     </div>
 
     <div class="wrap-wide" style="padding:0; width:100%;">
-      <div class="imgph">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        <div class="caption">תמונת תוצאה — ה-CRM והדשבורד מתוך הסרטון</div>
+      <div class="imgph has-img wide">
+        <img src="/images/lp-law/system.webp" alt="מערכת ניהול המשרד של Smart Scale — דשבורד עם תיקים פעילים, צנרת לידים, משימות ולידים חמים" />
       </div>
     </div>
 
@@ -1148,9 +1149,10 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     </p>
 
     <div class="wrap-wide" style="padding:0; width:100%;">
-      <div class="imgph">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        <div class="caption">תמונת תוצאה — ה-CRM והדשבורד מתוך הסרטון, עם אנימציה שדברים מתחלפים</div>
+      <div class="imgph has-img wide">
+        <video autoplay loop muted playsinline preload="auto" poster="/images/lp-law/system-demo-poster.jpg" aria-label="הדגמת מערכת Smart Scale בפעולה — מעבר חי בין מסכי הדשבורד, הצנרת והמסמכים">
+          <source src="/images/lp-law/system-demo.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
 
