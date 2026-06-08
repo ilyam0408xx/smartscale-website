@@ -234,6 +234,7 @@
   /* === VIDEO / VSL === */
   .video {
     aspect-ratio: 16 / 9;
+    cursor: pointer;
     max-width: 720px;
     margin-inline: auto;
     background: #000;
@@ -676,6 +677,19 @@
   .form-card .form-msg.err { color: var(--danger, #dc2626); }
   .form-card .form-msg a { color: var(--wa, #25D366); text-decoration: underline; }
   .form-card .submit[disabled] { opacity: .65; cursor: default; }
+  .form-card .consent {
+    display: flex; align-items: flex-start; gap: 10px;
+    cursor: pointer; text-align: right; margin-top: 2px;
+  }
+  .form-card .consent input[type="checkbox"] {
+    width: 18px; height: 18px; margin: 3px 0 0; flex: 0 0 auto;
+    accent-color: var(--accent); cursor: pointer;
+  }
+  .form-card .consent-text {
+    display: flex; flex-direction: column;
+    font-size: 14px; color: var(--ink-soft); line-height: 1.45;
+  }
+  .form-card .consent-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
   /* === FAQ === */
   details.faq {
@@ -787,6 +801,37 @@
   @media (prefers-reduced-motion: reduce) {
     .pop-word.pop-go { animation: none; }
   }
+
+  /* === COOKIE BANNER === */
+  .cookie-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;
+    background: var(--bg-dark); color: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px; padding: 16px 22px; flex-wrap: wrap;
+    box-shadow: 0 -8px 30px rgba(0,0,0,0.25);
+  }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-banner .cookie-text {
+    margin: 0; font-size: 14px; line-height: 1.55;
+    color: rgba(255,255,255,0.92); flex: 1; min-width: 240px;
+  }
+  .cookie-actions { display: flex; gap: 10px; flex: 0 0 auto; }
+  .cookie-btn {
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    padding: 10px 22px; border-radius: 6px; border: 0; cursor: pointer;
+    transition: background .15s ease;
+  }
+  .cookie-btn.primary { background: var(--accent); color: #fff; }
+  .cookie-btn.primary:hover { background: var(--accent-hover); }
+  .cookie-btn.ghost {
+    background: transparent; color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .cookie-btn.ghost:hover { background: rgba(255,255,255,0.08); }
+  @media (max-width: 600px) {
+    .cookie-banner { flex-direction: column; align-items: stretch; text-align: center; }
+    .cookie-actions { justify-content: center; }
+  }
 </style>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -828,7 +873,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     <p class="big-line">וככל שהזמן עובר.. <span class="accent">הבעיות גדלות</span></p>
 
     <div class="wrap-wide" style="padding:0; width:100%; margin-top: 8px;">
-      <div class="video">
+      <div class="video" id="vsl" role="button" tabindex="0" aria-label="נגן את הסרטון">
         <div class="play" aria-hidden="true"></div>
         <div class="tag">VSL · סרטון</div>
       </div>
@@ -1237,28 +1282,25 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
 
     <form id="leadForm" class="form-card" novalidate>
       <div class="stack">
-        <div class="row2">
-          <div class="field">
-            <label for="fn">שם מלא</label>
-            <input id="fn" name="fn" type="text" autocomplete="name" placeholder="ישראל ישראלי" />
-          </div>
-          <div class="field">
-            <label for="ph">טלפון</label>
-            <input id="ph" name="ph" type="tel" autocomplete="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" />
-          </div>
+        <div class="field">
+          <label for="fn">שם מלא</label>
+          <input id="fn" name="fn" type="text" autocomplete="name" placeholder="ישראל ישראלי" required />
+        </div>
+        <div class="field">
+          <label for="ph">טלפון</label>
+          <input id="ph" name="ph" type="tel" autocomplete="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" required />
         </div>
         <div class="field">
           <label for="em">אימייל</label>
-          <input id="em" name="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" />
+          <input id="em" name="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" required />
         </div>
-        <div class="field">
-          <label for="of">שם המשרד</label>
-          <input id="of" name="of" type="text" placeholder="משרד עורכי דין..." />
-        </div>
-        <div class="field">
-          <label for="msg">משהו שאתה רוצה שאדע לפני השיחה <span class="small">(לא חובה)</span></label>
-          <textarea id="msg" name="msg" placeholder="ספר/י בקצרה איפה הכי כואב..."></textarea>
-        </div>
+        <label class="consent">
+          <input type="checkbox" id="consent" />
+          <span class="consent-text">
+            אני מאשר/ת קבלת דיוור ויצירת קשר
+            <span class="consent-sub">אל דאגה — לא שולחים ספאם.</span>
+          </span>
+        </label>
         <!-- Honeypot: must stay empty. Hidden via .hp-field. -->
         <input class="hp-field" id="company_site" name="_gotcha" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <button id="leadSubmit" class="cta submit" type="submit">שליחה וקביעת שיחה ביומן</button>
@@ -1477,22 +1519,32 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
 
   function val(id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
 
-  function waUrl(name, phone, office) {
-    var t = 'היי איליה! מילאתי טופס באתר.\nשם: ' + name + '\nטלפון: ' + phone + (office ? '\nמשרד: ' + office : '');
+  function waUrl(name, phone) {
+    var t = 'היי איליה! מילאתי טופס באתר.\nשם: ' + name + '\nטלפון: ' + phone;
     return WA + '?text=' + encodeURIComponent(t);
   }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var name = val('fn'), phone = val('ph'), email = val('em'),
-        office = val('of'), notes = val('msg'), hp = val('company_site');
+    var name = val('fn'), phone = val('ph'), email = val('em'), hp = val('company_site');
+    var consentEl = document.getElementById('consent');
 
     msg.className = 'form-msg';
     msg.textContent = '';
 
-    if (!name || !phone) {
+    if (!name || !phone || !email) {
       msg.classList.add('err');
-      msg.textContent = 'נא למלא שם וטלפון.';
+      msg.textContent = 'נא למלא את כל השדות.';
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      msg.classList.add('err');
+      msg.textContent = 'כתובת האימייל לא תקינה.';
+      return;
+    }
+    if (consentEl && !consentEl.checked) {
+      msg.classList.add('err');
+      msg.textContent = 'יש לאשר את הדיוור כדי להמשיך.';
       return;
     }
 
@@ -1502,7 +1554,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
 
     function fallback() {
       msg.classList.add('err');
-      msg.innerHTML = 'לא הצלחנו לשלוח כרגע — <a href="' + waUrl(name, phone, office) + '" target="_blank" rel="noopener">המשך בוואטסאפ</a>';
+      msg.innerHTML = 'לא הצלחנו לשלוח כרגע — <a href="' + waUrl(name, phone) + '" target="_blank" rel="noopener">המשך בוואטסאפ</a>';
       btn.disabled = false;
       btn.textContent = orig;
     }
@@ -1512,7 +1564,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name, phone: phone, email: email,
-        office: office, notes: notes, _gotcha: hp, source: 'lp-law'
+        consent: true, _gotcha: hp, source: 'lp-law'
       })
     })
       .then(function (r) {
@@ -1523,10 +1575,10 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       .then(function (res) {
         if (res.d && res.d.ok) {
           if (typeof fbq === 'function') { try { fbq('track', 'Lead'); } catch (e) {} }
-          form.reset();
           msg.classList.add('ok');
-          msg.textContent = 'נשלח! אחזור אליך בהקדם. 🙌';
+          msg.textContent = 'נשלח! מעביר אותך...';
           btn.textContent = 'נשלח ✓';
+          window.location.href = '/lp-law-toda';
           return;
         }
         if (res.status === 422 && res.d && res.d.userMessage) {
@@ -1540,6 +1592,69 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       })
       .catch(fallback);
   });
+})();
+</script>
+
+<!-- Cookie consent — accepting it auto-plays the VSL video -->
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="הודעת עוגיות" hidden>
+  <p class="cookie-text">אנחנו משתמשים בעוגיות כדי לשפר את החוויה ולהציג תוכן (כולל הסרטון). אישור יפעיל את הסרטון אוטומטית.</p>
+  <div class="cookie-actions">
+    <button type="button" id="cookieDecline" class="cookie-btn ghost">דחה</button>
+    <button type="button" id="cookieAccept" class="cookie-btn primary">מאשר</button>
+  </div>
+</div>
+
+<script>
+// VSL video + cookie consent. Accepting cookies auto-plays the video.
+(function () {
+  var VSL_ID = '02x3nH66wKA';
+  var box = document.getElementById('vsl');
+
+  function consentRaw() { try { return localStorage.getItem('cookie_consent'); } catch (e) { return null; } }
+  function marketingOK() {
+    var c = consentRaw();
+    if (c === 'accepted') return true;
+    if (!c || c === 'declined') return false;
+    try { var p = JSON.parse(c); return !!(p.marketing || p.statistics); } catch (e) { return false; }
+  }
+
+  function loadVSL(autoplay) {
+    if (!box || box.getAttribute('data-loaded')) return;
+    box.setAttribute('data-loaded', '1');
+    var host = marketingOK() ? 'www.youtube.com' : 'www.youtube-nocookie.com';
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://' + host + '/embed/' + VSL_ID + '?rel=0&playsinline=1' + (autoplay ? '&autoplay=1' : '');
+    ifr.title = 'VSL';
+    ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    ifr.setAttribute('allowfullscreen', '');
+    ifr.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+    box.innerHTML = '';
+    box.appendChild(ifr);
+  }
+
+  if (box) {
+    box.addEventListener('click', function () { loadVSL(true); });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadVSL(true); }
+    });
+  }
+
+  var banner = document.getElementById('cookieBanner');
+  if (banner) {
+    if (!consentRaw()) banner.removeAttribute('hidden');
+    var acc = document.getElementById('cookieAccept');
+    var dec = document.getElementById('cookieDecline');
+    if (acc) acc.addEventListener('click', function () {
+      try { localStorage.setItem('cookie_consent', 'accepted'); } catch (e) {}
+      if (typeof fbq === 'function') { try { fbq('consent', 'grant'); } catch (e) {} }
+      banner.setAttribute('hidden', '');
+      loadVSL(true);
+    });
+    if (dec) dec.addEventListener('click', function () {
+      try { localStorage.setItem('cookie_consent', 'declined'); } catch (e) {}
+      banner.setAttribute('hidden', '');
+    });
+  }
 })();
 </script>
 
