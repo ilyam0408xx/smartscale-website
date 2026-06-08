@@ -664,6 +664,18 @@
     color: var(--muted); text-transform: uppercase;
     margin-bottom: 12px;
   }
+  /* Honeypot — hidden from humans, catches bots that fill every field */
+  .form-card .hp-field {
+    position: absolute; left: -9999px; top: -9999px;
+    width: 1px; height: 1px; opacity: 0; pointer-events: none;
+  }
+  .form-card .form-msg {
+    margin: 4px 0 0; font-size: 15px; font-weight: 600; min-height: 1px;
+  }
+  .form-card .form-msg.ok { color: var(--success, #16a34a); }
+  .form-card .form-msg.err { color: var(--danger, #dc2626); }
+  .form-card .form-msg a { color: var(--wa, #25D366); text-decoration: underline; }
+  .form-card .submit[disabled] { opacity: .65; cursor: default; }
 
   /* === FAQ === */
   details.faq {
@@ -1223,32 +1235,34 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     <h2>מלא את הפרטים שלך <span class="mark">בטופס</span></h2>
     <p class="lede-lg">ומיד תועבר לדף שבו תוכל לקבוע איתי שיחה ביומן.</p>
 
-    <form class="form-card" onsubmit="event.preventDefault(); alert('הטופס הוא placeholder — יחובר ל-CRM');">
-      <span class="placeholder-tag">טופס השארת פרטים · placeholder</span>
+    <form id="leadForm" class="form-card" novalidate>
       <div class="stack">
         <div class="row2">
           <div class="field">
             <label for="fn">שם מלא</label>
-            <input id="fn" type="text" placeholder="ישראל ישראלי" />
+            <input id="fn" name="fn" type="text" autocomplete="name" placeholder="ישראל ישראלי" />
           </div>
           <div class="field">
             <label for="ph">טלפון</label>
-            <input id="ph" type="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" />
+            <input id="ph" name="ph" type="tel" autocomplete="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" />
           </div>
         </div>
         <div class="field">
           <label for="em">אימייל</label>
-          <input id="em" type="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" />
+          <input id="em" name="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" />
         </div>
         <div class="field">
           <label for="of">שם המשרד</label>
-          <input id="of" type="text" placeholder="משרד עורכי דין..." />
+          <input id="of" name="of" type="text" placeholder="משרד עורכי דין..." />
         </div>
         <div class="field">
           <label for="msg">משהו שאתה רוצה שאדע לפני השיחה <span class="small">(לא חובה)</span></label>
-          <textarea id="msg" placeholder="ספר/י בקצרה איפה הכי כואב..."></textarea>
+          <textarea id="msg" name="msg" placeholder="ספר/י בקצרה איפה הכי כואב..."></textarea>
         </div>
-        <button class="cta submit" type="submit">שליחה וקביעת שיחה ביומן</button>
+        <!-- Honeypot: must stay empty. Hidden via .hp-field. -->
+        <input class="hp-field" id="company_site" name="_gotcha" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button id="leadSubmit" class="cta submit" type="submit">שליחה וקביעת שיחה ביומן</button>
+        <p id="leadMsg" class="form-msg" role="status" aria-live="polite"></p>
       </div>
     </form>
   </div>
@@ -1448,6 +1462,84 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   check();
+})();
+</script>
+
+<script>
+// Lead form → /api/lead (same-origin). On any connection/config failure,
+// fall back to WhatsApp so a lead is never lost.
+(function () {
+  var form = document.getElementById('leadForm');
+  if (!form) return;
+  var btn = document.getElementById('leadSubmit');
+  var msg = document.getElementById('leadMsg');
+  var WA = 'https://wa.me/9720502611165';
+
+  function val(id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
+
+  function waUrl(name, phone, office) {
+    var t = 'היי איליה! מילאתי טופס באתר.\nשם: ' + name + '\nטלפון: ' + phone + (office ? '\nמשרד: ' + office : '');
+    return WA + '?text=' + encodeURIComponent(t);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = val('fn'), phone = val('ph'), email = val('em'),
+        office = val('of'), notes = val('msg'), hp = val('company_site');
+
+    msg.className = 'form-msg';
+    msg.textContent = '';
+
+    if (!name || !phone) {
+      msg.classList.add('err');
+      msg.textContent = 'נא למלא שם וטלפון.';
+      return;
+    }
+
+    var orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'שולח...';
+
+    function fallback() {
+      msg.classList.add('err');
+      msg.innerHTML = 'לא הצלחנו לשלוח כרגע — <a href="' + waUrl(name, phone, office) + '" target="_blank" rel="noopener">המשך בוואטסאפ</a>';
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name, phone: phone, email: email,
+        office: office, notes: notes, _gotcha: hp, source: 'lp-law'
+      })
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          return { status: r.status, d: d };
+        });
+      })
+      .then(function (res) {
+        if (res.d && res.d.ok) {
+          if (typeof fbq === 'function') { try { fbq('track', 'Lead'); } catch (e) {} }
+          form.reset();
+          msg.classList.add('ok');
+          msg.textContent = 'נשלח! אחזור אליך בהקדם. 🙌';
+          btn.textContent = 'נשלח ✓';
+          return;
+        }
+        if (res.status === 422 && res.d && res.d.userMessage) {
+          msg.classList.add('err');
+          msg.textContent = res.d.userMessage;
+          btn.disabled = false;
+          btn.textContent = orig;
+          return;
+        }
+        fallback();
+      })
+      .catch(fallback);
+  });
 })();
 </script>
 
