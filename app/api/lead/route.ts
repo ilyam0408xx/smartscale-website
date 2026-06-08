@@ -7,9 +7,10 @@ type LeadBody = {
   name?: string
   phone?: string
   email?: string
-  office?: string
-  notes?: string
+  consent?: boolean
   source?: string
+  // Campaign attribution captured from the landing-page URL (?ref=, ?utm_*=).
+  tracking?: Record<string, unknown>
   // Honeypot — real users never see/fill this. Bots tend to fill every field.
   _gotcha?: string
 }
@@ -28,6 +29,19 @@ function clean(v: unknown): string {
 function isValidPhone(phone: string): boolean {
   const digits = phone.replace(/\D/g, '')
   return digits.length >= 9 && digits.length <= 15
+}
+
+// Campaign attribution keys passed through to Make (string values only).
+const TRACKING_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'] as const
+function pickTracking(t: unknown): Record<string, string> {
+  const out: Record<string, string> = {}
+  if (t && typeof t === 'object') {
+    for (const k of TRACKING_KEYS) {
+      const v = (t as Record<string, unknown>)[k]
+      if (typeof v === 'string' && v.trim()) out[k] = v.trim()
+    }
+  }
+  return out
 }
 
 export async function POST(req: Request) {
@@ -50,8 +64,6 @@ export async function POST(req: Request) {
   const name = clean(body.name)
   const phone = clean(body.phone)
   const email = clean(body.email)
-  const office = clean(body.office)
-  const notes = clean(body.notes)
 
   if (!name || !phone) {
     return Response.json(
@@ -81,10 +93,10 @@ export async function POST(req: Request) {
     name,
     phone,
     email,
-    office,
-    notes,
+    consent: body.consent === true,
     source: clean(body.source) || 'lp-law',
     page: '/lp-law.html',
+    ...pickTracking(body.tracking),
   }
 
   try {

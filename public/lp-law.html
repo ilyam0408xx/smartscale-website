@@ -233,9 +233,9 @@
 
   /* === VIDEO / VSL === */
   .video {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 9 / 16;
     cursor: pointer;
-    max-width: 720px;
+    max-width: 400px;
     margin-inline: auto;
     background: #000;
     background-image:
@@ -268,6 +268,27 @@
     margin-right: 6px;
   }
   .video:hover .play { transform: scale(1.07); }
+  /* VSL — custom thumbnail + YouTube-style play button */
+  .video .vsl-thumb {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 20%; display: block;
+  }
+  .video .vsl-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 86px; height: 60px; border-radius: 16px;
+    background: rgba(220, 38, 38, 0.93);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s ease, transform .15s ease;
+    z-index: 2; pointer-events: none;
+  }
+  .video .vsl-play::before {
+    content: ""; width: 0; height: 0; border-style: solid;
+    border-width: 11px 0 11px 19px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 4px;
+  }
+  .video:hover .vsl-play { background: #dc2626; transform: translate(-50%, -50%) scale(1.06); }
+  .video.is-playing .vsl-thumb, .video.is-playing .vsl-play { display: none; }
   .video .tag {
     position: absolute; bottom: 18px; left: 18px;
     font-size: 11px; letter-spacing: 0.2em;
@@ -637,10 +658,11 @@
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 10px;
-    padding: 40px 36px;
-    text-align: right;
+    padding: 26px 26px;
+    text-align: left;
     box-shadow: 0 30px 60px -34px rgba(11, 20, 48, 0.25);
   }
+  .form-card .stack > * + * { margin-top: 12px; }
   section.dark .form-card {
     background: #fff;
     color: var(--ink);
@@ -651,15 +673,17 @@
   }
   .form-card input, .form-card textarea {
     width: 100%;
-    padding: 14px 16px;
+    padding: 13px 15px;
     border: 1.5px solid var(--line);
     border-radius: 6px;
     font-family: inherit;
     font-size: 16px;
     background: #fff;
     color: var(--ink);
+    text-align: left;
     transition: border-color .15s ease;
   }
+  .form-card .field label { display: block; width: 100%; text-align: left; }
   .form-card input:focus, .form-card textarea:focus {
     outline: none;
     border-color: var(--accent);
@@ -687,8 +711,9 @@
   .form-card .submit[disabled] { opacity: .65; cursor: default; }
   .form-card .consent {
     display: flex; align-items: flex-start; gap: 10px;
-    cursor: pointer; text-align: right; margin-top: 2px;
+    direction: ltr; cursor: pointer; margin-top: 4px;
   }
+  .form-card .consent-text { direction: rtl; text-align: left; }
   .form-card .consent input[type="checkbox"] {
     width: 18px; height: 18px; margin: 3px 0 0; flex: 0 0 auto;
     accent-color: var(--accent); cursor: pointer;
@@ -881,9 +906,9 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     <p class="big-line">וככל שהזמן עובר.. <span class="accent">הבעיות גדלות</span></p>
 
     <div class="wrap-wide" style="padding:0; width:100%; margin-top: 8px;">
-      <div class="video" id="vsl" role="button" tabindex="0" aria-label="נגן את הסרטון">
-        <div class="play" aria-hidden="true"></div>
-        <div class="tag">VSL · סרטון</div>
+      <div class="video" id="vsl" role="button" tabindex="0" aria-label="הפעל סרטון">
+        <img class="vsl-thumb" src="/images/lp-law/vsl-thumb.jpg" alt="סרטון: מערכות אוטומציה ו-AI למשרדי עורכי דין — Smart Scale" />
+        <span class="vsl-play" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -1294,11 +1319,11 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
         </div>
         <div class="field">
           <label for="ph">טלפון</label>
-          <input id="ph" name="ph" type="tel" autocomplete="tel" placeholder="050-0000000" dir="ltr" style="text-align:right;" required />
+          <input id="ph" name="ph" type="tel" autocomplete="tel" placeholder="050-0000000" dir="ltr" required />
         </div>
         <div class="field">
           <label for="em">אימייל</label>
-          <input id="em" name="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" style="text-align:right;" required />
+          <input id="em" name="em" type="email" autocomplete="email" placeholder="name@example.com" dir="ltr" required />
         </div>
         <label class="consent">
           <input type="checkbox" id="consent" />
@@ -1530,6 +1555,21 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     return WA + '?text=' + encodeURIComponent(t);
   }
 
+  // Campaign attribution from the URL (?ref=, ?utm_*=) — forwarded to the
+  // webhook and preserved into the thank-you page URL.
+  var TRACK_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
+  function getTracking() {
+    var p = new URLSearchParams(location.search), out = {};
+    TRACK_KEYS.forEach(function (k) { var v = p.get(k); if (v) out[k] = v; });
+    return out;
+  }
+  function trackingQuery() {
+    var t = getTracking(), keep = new URLSearchParams();
+    Object.keys(t).forEach(function (k) { keep.set(k, t[k]); });
+    var s = keep.toString();
+    return s ? ('?' + s) : '';
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = val('fn'), phone = val('ph'), email = val('em'), hp = val('company_site');
@@ -1570,7 +1610,8 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name, phone: phone, email: email,
-        consent: true, _gotcha: hp, source: 'lp-law'
+        consent: true, _gotcha: hp, source: 'lp-law',
+        tracking: getTracking()
       })
     })
       .then(function (r) {
@@ -1584,7 +1625,7 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
           msg.classList.add('ok');
           msg.textContent = 'נשלח! מעביר אותך...';
           btn.textContent = 'נשלח ✓';
-          window.location.href = '/lp-law-toda';
+          window.location.href = '/lp-law-toda' + trackingQuery();
           return;
         }
         if (res.status === 422 && res.d && res.d.userMessage) {
@@ -1611,7 +1652,10 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
 </div>
 
 <script>
-// VSL video + cookie consent. Accepting cookies auto-plays the video.
+// VSL video — shows a custom thumbnail, then autoplays (MUTED) the moment the
+// page is entered, at any time/state (browsers block autoplay WITH sound, so it
+// starts muted; the viewer taps the video to unmute via YouTube's controls).
+// Cookie consent is independent and no longer gates the video.
 (function () {
   var VSL_ID = '02x3nH66wKA';
   var box = document.getElementById('vsl');
@@ -1624,25 +1668,30 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
     try { var p = JSON.parse(c); return !!(p.marketing || p.statistics); } catch (e) { return false; }
   }
 
-  function loadVSL(autoplay) {
+  function loadVSL(withSound) {
     if (!box || box.getAttribute('data-loaded')) return;
     box.setAttribute('data-loaded', '1');
     var host = marketingOK() ? 'www.youtube.com' : 'www.youtube-nocookie.com';
+    var params = 'rel=0&playsinline=1&modestbranding=1&autoplay=1&mute=' + (withSound ? '0' : '1');
     var ifr = document.createElement('iframe');
-    ifr.src = 'https://' + host + '/embed/' + VSL_ID + '?rel=0&playsinline=1' + (autoplay ? '&autoplay=1' : '');
-    ifr.title = 'VSL';
+    ifr.src = 'https://' + host + '/embed/' + VSL_ID + '?' + params;
+    ifr.title = 'VSL — Smart Scale';
     ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
     ifr.setAttribute('allowfullscreen', '');
-    ifr.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
-    box.innerHTML = '';
+    ifr.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3;opacity:0;transition:opacity .4s ease;';
+    // Keep the thumbnail as the poster until the player loads, then fade it in.
+    ifr.addEventListener('load', function () { ifr.style.opacity = '1'; box.classList.add('is-playing'); });
     box.appendChild(ifr);
   }
 
   if (box) {
+    // A tap before autoplay kicks in → play WITH sound (user gesture present).
     box.addEventListener('click', function () { loadVSL(true); });
     box.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadVSL(true); }
     });
+    // Autoplay muted immediately on entry — works no matter when you arrived.
+    loadVSL(false);
   }
 
   var banner = document.getElementById('cookieBanner');
@@ -1654,7 +1703,6 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       try { localStorage.setItem('cookie_consent', 'accepted'); } catch (e) {}
       if (typeof fbq === 'function') { try { fbq('consent', 'grant'); } catch (e) {} }
       banner.setAttribute('hidden', '');
-      loadVSL(true);
     });
     if (dec) dec.addEventListener('click', function () {
       try { localStorage.setItem('cookie_consent', 'declined'); } catch (e) {}
