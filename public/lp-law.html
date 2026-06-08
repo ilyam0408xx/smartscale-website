@@ -1634,7 +1634,8 @@ src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"/></
       })
       .then(function (res) {
         if (res.d && res.d.ok) {
-          if (typeof fbq === 'function') { try { fbq('track', 'Lead'); } catch (e) {} }
+          // Meta Pixel "Lead" fires on the thank-you page (/lp-law-toda), not here,
+          // to avoid double-counting the conversion.
           msg.classList.add('ok');
           msg.textContent = 'נשלח! מעביר אותך...';
           btn.textContent = 'נשלח ✓';
