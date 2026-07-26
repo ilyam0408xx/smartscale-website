@@ -39,10 +39,6 @@ export default function StickyMobileCTA({ label, slug }: StickyMobileCTAProps) {
 
   const handleClick = () => {
     trackLead('sticky')
-    const fbq = (window as Window & { fbq?: (a: string, b: string) => void }).fbq
-    if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead')
-    }
   }
 
   if (!visible) return null

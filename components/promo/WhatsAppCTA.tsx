@@ -18,11 +18,6 @@ export default function WhatsAppCTA({ position, label, primary = false }: WhatsA
 
   const handleClick = () => {
     trackLead(position)
-    // Meta Pixel also fires; the anchor href handles navigation.
-    const fbq = (window as Window & { fbq?: (a: string, b: string) => void }).fbq
-    if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead')
-    }
   }
 
   return (

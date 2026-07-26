@@ -231,7 +231,7 @@ export default function CookieBanner() {
   )
 }
 
-// Public helper for other components (PixelLoader, OutbrainPixel, etc.)
+// Public helper for other components (GtmLoader, OutbrainPixel, etc.)
 // to check whether a given category was consented to.
 export function getConsent(): ConsentState {
   return readConsent() ?? DEFAULT_DECLINED

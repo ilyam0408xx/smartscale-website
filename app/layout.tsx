@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Heebo, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import CookieBanner from '@/components/CookieBanner'
-import PixelLoader from '@/components/PixelLoader'
+import GtmLoader, { GtmNoScript } from '@/components/GtmLoader'
 import OutbrainPixel from '@/components/OutbrainPixel'
 import TaboolaPixel from '@/components/TaboolaPixel'
 import AiWidget from '@/components/AiWidget'
@@ -64,7 +64,7 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://www.youtube.com" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
-        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://amplify.outbrain.com" />
         <link rel="dns-prefetch" href="https://cdn.taboola.com" />
       </head>
@@ -72,17 +72,9 @@ export default function RootLayout({
         className={`${heebo.className} antialiased`}
         style={{ background: 'var(--bg)', color: 'var(--fg)' }}
       >
+        <GtmNoScript />
         {children}
-        <PixelLoader />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1305380584811353&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+        <GtmLoader />
         <OutbrainPixel />
         <TaboolaPixel />
         <CookieBanner />

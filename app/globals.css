@@ -39,6 +39,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* GTM noscript fallback iframe — must take up no space */
+.gtm-noscript-frame { display: none; visibility: hidden; }
+
 html {
   font-size: calc(16px * var(--font-scale));
   scroll-padding-top: 96px;
