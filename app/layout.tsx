@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Heebo, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import CookieBanner from '@/components/CookieBanner'
-import GtmLoader, { GtmNoScript } from '@/components/GtmLoader'
+import { GtmHeadScript, GtmNoScript } from '@/components/GtmLoader'
 import OutbrainPixel from '@/components/OutbrainPixel'
 import TaboolaPixel from '@/components/TaboolaPixel'
 import AiWidget from '@/components/AiWidget'
@@ -56,6 +56,8 @@ export default function RootLayout({
       className={`${heebo.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        {/* GTM first in <head> — nothing may load ahead of it */}
+        <GtmHeadScript />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -74,7 +76,6 @@ export default function RootLayout({
       >
         <GtmNoScript />
         {children}
-        <GtmLoader />
         <OutbrainPixel />
         <TaboolaPixel />
         <CookieBanner />
