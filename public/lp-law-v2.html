@@ -908,13 +908,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-inline: 0;
     max-width: none;
   }
-  /* כותרות, כפתורים, וידאו ותמונות נשארים ממורכזים */
+  /* כותרות ומשפטי מפתח נשארים ממורכזים */
   .justified > h1, .justified > h2, .justified > h3, .justified > h4,
-  .justified > .eyebrow, .justified > .big-line, .justified > .mega-line,
-  .justified > .cta-row, .justified > .video, .justified > .imgph,
-  .justified > .about-portrait { text-align: center; }
-  .justified > .eyebrow { margin-inline: auto; }
-  .justified > .about-portrait { margin-inline: auto; }
+  .justified > .big-line, .justified > .mega-line { text-align: center; }
+
+  /* אלמנטים שאינם טקסט חייבים מירכוז אמיתי ולא text-align.
+     בבלוק מיושר אין את .centered של הדף המקורי, ולכן הם נצמדו לימין. */
+  .justified > .eyebrow {
+    display: flex;            /* המקור הוא inline-flex, ו-margin auto לא מרכז אותו */
+    width: fit-content;
+    margin-inline: auto;
+  }
+  .justified > .video,
+  .justified > .imgph,
+  .justified > .about-portrait,
+  .justified > .cta-row { margin-inline: auto; }
+  .justified > .imgph { text-align: center; }
+  .justified > .imgph .caption { margin-inline: auto; }
 
   /* פחות אוויר. הדף היה מרוח מדי */
   section { padding: 56px 0; }
@@ -957,10 +967,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <p class="lede-lg">מסמכים שנכנסים אליך בווצאפ ובמייל נפתחים, נקראים, מקבלים שם ונשמרים בתיק הנכון. בלי שאף אחד במשרד נוגע בהם.</p>
 
-    <div class="imgph">
-      <p class="caption">כאן תיכנס גרפיקה: יד שמחזיקה שטר כסף מעל ערימת מסמכים. השטר מתפורר לחתיכות קטנות שנופלות על הערימה. איור קו אחד, שני צבעים, בלי פרצופים ובלי טקסט.</p>
-    </div>
-
     <p class="big-line">45 שניות. תראה בדיוק על מה אתה משלם היום.</p>
 
     <div class="video" id="vsl" role="button" tabindex="0" aria-label="הפעל סרטון">
@@ -988,6 +994,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="imgph">
       <p class="caption">כאן תיכנס גרפיקה: 12 ריבועים קטנים זהים בשורה אחת, בכל אחד סמל שקל. הריבוע האחרון בצבע מלא, כל השאר בקו מתאר בלבד. איור שטוח ומופשט, בלי טקסט.</p>
     </div>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
   </div>
 </section>
 
@@ -1001,6 +1012,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="imgph">
       <p class="caption">כאן תיכנס גרפיקה: שלושה אלמנטים בשורה. מסמך בודד, חץ, תיקייה סגורה. זהו. איור קו מינימלי לגמרי, בלי מסכים, בלי אייקונים נוספים, בלי טקסט.</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
     </div>
   </div>
 </section>
@@ -1018,15 +1034,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <p class="mega-line">זו לא טכנולוגיה של מחר.<br/>הרכבת כבר נוסעת.</p>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
   </div>
 </section>
 
 
 <!-- ========= 5 - עדויות (LIGHT SOFT) ========= -->
 <section class="guarantee-section tight">
-  <div class="wrap justified">
+  <div class="wrap stack-lg justified">
     <div class="imgph">
       <p class="caption">בלוק עדויות. ריק בהחלטת איליה מ-13.8.2026, עולים בלי. הבלוק שומר על מקומו במבנה כדי שאפשר יהיה למלא אותו בעדויות מעורכי דין בלי לפרק את הדף.</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
     </div>
   </div>
 </section>
@@ -1042,6 +1068,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="lede-lg">עד היום בניתי למאות עסקים ועורכי דין בישראל מערכות אוטומטיות בשילוב של AI שפשוט עושות את כל העבודה הקשה ל-ב-ד. אני לא מוכר לך עוד כלי שצריך ללמוד. אני בונה משהו שרץ ברקע ועושה את העבודה הטכנית במקומך.</p>
 
     <p class="big-line">העיקרון שלי אחד: או שזה מחזיר לך כסף, או שלא בונים את זה.</p>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
+      <span class="cta-meta">שיחה ראשונה ללא עלות · 30 דקות</span>
+    </div>
   </div>
 </section>
 
@@ -1099,6 +1130,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </summary>
         <div class="answer">
           <p>לא. מה שיש לך נשאר. המערכת יושבת מעל ועושה את החלק שאף אחד לא רוצה לעשות ידנית.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>תן דוגמה למה אפשר לבנות אצלי</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>מערכת שקולטת מסמכים מווצאפ וממייל וממיינת אותם לתיקיות. בוט ששואל ליד חדש כמה שאלות ומכניס אותו לתהליך קליטה מסודר. תזכורות בווצאפ לצוות על תיקים תקועים, מסמכים חסרים או מועדים מתקרבים. דשבורד שמראה לך מה קורה עם הלידים, התיקים והמשימות.</p>
+          <p>אבל השאלה החשובה היא לא מה אפשר לבנות. <strong>השאלה היא מה שווה לבנות אצלך קודם.</strong></p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>איפה הכסף חוזר אלי?</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>בשלושה מקומות. הראשון הוא שעות צוות: פחות הורדה, תיוק, שינוי שמות, חיפוש מסמכים ותזכורות ידניות.</p>
+          <p>השני הוא לידים שלא מתפספסים. כשכל פנייה נכנסת לתהליך ברור ומקבלת סטטוס, פחות דברים נופלים בין הכיסאות.</p>
+          <p>השלישי הוא שליטה. כשאתה רואה מה תקוע ומה חסר, פחות דברים מתגלים מאוחר מדי.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>אני צריך להחליף את כל צורת העבודה במשרד?</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="answer">
+          <p>לא. לא מתחילים מלשנות את כל המשרד, אלא מלמצוא את המקום האחד שבו אתה מאבד הכי הרבה זמן וכסף, ולבנות שם את הדבר הראשון ששווה לבנות.</p>
         </div>
       </details>
 
