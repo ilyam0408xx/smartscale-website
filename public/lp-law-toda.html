@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Conversion guard: this page is a public URL, so a reload, a back-button or a
+     bookmark used to report another conversion for the same lead. The landing page
+     hands over a one-time token; we count the lead only when it matches, and we burn
+     the stored copy immediately so it can never count twice.
+     ⚠️ Requires the conversion tag in GTM to trigger on the custom event
+     "lead_conversion" instead of on a page view of this URL. -->
+<script>(function(){
+  window.dataLayer = window.dataLayer || [];
+  try {
+    var urlToken = new URLSearchParams(location.search).get('c');
+    var stored = sessionStorage.getItem('ss_lead_conv');
+    if (urlToken && stored && urlToken === stored) {
+      sessionStorage.removeItem('ss_lead_conv');
+      window.dataLayer.push({ event: 'lead_conversion' });
+    }
+  } catch (e) { /* private mode: no storage, so no conversion counted */ }
+})();</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

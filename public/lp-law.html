@@ -1593,11 +1593,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     TRACK_KEYS.forEach(function (k) { var v = p.get(k); if (v) out[k] = v; });
     return out;
   }
-  function trackingQuery() {
-    var t = getTracking(), keep = new URLSearchParams();
+  // One-time conversion token. The thank-you page counts a conversion only when the
+  // token in the URL matches the one we just stored, and it burns the stored copy on
+  // use — so a reload or a direct visit to that page reports nothing.
+  function convQuery() {
+    var keep = new URLSearchParams(), t = getTracking();
     Object.keys(t).forEach(function (k) { keep.set(k, t[k]); });
-    var s = keep.toString();
-    return s ? ('?' + s) : '';
+    var token = String(Date.now()) + '-' + Math.random().toString(36).slice(2, 10);
+    try { sessionStorage.setItem('ss_lead_conv', token); } catch (e) { /* private mode */ }
+    keep.set('c', token);
+    return '?' + keep.toString();
   }
 
   form.addEventListener('submit', function (e) {
@@ -1641,7 +1646,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       body: JSON.stringify({
         name: name, phone: phone, email: email,
         consent: true, _gotcha: hp, source: 'lp-law',
-        tracking: getTracking()
+        page: '/lp-law', tracking: getTracking()
       })
     })
       .then(function (r) {
@@ -1650,13 +1655,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
       })
       .then(function (res) {
+        // redirect:false = the honeypot caught this submission. The server answers ok
+        // so a bot learns nothing, but we must NOT continue to the thank-you page:
+        // that page fires the conversion, and nothing was forwarded to Make.
+        if (res.d && res.d.ok && res.d.redirect === false) {
+          msg.classList.add('ok');
+          msg.textContent = 'נשלח! נחזור אליך בהקדם.';
+          btn.textContent = 'נשלח ✓';
+          return;
+        }
         if (res.d && res.d.ok) {
-          // Meta Pixel "Lead" fires on the thank-you page (/lp-law-toda), not here,
-          // to avoid double-counting the conversion.
+          // The conversion tag fires on the thank-you page, not here. It is handed a
+          // one-time token so that a reload, a back-button or a bookmark of that page
+          // cannot report the same lead as another conversion.
           msg.classList.add('ok');
           msg.textContent = 'נשלח! מעביר אותך...';
           btn.textContent = 'נשלח ✓';
-          window.location.href = '/lp-law-toda' + trackingQuery();
+          window.location.href = '/lp-law-toda' + convQuery();
           return;
         }
         if (res.status === 422 && res.d && res.d.userMessage) {
