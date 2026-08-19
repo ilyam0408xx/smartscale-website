@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
       { source: '/lp-law-v2', destination: '/lp-law-v2.html' },
       { source: '/lp-law-toda', destination: '/lp-law-toda.html' },
       { source: '/lp-law-system', destination: '/lp-law-system.html' },
+      // טסט הנישות באאוטבריין, 19.8.2026. דף נחיתה לכל נישה + דף תודה משותף.
+      { source: '/lp-bituach', destination: '/lp-bituach.html' },
+      { source: '/lp-toda', destination: '/lp-toda.html' },
     ]
   },
 }
