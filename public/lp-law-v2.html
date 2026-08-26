@@ -1130,7 +1130,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      וחישוב המיקום ב-JS יישאר טריוויאלי */
   .car-slide {
     flex: 0 0 100%;
-    scroll-snap-align: start; scroll-snap-stop: always;
+    scroll-snap-align: start;
     margin: 0; padding: 0 8px;
     display: flex; flex-direction: column; align-items: center; gap: 14px;
   }
@@ -1307,26 +1307,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     try { var p = JSON.parse(c); return !!(p.marketing || p.statistics); } catch (e) { return false; }
   }
 
-  // ב-RTL הדפדפנים המודרניים מדווחים scrollLeft שלילי, וישנים מדווחים חיובי.
-  // בודקים פעם אחת במקום לנחש.
-  var neg = (function () {
-    var prev = track.style.scrollBehavior;
-    track.style.scrollBehavior = 'auto';
-    var start = track.scrollLeft;
-    track.scrollLeft = -1;
-    var isNeg = track.scrollLeft < 0;
-    track.scrollLeft = start;
-    track.style.scrollBehavior = prev;
-    return isNeg;
-  })();
+  // המיקום נקרא מהגאומטריה ולא מ-scrollLeft. ל-RTL יש שלוש קונבנציות
+  // שונות (0 עד max, 0 עד מינוס max, ו-max עד 0), וקריאה ישירה החזירה אינדקס הפוך.
+  // מרכז האלמנט בפיקסלים פיזיים זהה בכולן.
+  function centreOf(el) { var r = el.getBoundingClientRect(); return r.left + r.width / 2; }
 
-  function step() { return track.clientWidth || 1; }
-  function current() { return Math.max(0, Math.min(slides.length - 1, Math.round(Math.abs(track.scrollLeft) / step()))); }
+  function current() {
+    var mid = centreOf(track), best = 0, bestD = Infinity;
+    for (var i = 0; i < slides.length; i++) {
+      var d = Math.abs(centreOf(slides[i]) - mid);
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    return best;
+  }
 
   function go(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
-    var x = i * step();
-    track.scrollTo({ left: neg ? -x : x, behavior: 'smooth' });
+    // scrollBy יחסי בפיקסלים פיזיים, ולכן עובד זהה בכל הקונבנציות
+    track.scrollBy({ left: centreOf(slides[i]) - centreOf(track), behavior: 'smooth' });
   }
 
   slides.forEach(function (s, i) {
