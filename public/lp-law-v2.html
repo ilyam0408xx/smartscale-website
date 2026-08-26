@@ -1120,7 +1120,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .car-track {
     display: flex; gap: 0;
     overflow-x: auto; overflow-y: hidden;
-    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    /* הסנאפ משרת את ההחלקה באצבע בלבד. המעבר בחצים ובנקודות
+       מונפש ידנית ב-JS, כי scroll-behavior של הדפדפן קצר ובלי האטה */
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; -ms-overflow-style: none;
   }
@@ -1321,10 +1323,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return best;
   }
 
+  // הנפשה ידנית. scrollBy יחסי בפיקסלים פיזיים, ולכן עובד זהה
+  // בשלוש קונבנציות ה-RTL. הסנאפ מכובה במהלך ההנפשה כדי שלא ימשוך באמצע.
+  var anim = 0;
+  // מי שביקש למעט תנועה במערכת ההפעלה מקבל מעבר מיידי במקום החלקה
+  var noMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DUR = noMotion ? 1 : 520;
+
   function go(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
-    // scrollBy יחסי בפיקסלים פיזיים, ולכן עובד זהה בכל הקונבנציות
-    track.scrollBy({ left: centreOf(slides[i]) - centreOf(track), behavior: 'smooth' });
+    var total = centreOf(slides[i]) - centreOf(track);
+    if (Math.abs(total) < 1) return;
+
+    var id = ++anim;
+    var t0 = null, done = 0;
+    track.style.scrollSnapType = 'none';
+
+    function frame(ts) {
+      if (id !== anim) return;                       // לחיצה חדשה דורסת את הקודמת
+      if (t0 === null) t0 = ts;
+      var t = Math.min(1, (ts - t0) / DUR);
+      var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;   // easeInOutCubic
+      var want = total * e;
+      track.scrollBy({ left: want - done, behavior: 'auto' });
+      done = want;
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        track.style.scrollSnapType = 'x mandatory';
+        sync();
+      }
+    }
+    requestAnimationFrame(frame);
   }
 
   slides.forEach(function (s, i) {
