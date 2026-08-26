@@ -242,10 +242,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   section.dark .cta-meta { color: rgba(255,255,255,0.6); }
 
   /* === VIDEO / VSL === */
+  /* "8-12" הוא רצף מספרי בתוך טקסט עברי. bidi מפריד אותו ושבירת שורה חותכת אותו לשניים */
+  .nb { white-space: nowrap; unicode-bidi: isolate; }
+
   .video {
     aspect-ratio: 9 / 16;
     cursor: pointer;
-    max-width: 280px;
+    max-width: 230px;
     margin-inline: auto;
     background: #000;
     background-image:
@@ -961,11 +964,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="eyebrow"><span class="dot"></span>למשרדי עורכי דין</span>
 
     <h1>
-      אתה עדיין משלם 8-12 אלף ש"ח בחודש<br/>
+      אתה עדיין משלם <span class="nb">8-12</span> אלף ש"ח בחודש<br/>
       משכורת <span class="accent">למזכירה</span> שלך?
     </h1>
 
     <div class="video" id="vsl" role="button" tabindex="0" aria-label="הפעל סרטון">
+      <img class="vsl-thumb" src="/images/lp-law/vsl-thumb.jpg" alt="סרטון קצר על תיוק מסמכים במשרד עורכי דין, Smart Scale" />
       <span class="vsl-play" aria-hidden="true"></span>
     </div>
 
@@ -1029,7 +1033,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <p class="lede-lg">משרד נזקי גוף בתל אביב שמקבל כ-300 מסמכים בחודש: תלושי שכר, מסמכים רפואיים, ייפויי כוח. הם נקלטים מווצאפ וממייל, מזוהים, מקבלים שם ונשמרים בתיק הנכון. אף אחד במשרד לא פותח אותם.</p>
 
-    <p class="big-line">בין 40 ל-50 שעות עבודה בחודש ירדו מהלוח זמנים.</p>
+    <p class="big-line">בין <span class="nb">40 ל-50</span> שעות עבודה בחודש ירדו מהלוח זמנים.</p>
 
     <!-- פתוח מ-14.8: הסקרינשוט doc-filed.jpeg של הודעת הווצאפ על מסמך שנקלט ותויק.
          להכניס כמו שהוא, לצלם מחדש בלי המילה "אוטומטית", או לוותר. מחכה להכרעה -->
@@ -1114,31 +1118,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* === קרוסלת עדויות === */
   .carousel { position: relative; }
   .car-track {
-    display: flex; gap: 18px;
+    display: flex; gap: 0;
     overflow-x: auto; overflow-y: hidden;
     scroll-snap-type: x mandatory; scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; -ms-overflow-style: none;
   }
   .car-track::-webkit-scrollbar { display: none; }
-  .car-slide {
-    flex: 0 0 100%; scroll-snap-align: center;
-    margin: 0; display: flex; flex-direction: column; gap: 12px;
-  }
-  @media (min-width: 860px) { .car-slide { flex-basis: calc(50% - 9px); } }
 
-  .testi-media {
-    position: relative; aspect-ratio: 16 / 9;
-    border-radius: 10px; overflow: hidden;
-    background: #000; cursor: pointer;
-    border: 1px solid var(--line);
+  /* שקופית אחת בכל פעם. gap אפס כדי שרוחב השקופית יהיה בדיוק רוחב המסילה,
+     וחישוב המיקום ב-JS יישאר טריוויאלי */
+  .car-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    margin: 0; padding: 0 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
   }
-  .testi-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .testi-media.is-shot { background: #0F1830; cursor: default; }
-  .testi-media.is-shot img { object-fit: contain; padding: 10px; }
+
+  /* גובה קבוע לכל המדיה, כך שהסקשן לא קופץ במעבר בין שקופיות.
+     contain ולא cover: שלוש העדויות אנכיות, אחת אופקית והחמישית צילום מסך רחב.
+     חיתוך היה קוצץ פרצופים */
+  .testi-media {
+    position: relative;
+    width: 100%; max-width: 300px;
+    height: min(58vh, 470px);
+    border-radius: 12px; overflow: hidden;
+    background: #0B1430;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .testi-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .testi-media.is-shot { max-width: 520px; cursor: default; }
+  .testi-media.is-shot img { padding: 14px; }
+
   .testi-media .play-btn {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 72px; height: 50px; border-radius: 14px;
+    width: 68px; height: 48px; border-radius: 13px;
     background: rgba(220, 38, 38, 0.93);
     display: flex; align-items: center; justify-content: center;
     transition: background .15s ease, transform .15s ease;
@@ -1153,36 +1169,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .testi-media:hover .play-btn { background: #dc2626; transform: translate(-50%, -50%) scale(1.06); }
   .testi-media.is-playing img, .testi-media.is-playing .play-btn { display: none; }
 
-  .testi-cap { text-align: center; padding: 0 6px; }
+  .testi-cap { text-align: center; padding: 0 6px; max-width: 420px; }
   .testi-name { font-size: 19px; font-weight: 800; color: var(--ink); line-height: 1.3; }
   .testi-role { font-size: 14px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
 
-  /* החצים יושבים על גוף המדיה, אחד בכל צד.
-     --media-h נקבע ב-JS לחצי מגובה הסרטון, כדי שהחץ ימורכז על הסרטון ולא על השקופית שכוללת כיתוב */
+  /* --media-h ו---media-w נקבעים ב-JS לפי המדיה שמוצגת כרגע, כדי שהחץ ימורכז
+     על גובה הסרטון ויישב בדיוק מחוצה לו ולא בקצה המכל */
   .car-nav {
-    position: absolute; top: var(--media-h, 28%);
+    position: absolute; top: var(--media-h, 235px);
     transform: translateY(-50%); z-index: 4;
-    width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid var(--line); background: rgba(255, 255, 255, 0.94);
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, 0.96);
     color: var(--ink);
     display: inline-flex; align-items: center; justify-content: center;
     cursor: pointer; padding: 0;
     box-shadow: 0 8px 22px -8px rgba(0, 0, 0, 0.35);
-    transition: background .15s ease, color .15s ease, transform .15s ease;
+    transition: background .15s ease, color .15s ease, transform .15s ease, opacity .15s ease;
   }
-  .car-nav[data-dir="prev"] { right: 10px; }
-  .car-nav[data-dir="next"] { left: 10px; }
+  .car-nav[data-dir="prev"] { right: max(2px, calc(50% - var(--media-w, 150px) - 50px)); }
+  .car-nav[data-dir="next"] { left:  max(2px, calc(50% - var(--media-w, 150px) - 50px)); }
   .car-nav:hover { background: #fff; color: var(--accent); transform: translateY(-50%) scale(1.07); }
-  .car-nav:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
-  .car-nav:disabled:hover { background: rgba(255,255,255,0.94); color: var(--ink); transform: translateY(-50%); }
+  .car-nav:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
+  .car-nav:disabled:hover { background: rgba(255,255,255,0.96); color: var(--ink); transform: translateY(-50%); }
   .car-nav svg { width: 18px; height: 18px; }
-  @media (min-width: 860px) {
-    .car-nav[data-dir="prev"] { right: -14px; }
-    .car-nav[data-dir="next"] { left: -14px; }
-  }
+
   .car-dots {
     display: flex; align-items: center; justify-content: center;
-    gap: 8px; margin-top: 22px;
+    gap: 8px; margin-top: 20px;
   }
   .car-dot {
     width: 8px; height: 8px; border-radius: 50%; padding: 0;
@@ -1275,13 +1288,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <script>
-// קרוסלת העדויות. גלילה עם scroll-snap (החלקה טבעית בנייד), חצים ונקודות.
+// קרוסלת העדויות. שקופית אחת בכל פעם, גלילת scroll-snap (החלקה טבעית בנייד).
 // היוטיוב נטען רק בלחיצה, ומכבד את אותו אישור עוגיות כמו הסרטון בהירו.
 (function () {
   var track = document.getElementById('testiTrack');
   var dotsBox = document.getElementById('testiDots');
   if (!track || !dotsBox) return;
+  var carousel = track.parentElement;
   var slides = [].slice.call(track.querySelectorAll('.car-slide'));
+  var navs = [].slice.call(carousel.querySelectorAll('.car-nav'));
   if (!slides.length) return;
 
   function consentRaw() { try { return localStorage.getItem('cookie_consent'); } catch (e) { return null; } }
@@ -1290,6 +1305,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (c === 'accepted') return true;
     if (!c || c === 'declined') return false;
     try { var p = JSON.parse(c); return !!(p.marketing || p.statistics); } catch (e) { return false; }
+  }
+
+  // ב-RTL הדפדפנים המודרניים מדווחים scrollLeft שלילי, וישנים מדווחים חיובי.
+  // בודקים פעם אחת במקום לנחש.
+  var neg = (function () {
+    var prev = track.style.scrollBehavior;
+    track.style.scrollBehavior = 'auto';
+    var start = track.scrollLeft;
+    track.scrollLeft = -1;
+    var isNeg = track.scrollLeft < 0;
+    track.scrollLeft = start;
+    track.style.scrollBehavior = prev;
+    return isNeg;
+  })();
+
+  function step() { return track.clientWidth || 1; }
+  function current() { return Math.max(0, Math.min(slides.length - 1, Math.round(Math.abs(track.scrollLeft) / step()))); }
+
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    var x = i * step();
+    track.scrollTo({ left: neg ? -x : x, behavior: 'smooth' });
   }
 
   slides.forEach(function (s, i) {
@@ -1302,44 +1339,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
   var dots = [].slice.call(dotsBox.children);
 
-  function step() { return slides[0].getBoundingClientRect().width + 18; }
-  // ב-RTL דפדפנים שונים מדווחים scrollLeft שלילי או חיובי. abs מנטרל את ההבדל.
-  function current() { return Math.round(Math.abs(track.scrollLeft) / step()); }
-
-  function go(i) {
-    i = Math.max(0, Math.min(slides.length - 1, i));
-    slides[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }
-
-  var carousel = track.parentElement;
-  var navs = [].slice.call(carousel.querySelectorAll('.car-nav'));
-
-  // ממרכז את החצים על גובה הסרטון עצמו, לא על השקופית שכוללת גם שם ותיאור
-  function fitNav() {
-    var m = track.querySelector('.testi-media');
+  // ממקם את החצים לפי המדיה שמוצגת כרגע. צילום המסך רחב מהסרטונים,
+  // ולכן מדידה של השקופית הראשונה בלבד הייתה מזיזה את החצים לתוך התמונה.
+  function fit(i) {
+    var m = slides[i] && slides[i].querySelector('.testi-media');
     if (!m) return;
-    var h = m.getBoundingClientRect().height;
-    if (h) carousel.style.setProperty('--media-h', (h / 2) + 'px');
+    var r = m.getBoundingClientRect();
+    if (r.height) carousel.style.setProperty('--media-h', (r.height / 2) + 'px');
+    if (r.width) carousel.style.setProperty('--media-w', (r.width / 2) + 'px');
   }
-
-  // abs מנטרל את ההבדל בין דפדפנים שמדווחים scrollLeft שלילי ב-RTL לבין אלה שמדווחים חיובי
-  function atStart() { return Math.abs(track.scrollLeft) <= 2; }
-  function atEnd() { return Math.abs(track.scrollLeft) >= (track.scrollWidth - track.clientWidth) - 2; }
 
   function sync() {
     var c = current();
     dots.forEach(function (d, i) { d.classList.toggle('is-on', i === c); });
     navs.forEach(function (b) {
-      b.disabled = (b.getAttribute('data-dir') === 'next') ? atEnd() : atStart();
+      b.disabled = (b.getAttribute('data-dir') === 'next') ? (c >= slides.length - 1) : (c <= 0);
     });
+    fit(c);
   }
 
   var t;
-  track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(sync, 90); });
-  window.addEventListener('resize', function () { fitNav(); sync(); });
-  window.addEventListener('load', fitNav);
+  track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(sync, 80); });
+  window.addEventListener('resize', sync);
+  window.addEventListener('load', sync);
   [].slice.call(track.querySelectorAll('img')).forEach(function (img) {
-    if (!img.complete) img.addEventListener('load', fitNav);
+    if (!img.complete) img.addEventListener('load', sync);
   });
 
   navs.forEach(function (b) {
@@ -1347,8 +1371,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       go(current() + (b.getAttribute('data-dir') === 'next' ? 1 : -1));
     });
   });
-
-  fitNav();
 
   function play(m) {
     if (m.getAttribute('data-loaded')) return;
