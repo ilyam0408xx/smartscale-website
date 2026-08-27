@@ -35,9 +35,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --highlight: #C9E6F7;
     --success: #1E9B5C;
     --danger: #D63A4F;
-    --cta: #F7991C;
-    --cta-hover: #E07F05;
-    --cta-ink: #1A1203;
+    --cta: #D97706;
+    --cta-hover: #B45309;
+    --cta-ink: #FFFFFF;
     --max: 720px;
     --max-wide: 980px;
     --font: "Assistant", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -194,13 +194,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-weight: 900;
     font-size: 19px;
     letter-spacing: 0.01em;
+    text-shadow: 0 1px 2px rgba(120, 53, 15, 0.45);
     text-decoration: none;
     border: 0;
     cursor: pointer;
     font-family: inherit;
     min-width: 320px;
     position: relative;
-    box-shadow: 0 14px 30px -10px rgba(224, 127, 5, 0.55);
+    box-shadow: 0 14px 30px -10px rgba(146, 64, 14, 0.55);
     animation: ctaPulse 2.6s ease-in-out infinite;
     transition: transform .15s ease, background .15s ease, box-shadow .2s ease;
   }
@@ -216,19 +217,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .cta:hover {
     background: var(--cta-hover);
     transform: translateY(-2px);
-    box-shadow: 0 22px 40px -10px rgba(224, 127, 5, 0.65);
+    box-shadow: 0 22px 40px -10px rgba(146, 64, 14, 0.65);
     animation: none;
   }
   .cta:hover::after { transform: translateX(-4px); }
   @keyframes ctaPulse {
-    0%, 100% { box-shadow: 0 14px 30px -10px rgba(224, 127, 5, 0.55), 0 0 0 0 rgba(247, 153, 28, 0.40); }
-    50%      { box-shadow: 0 14px 30px -10px rgba(224, 127, 5, 0.55), 0 0 0 10px rgba(247, 153, 28, 0); }
+    0%, 100% { box-shadow: 0 14px 30px -10px rgba(146, 64, 14, 0.55), 0 0 0 0 rgba(217, 119, 6, 0.45); }
+    50%      { box-shadow: 0 14px 30px -10px rgba(146, 64, 14, 0.55), 0 0 0 10px rgba(217, 119, 6, 0); }
   }
   @media (prefers-reduced-motion: reduce) {
     .cta { animation: none; }
   }
   section.dark .cta {
-    box-shadow: 0 16px 34px -8px rgba(224, 127, 5, 0.6);
+    box-shadow: 0 16px 34px -8px rgba(146, 64, 14, 0.6);
   }
   .cta-row {
     display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -832,7 +833,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .center-list { font-size: 17px; }
     .form-card { padding: 26px 22px; }
     .form-card .row2 { grid-template-columns: 1fr; }
-    .cta { width: 100%; min-width: 0; padding: 18px 22px; font-size: 16px; }
+    /* 19px && 900 = "טקסט גדול" לפי WCAG, ולכן סף הניגודיות הוא 3:1 ולא 4.5:1.
+       ב-16px הכיתוב הלבן לא היה עומד בסף על הכתום הזה */
+    .cta { width: 100%; min-width: 0; padding: 18px 22px; font-size: 19px; }
     .about-portrait { width: 132px; height: 132px; }
     details.faq summary { font-size: 16px; padding: 18px 20px; }
     details.faq .answer { padding: 0 20px 20px; }
@@ -911,9 +914,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-inline: 0;
     max-width: none;
   }
-  /* כותרות ומשפטי מפתח נשארים ממורכזים */
+  /* כותרות ומשפטי מפתח נשארים ממורכזים.
+     text-align-last חובה: שורות המפתח הן p, ולכן הן יורשות
+     text-align-last: right מהכלל של הפסקאות. בלי זה השורה
+     האחרונה נצמדת לימין בעוד הראשונה ממורכזת */
   .justified > h1, .justified > h2, .justified > h3, .justified > h4,
-  .justified > .big-line, .justified > .mega-line { text-align: center; }
+  .justified > .big-line, .justified > .mega-line {
+    text-align: center;
+    text-align-last: center;
+  }
 
   /* אלמנטים שאינם טקסט חייבים מירכוז אמיתי ולא text-align.
      בבלוק מיושר אין את .centered של הדף המקורי, ולכן הם נצמדו לימין. */
@@ -992,7 +1001,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <p class="lede-lg">פתיחה של קבצים, קריאה, שינוי שמות ותיוק הם לא עבודה שצריך בן אדם בשבילה. זה, ועוד עשרות פעולות שאתה לא צריך שמזכירה תעשה אותן כשיש לך מערכות שפועלות לבד.</p>
 
-    <p class="big-line">אף אחת מהן לא מרגישה כמו הוצאה.<br/>ביחד <span class="mark">הן משכורת</span></p>
+    <p class="big-line">המחשב עושה את זה <span class="mark">בחינם</span>.<br/>אתה משלם על זה משכורת.</p>
 
     <div class="cta-row">
       <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
@@ -1066,11 +1075,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="lede-lg">מערכת <strong>שמתייקת</strong> מסמכים לא יכולה לטעות בתיק. זה לא המקום להתנסות עם מישהו שעושה את זה בפעם הראשונה.</p>
 
     <p class="big-line">העיקרון שלי אחד: או שזה מחזיר לך כסף, או שלא בונים את זה.</p>
-
-    <div class="cta-row">
-      <a class="cta" href="#contact">השאירו פרטים ונדבר</a>
-      <span class="cta-meta">שיחה ראשונה ללא עלות</span>
-    </div>
   </div>
 </section>
 
