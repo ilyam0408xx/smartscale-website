@@ -296,6 +296,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .video:hover .vsl-play { background: #dc2626; transform: translate(-50%, -50%) scale(1.06); }
   .video.is-playing .vsl-thumb, .video.is-playing .vsl-play { display: none; }
+  /* נגן מובנה של הדפדפן (קובץ mp4 באתר) מתחת לתמונת הפתיחה. עולה מעליה ברגע שהניגון מתחיל */
+  .video .vsl-thumb { z-index: 2; }
+  .video .vsl-play { z-index: 3; }
+  .video .vsl-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; background: #000; display: block; z-index: 1;
+  }
+  .video.is-playing .vsl-video { z-index: 2; }
+  .video.is-playing { cursor: default; }
+  /* ספינר: פידבק מיידי מרגע הלחיצה ועד שהפריים הראשון מתנגן, וגם בזמן באפרינג */
+  .video .vsl-spinner {
+    position: absolute; top: 50%; left: 50%; z-index: 4; display: none;
+    width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.28); border-top-color: #fff;
+    animation: vsl-spin .8s linear infinite; pointer-events: none;
+  }
+  @keyframes vsl-spin { to { transform: rotate(360deg); } }
+  .video.is-loading .vsl-spinner { display: block; }
+  .video.is-loading .vsl-play { display: none; }
+  /* מגן שקוף מעל אזור התמונה (לא מעל פס הפקדים בתחתית). בולע לחיצות ב-4 השניות
+     הראשונות של הניגון, ואחר כך לחיצה עוצרת/ממשיכה עם כפתור פליי גלוי במצב עצור */
+  .video .vsl-shield { position: absolute; left: 0; right: 0; top: 0; bottom: 64px; z-index: 3; background: transparent; cursor: pointer; }
+  .video.is-paused .vsl-play { display: flex; z-index: 4; }
   .video .tag {
     position: absolute; bottom: 18px; left: 18px;
     font-size: 11px; letter-spacing: 0.2em;
@@ -932,8 +955,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="wrap-wide" style="padding:0; width:100%; margin-top: 8px;">
       <div class="video" id="vsl" role="button" tabindex="0" aria-label="הפעל סרטון">
+        <video class="vsl-video" preload="metadata" playsinline webkit-playsinline poster="/images/lp-law/vsl-thumb.jpg" src="/images/lp-law/vsl-law.mp4"></video>
         <img class="vsl-thumb" src="/images/lp-law/vsl-thumb.jpg" alt="סרטון: מערכות אוטומציה ו-AI למשרדי עורכי דין — Smart Scale" />
         <span class="vsl-play" aria-hidden="true"></span>
+        <span class="vsl-spinner" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -1702,12 +1727,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-// VSL video — shows a custom thumbnail. The video plays WITH sound when the
-// visitor accepts cookies, or when they click the thumbnail (both are user
-// gestures, which browsers require before allowing audio playback).
+// ה-VSL מתנגן מקובץ באתר (public/images/lp-law/) בנגן המובנה של הדפדפן, לא מ-iframe של יוטיוב.
+// video.play() נקרא בתוך מחוות המשתמש עצמה (לחיצה, מקלדת או אישור עוגיות), ולכן סאונד מותר
+// בכל דפדפן כולל iOS. יש פידבק מיידי (ספינר), ואחרי שהניגון התחיל הקופסה מפסיקה להאזין
+// ללחיצות, כדי שלחיצה חוזרת לא תעצור את הסרטון (זה מה שקרה עם היוטיוב: כל לחיצה נוספת
+// נחתה בתוך הנגן ועשתה pause). יוטיוב נשאר רק כגיבוי אם הקובץ המקומי לא מתנגן.
 (function () {
   var VSL_ID = '02x3nH66wKA';
   var box = document.getElementById('vsl');
+  var video = box && box.querySelector('.vsl-video');
+  var started = false;
+  var fellBack = false;
 
   function consentRaw() { try { return localStorage.getItem('cookie_consent'); } catch (e) { return null; } }
   function marketingOK() {
@@ -1716,29 +1746,94 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (!c || c === 'declined') return false;
     try { var p = JSON.parse(c); return !!(p.marketing || p.statistics); } catch (e) { return false; }
   }
-
-  function loadVSL(withSound) {
-    if (!box || box.getAttribute('data-loaded')) return;
-    box.setAttribute('data-loaded', '1');
-    var host = marketingOK() ? 'www.youtube.com' : 'www.youtube-nocookie.com';
-    var params = 'rel=0&playsinline=1&modestbranding=1&autoplay=1&mute=' + (withSound ? '0' : '1');
-    var ifr = document.createElement('iframe');
-    ifr.src = 'https://' + host + '/embed/' + VSL_ID + '?' + params;
-    ifr.title = 'VSL — Smart Scale';
-    ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-    ifr.setAttribute('allowfullscreen', '');
-    ifr.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3;opacity:0;transition:opacity .4s ease;';
-    // Keep the thumbnail as the poster until the player loads, then fade it in.
-    ifr.addEventListener('load', function () { ifr.style.opacity = '1'; box.classList.add('is-playing'); });
-    box.appendChild(ifr);
+  // אירועים ל-GTM במקום ספירת הצפיות של יוטיוב: vsl_play, vsl_progress (25/50/75/100)
+  function track(name, extra) {
+    try {
+      window.dataLayer = window.dataLayer || [];
+      var d = { event: name, vsl_id: VSL_ID };
+      for (var k in extra) d[k] = extra[k];
+      window.dataLayer.push(d);
+    } catch (e) {}
   }
 
-  if (box) {
-    // Click the thumbnail → play WITH sound (user gesture present).
-    box.addEventListener('click', function () { loadVSL(true); });
-    box.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadVSL(true); }
+  // גיבוי: iframe של יוטיוב כמו בקוד הקודם. רץ רק אם הקובץ המקומי נכשל.
+  function fallbackToYouTube() {
+    if (!box || fellBack) return;
+    fellBack = true;
+    box.classList.remove('is-loading');
+    if (video) { try { video.pause(); } catch (e) {} video.style.display = 'none'; }
+    var host = marketingOK() ? 'www.youtube.com' : 'www.youtube-nocookie.com';
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://' + host + '/embed/' + VSL_ID + '?rel=0&playsinline=1&modestbranding=1&autoplay=1';
+    ifr.title = 'VSL - Smart Scale';
+    ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    ifr.setAttribute('allowfullscreen', '');
+    ifr.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;';
+    box.appendChild(ifr);
+    box.classList.add('is-playing');
+    track('vsl_fallback_youtube');
+  }
+
+  function onClick() { startVSL(); }
+  function onKey(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startVSL(); } }
+
+  function startVSL() {
+    if (!box || started) return;
+    started = true;
+    if (!video || video.error || !video.canPlayType || !video.canPlayType('video/mp4')) { fallbackToYouTube(); return; }
+    box.classList.add('is-loading');
+    video.muted = false;
+    video.volume = 1;
+    var p = null;
+    try { p = video.play(); } catch (e) { p = null; }
+    if (p && typeof p.then === 'function') {
+      p.catch(function (err) {
+        // NotAllowedError: הדפדפן לא זיהה מחוות משתמש. לא אמור לקרות (הקריאה תמיד יוצאת
+        // מאירוע משתמש), ואם קרה, הקופסה חוזרת להאזין ללחיצה הבאה במקום להיתקע.
+        if (err && err.name === 'NotAllowedError') { started = false; box.classList.remove('is-loading'); return; }
+        fallbackToYouTube();
+      });
+    }
+  }
+
+  if (box && video) {
+    var marks = { 25: false, 50: false, 75: false, 100: false };
+    var graceUntil = 0;
+    video.addEventListener('playing', function () {
+      box.classList.remove('is-loading');
+      box.classList.remove('is-paused');
+      if (box.classList.contains('is-playing')) return;
+      box.classList.add('is-playing');
+      // מכאן הקופסה עצמה לא מאזינה. מעל הווידאו יושב מגן שבולע לחיצות ב-4 השניות
+      // הראשונות (לחיצות חוזרות של מי שעוד לא קלט שהסרטון התחיל), ואחריהן לחיצה
+      // עוצרת או ממשיכה. פס הפקדים המובנה בתחתית נשאר חשוף לגלילה, ווליום ומסך מלא.
+      box.removeEventListener('click', onClick);
+      box.removeEventListener('keydown', onKey);
+      box.removeAttribute('role'); box.removeAttribute('tabindex'); box.removeAttribute('aria-label');
+      video.controls = true;
+      graceUntil = Date.now() + 4000;
+      var shield = document.createElement('div');
+      shield.className = 'vsl-shield';
+      shield.addEventListener('click', function () {
+        if (Date.now() < graceUntil) return;
+        if (video.paused) { try { var p = video.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+        else video.pause();
+      });
+      box.appendChild(shield);
+      track('vsl_play');
     });
+    video.addEventListener('waiting', function () { if (started && !fellBack && !video.paused) box.classList.add('is-loading'); });
+    video.addEventListener('pause', function () { box.classList.remove('is-loading'); if (box.classList.contains('is-playing')) box.classList.add('is-paused'); });
+    video.addEventListener('play', function () { box.classList.remove('is-paused'); });
+    video.addEventListener('timeupdate', function () {
+      if (!video.duration) return;
+      var pct = video.currentTime / video.duration * 100;
+      for (var m in marks) if (!marks[m] && pct >= +m) { marks[m] = true; track('vsl_progress', { vsl_percent: +m }); }
+    });
+    video.addEventListener('ended', function () { if (!marks[100]) { marks[100] = true; track('vsl_progress', { vsl_percent: 100 }); } });
+    video.addEventListener('error', function () { if (started) fallbackToYouTube(); });
+    box.addEventListener('click', onClick);
+    box.addEventListener('keydown', onKey);
   }
 
   var banner = document.getElementById('cookieBanner');
@@ -1749,7 +1844,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (acc) acc.addEventListener('click', function () {
       try { localStorage.setItem('cookie_consent', 'accepted'); } catch (e) {}
       banner.setAttribute('hidden', '');
-      loadVSL(true); // accepting cookies plays the video automatically (with sound)
+      startVSL(); // אישור העוגיות הוא מחוות משתמש, ולכן הסרטון מתחיל עם סאונד
     });
     if (dec) dec.addEventListener('click', function () {
       try { localStorage.setItem('cookie_consent', 'declined'); } catch (e) {}
