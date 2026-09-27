@@ -134,10 +134,10 @@ export default function CRMPage() {
         <section className="case-study">
           <div className="container">
             <span className="case-study-eyebrow mono">דוגמה אמיתית</span>
-            <h2 className="case-study-title">אריק — 24 תהליכים אוטומטיים, עסק שעובד לבד</h2>
+            <h2 className="case-study-title">אריק: יותר מ-30 אוטומציות, עסק שעובד לבד</h2>
             <p className="case-study-body">
               אריק ניהל עסק עם תורים דרך WhatsApp וגיליון. לידים נשכחו, פולואפים לא קרו.
-              אחרי שבניתי לו מערכת — 24 תהליכים רצים לבד. מהרגע שנכנס ליד חדש ועד פולואפ אחרי טיפול,
+              אחרי שבניתי לו מערכת, יותר מ-30 אוטומציות רצות לבד. מהרגע שנכנס ליד חדש ועד פולואפ אחרי טיפול,
               הכל קורה אוטומטי. הוא חוסך 3 שעות ביום ומנהל פי 2 יותר לקוחות.
             </p>
           </div>

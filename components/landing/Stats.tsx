@@ -2,7 +2,7 @@ import Counter from './Counter'
 
 const ITEMS = [
   { num: 7, suffix: '+', label: 'שנות ניסיון', sub: 'בבנייה לעסקים' },
-  { num: 24, suffix: '', label: 'תהליכים אוטומטיים', sub: 'ללקוח אחד' },
+  { num: 30, suffix: '+', label: 'אוטומציות', sub: 'ללקוח אחד' },
   { num: 100, suffix: '+', label: 'לידים מאומתים באמצעות מערכת מציאת לידים', sub: 'תוך 6 דקות' },
   { num: 14, suffix: '', label: 'הגיל בו התחלתי', sub: 'לעבוד עם עסקים' },
 ]

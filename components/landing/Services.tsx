@@ -5,7 +5,7 @@ const SERVICES: { tag: string; title: string; body: string; proof: string; icon:
     tag: 'CRM',
     title: 'מערכת ניהול לקוחות',
     body: 'כל הלקוחות במקום אחד. היסטוריה מלאה, תזכורות אוטומטיות, מעקב אחרי כל שלב.',
-    proof: 'אריק: 24 תהליכים אוטומטיים שרצים לבד.',
+    proof: 'אריק: יותר מ-30 אוטומציות שרצות לבד.',
     icon: 'crm',
   },
   {

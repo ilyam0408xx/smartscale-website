@@ -9,14 +9,14 @@ import { personSchema, breadcrumbSchema, WA_LINK } from '@/lib/schema'
 export const metadata: Metadata = {
   title: 'איליה מלצב — בונה מערכות לעסקים ישראליים | Smart Scale',
   description:
-    'איליה מלצב, מייסד Smart Scale. 7+ שנות ניסיון בבניית מערכות אוטומציה לעסקים ישראליים. בנה את Reacherful, הקים 24 תהליכים אוטומטיים ללקוח אחד, מגיל 14 בונה מערכות.',
+    'איליה מלצב, מייסד Smart Scale. 7+ שנות ניסיון בבניית מערכות אוטומציה לעסקים ישראליים. בנה את Reacherful, הקים יותר מ-30 אוטומציות ללקוח אחד, מגיל 14 בונה מערכות.',
   alternates: {
     canonical: 'https://ilyamaltsev.com/about',
     languages: { he: 'https://ilyamaltsev.com/about' },
   },
   openGraph: {
     title: 'איליה מלצב — בונה מערכות לעסקים ישראליים',
-    description: 'מייסד Smart Scale. 7+ שנות ניסיון. 24 תהליכים אוטומטיים ללקוח אחד.',
+    description: 'מייסד Smart Scale. 7+ שנות ניסיון. 30+ אוטומציות ללקוח אחד.',
     url: 'https://ilyamaltsev.com/about',
     locale: 'he_IL',
     type: 'profile',
@@ -33,14 +33,14 @@ export const metadata: Metadata = {
 
 const milestones = [
   { year: 'גיל 14', title: 'הכל התחיל מסקרנות', desc: 'התחיל לבנות מערכות ולאוטמט תהליכים — לא כי מישהו ביקש, אלא כי ראה שאפשר לעשות דברים יותר חכם.' },
-  { year: '7+ שנים', title: 'ניסיון עם עסקים ישראליים', desc: 'בנה מערכות לסוכנויות שיווק, קליניקות, נדל"ן, e-commerce וחברות שירות. כל מערכת — בעיה אמיתית שנפתרה.' },
+  { year: '10 שנים', title: 'ניסיון עם עסקים ישראליים', desc: 'בנה מערכות לסוכנויות שיווק, קליניקות, נדל"ן, e-commerce וחברות שירות. כל מערכת — בעיה אמיתית שנפתרה.' },
   { year: 'Reacherful', title: 'פלטפורמת לידים SaaS מאפס', desc: 'בנה פלטפורמת SaaS שמייצרת 100+ לידים מאומתים ב-6 דקות — ארכיטקטורה, קוד, ממשק, הכל.' },
   { year: 'Smart Scale', title: 'בניית מערכות לעסקים ישראליים', desc: 'הקים את Smart Scale כדי לתת לבעלי עסקים גישה למערכות שרק חברות גדולות יכלו להרשות לעצמן.' },
 ]
 
 const stats = [
   { num: '7+', label: 'שנות ניסיון' },
-  { num: '24', label: 'תהליכים אוטומטיים ללקוח אחד' },
+  { num: '30+', label: 'אוטומציות ללקוח אחד' },
   { num: '100+', label: 'לידים מאומתים ב-6 דקות' },
   { num: '14', label: 'גיל שבו התחלתי' },
 ]
