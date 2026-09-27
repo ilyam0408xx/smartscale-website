@@ -359,5 +359,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }, 15000);
 </script>
 
+<script>
+  // פרמטרי הקמפיין (utm וכו') ממשיכים גם לקביעת השיחה ביומן, כדי שכל הפאנל יישא אותם.
+  (function () {
+    var keys = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
+    var p = new URLSearchParams(location.search);
+    document.querySelectorAll('a[href^="https://book.ilyamaltsev.com"]').forEach(function (a) {
+      var u = new URL(a.href);
+      keys.forEach(function (k) { var v = p.get(k); if (v && !u.searchParams.has(k)) u.searchParams.set(k, v); });
+      a.href = u.toString();
+    });
+  })();
+</script>
 </body>
 </html>

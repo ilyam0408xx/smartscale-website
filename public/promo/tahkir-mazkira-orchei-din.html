@@ -495,7 +495,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <p>הם לא למדו תוכנה חדשה. זה יושב מעל הוואטסאפ והמייל שכבר יש להם. כל בוקר הם מקבלים רשימה אחת מסודרת: מה נקלט, מה עוד חסר בכל תיק, ואיזה לקוח צריך תזכורת.</p>
 
       <p>התוצאה שהם מדווחים: "<span class="nw">40-50</span> שעות בחודש שירדו מהלוח". לא כי הם עובדים יותר מהר אלא כי הם הפסיקו לעשות ידנית את מה שמחשב עושה.</p>
-      <p><a class="inlink" href="#LANDING">&gt;&gt; ריכזנו הדגמה של 2 דקות על תיק אמיתי &lt;&lt;</a></p>
+      <p><a class="inlink" href="https://www.ilyamaltsev.com/lp-law-v2" data-landing>&gt;&gt; ריכזנו הדגמה של 2 דקות על תיק אמיתי &lt;&lt;</a></p>
 
       <h2>חיסיון משפטי מול עבודת AI - מה שלא מדברים עליו</h2>
       <p>בשנה האחרונה כמעט כל משרד ניסה את זה: להעלות 81 עמודים של מסמכים רפואיים <span class="nw">ל-ChatGPT</span> <span class="nw">ול-Gemini</span> כדי שיסכם.</p>
@@ -530,7 +530,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <h2>בדוק את המשרד שלך</h2>
         <p><span class="nw">ב-3</span> המשרדים שבדקנו זה היה <span class="nw">33-50</span> שעות בחודש רק על הורדה ותיוק ידני מוואטסאפ.</p>
         <p>ריכזנו הדגמה של 2 דקות על תיק אמיתי - איך מסמך נכנס, מתויק לבד לשם הנכון, וכל בוקר אתה מקבל רשימה מסודרת של מה חסר בכל תיק.</p>
-        <a class="cta" href="#LANDING">לחץ כאן לבדיקה - כמה שעות המשרד שלך מבזבז</a>
+        <a class="cta" href="https://www.ilyamaltsev.com/lp-law-v2" data-landing>לחץ כאן לבדיקה - כמה שעות המשרד שלך מבזבז?</a>
         <p class="cta__note">בלי להחליף מערכת ובלי להעלות <span class="nw">ל-ChatGPT</span> פתוח</p>
       </section>
 
@@ -561,11 +561,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script>
-  // לינק לדף הנחיתה: איליה ימסור. כל קישור עם href="#LANDING" יקבל אותו,
+  // לינק לדף הנחיתה (כל קישור עם data-landing),
   // יחד עם פרמטרי הקליק מטאבולה (tblci, utm) כדי שההמרה תיוחס לקמפיין.
-  var LANDING_URL = '#LANDING';
-  document.querySelectorAll('a[href="#LANDING"]').forEach(function (a) {
-    a.href = LANDING_URL + (LANDING_URL.charAt(0) === '#' ? '' : location.search);
+  var LANDING_URL = 'https://www.ilyamaltsev.com/lp-law-v2';
+  // הכתובת כבר כתובה ב-href (עובד גם בלי JavaScript); כאן רק מצרפים את פרמטרי הקמפיין.
+  document.querySelectorAll('a[data-landing]').forEach(function (a) {
+    if (LANDING_URL.charAt(0) === '#') return;
+    var u = new URL(LANDING_URL), q = new URLSearchParams(location.search);
+    q.forEach(function (v, k) { if (!u.searchParams.has(k)) u.searchParams.set(k, v); });
+    a.href = u.toString();
   });
 
   // כפתורי שיתוף: כתובת נקייה, בלי פרמטרי מעקב
