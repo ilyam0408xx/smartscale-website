@@ -65,7 +65,7 @@ export default function PortfolioPage() {
             <span className="section-eyebrow">{caseStudy.eyebrow}</span>
             <h2 className="section-title">{caseStudy.title}</h2>
             <p className="section-lead">
-              מערכת חיה שמנהלת קליניקה מקצה לקצה: CRM, יומן, תזכורות, ו-35
+              מערכת חיה שמנהלת קליניקה מקצה לקצה: CRM, יומן, תזכורות, ויותר מ-30
               אוטומציות שרצות לבד. <strong>בלב המערכת סוכן AI</strong> שמתזמר את כל
               הזרימה.
             </p>
