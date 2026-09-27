@@ -33,6 +33,9 @@ const nextConfig: NextConfig = {
       // טסט הנישות באאוטבריין, 19.8.2026. דף נחיתה לכל נישה + דף תודה משותף.
       { source: '/lp-bituach', destination: '/lp-bituach.html' },
       { source: '/lp-toda', destination: '/lp-toda.html' },
+      // כתבות ממומנות לטאבולה, 27.9.2026: HTML סטטי לפי הטמפלייט הנעול
+      // (יוצר-כתבות/_outbrain/_טמפלייט-עיצוב/). נבדק לפני הנתיב הדינמי /promo/[slug].
+      { source: '/promo/tahkir-mazkira-orchei-din', destination: '/promo/tahkir-mazkira-orchei-din.html' },
     ]
   },
 }
