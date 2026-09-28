@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <main className="legal-page">
         <div className="container">
           <h1>מדיניות פרטיות</h1>
-          <p className="legal-updated mono">עודכן לאחרונה: מאי 2026</p>
+          <p className="legal-updated mono">עודכן לאחרונה: ספטמבר 2026</p>
 
           <div className="prose">
             <h2>1. מי אנחנו</h2>
@@ -37,6 +37,7 @@ export default function PrivacyPage() {
                   <li><strong>Outbrain Amplify Pixel:</strong> עמודים שנצפו וקליקים על כפתורי המרה (כגון WhatsApp) — לטובת מדידת קמפיינים ממומנים, רטרגטינג ויצירת קהלים דומים.</li>
                 </ul>
               </li>
+              <li><strong>Taboola (Realize Pixel):</strong> בדפי הנחיתה ובכתבות הממומנות שלנו פועל הפיקסל של טאבולה. הוא אוסף עמודים שנצפו, פעולות שבוצעו (כגון השארת פרטים או קביעת שיחה), כתובת IP ומזהה דפדפן, לטובת מדידת קמפיינים ממומנים בטאבולה ויצירת קהלים לפרסום. טאבולה מעבדת את המידע לפי <a href="https://policies.taboola.com/privacy-policy/" target="_blank" rel="noopener">מדיניות הפרטיות שלה</a>, ושם אפשר גם לבטל פרסום מותאם אישית של טאבולה.</li>
               <li><strong>קוקיז:</strong> אנחנו משתמשים בקוקיז לצרכי ניתוח תנועה ושיפור חוויית השימוש, מחולקות לארבע קטגוריות:
                 <ul>
                   <li><strong>Functional</strong> — תמיד פעילות, נדרשות לתפעול בסיסי של האתר.</li>
@@ -62,6 +63,7 @@ export default function PrivacyPage() {
             <ul>
               <li><strong>Meta (Facebook):</strong> נתוני Pixel לצרכי פרסום — בהסכמה בלבד.</li>
               <li><strong>Outbrain (Amplify):</strong> נתוני פיקסל הכוללים צפיות בעמודים וקליקים על כפתורי המרה — בהסכמה בלבד, לטובת מדידה ורטרגטינג של קמפיינים ממומנים.</li>
+              <li><strong>Taboola:</strong> נתוני פיקסל (צפיות בעמודים ופעולות בדפי הנחיתה ובכתבות הממומנות), לטובת מדידה ופרסום של קמפיינים ממומנים. <a href="https://policies.taboola.com/privacy-policy/" target="_blank" rel="noopener">מדיניות הפרטיות של טאבולה</a>.</li>
               <li><strong>Vercel:</strong> שירות אחסון האתר — נתוני log בסיסיים.</li>
               <li><strong>Google Analytics:</strong> ניתוח תנועה — בהסכמה בלבד.</li>
             </ul>
