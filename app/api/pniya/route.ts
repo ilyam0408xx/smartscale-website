@@ -97,7 +97,7 @@ export async function POST(req: Request) {
 
   if (telegram !== 'sent') {
     return Response.json(
-      { ok: false, telegram, userMessage: 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו ל-im@ilyamaltsev.com' },
+      { ok: false, telegram, userMessage: 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו במייל ilya@smartscale.biz' },
       { status: 502 },
     )
   }

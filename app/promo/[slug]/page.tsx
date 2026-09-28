@@ -106,7 +106,7 @@ export default async function PromoPage({ params }: Props) {
             <span className="promo-footer__sep">·</span>
             <a href="/terms" target="_blank" rel="noopener">תנאי שימוש</a>
             <span className="promo-footer__sep">·</span>
-            <a href="mailto:im@ilyamaltsev.com">im@ilyamaltsev.com</a>
+            <a href="mailto:ilya@smartscale.biz">ilya@smartscale.biz</a>
           </div>
           <div className="promo-disclosure">
             {meta.sponsoredLabel}

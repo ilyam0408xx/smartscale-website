@@ -62,7 +62,7 @@ export default function TermsPage() {
 
             <h2>6. יצירת קשר</h2>
             <p>
-              לשאלות בנוגע לתנאים אלה: <a href="mailto:ilya@ilyamaltsev.com">ilya@ilyamaltsev.com</a>
+              לשאלות בנוגע לתנאים אלה: <a href="mailto:ilya@smartscale.biz">ilya@smartscale.biz</a>
               {' '}| טלפון: <span dir="ltr">050-261-1165</span>
             </p>
           </div>

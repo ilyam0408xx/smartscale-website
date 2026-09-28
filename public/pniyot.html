@@ -122,7 +122,7 @@
 
 <footer class="site-footer">
   <div>האתר מופעל על ידי <strong>Smart Scale</strong></div>
-  <div>טלפון <span class="nw">050-261-1165</span> · <a href="mailto:im@ilyamaltsev.com">im@ilyamaltsev.com</a></div>
+  <div>טלפון <span class="nw">050-261-1165</span> · <a href="mailto:ilya@smartscale.biz">ilya@smartscale.biz</a></div>
   <div><a href="/privacy" target="_blank" rel="noopener">מדיניות פרטיות</a> · <a href="/terms" target="_blank" rel="noopener">תנאי שימוש</a></div>
 </footer>
 
@@ -135,6 +135,10 @@
 
     var f = document.getElementById('f'), btn = document.getElementById('btn'), msg = document.getElementById('msg');
     function v(id) { return (document.getElementById(id).value || '').trim(); }
+    // המייל בתוך bdi, אחרת ב-RTL הוא מתהפך ("...com-ל")
+    function sendFail() {
+      msg.innerHTML = 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו במייל <a href="mailto:ilya@smartscale.biz"><bdi>ilya@smartscale.biz</bdi></a>';
+    }
 
     f.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -153,12 +157,11 @@
         .then(function (d) {
           if (d && d.ok) { f.style.display = 'none'; document.getElementById('done').style.display = 'block'; return; }
           msg.classList.add('err');
-          msg.textContent = (d && d.userMessage) || 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו ל-im@ilyamaltsev.com';
+          if (d && d.userMessage && !d.telegram) msg.textContent = d.userMessage; else sendFail();
           btn.disabled = false; btn.textContent = orig;
         })
         .catch(function () {
-          msg.classList.add('err');
-          msg.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו ל-im@ilyamaltsev.com';
+          msg.classList.add('err'); sendFail();
           btn.disabled = false; btn.textContent = orig;
         });
     });

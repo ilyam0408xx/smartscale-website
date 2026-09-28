@@ -24,7 +24,7 @@ export default function PrivacyPage() {
             <p>
               Smart Scale (להלן: "החברה") היא עסק המספק שירותי בניית מערכות אוטומציה לעסקים.
               המייסד ובעל העסק: איליה מלצב. כתובת: ישראל.
-              ליצירת קשר בנושא פרטיות: <a href="mailto:ilya@ilyamaltsev.com">ilya@ilyamaltsev.com</a>
+              ליצירת קשר בנושא פרטיות: <a href="mailto:ilya@smartscale.biz">ilya@smartscale.biz</a>
             </p>
 
             <h2>2. מה אנחנו אוספים</h2>
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
               <li>לבקש מחיקת המידע שלך</li>
               <li>לבטל הסכמה לשימוש בקוקיז בכל עת (על ידי מחיקת ה-localStorage של האתר)</li>
             </ul>
-            <p>לכל בקשה: <a href="mailto:ilya@ilyamaltsev.com">ilya@ilyamaltsev.com</a></p>
+            <p>לכל בקשה: <a href="mailto:ilya@smartscale.biz">ilya@smartscale.biz</a></p>
 
             <h2>6. אבטחת מידע</h2>
             <p>
