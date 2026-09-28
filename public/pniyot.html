@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, follow">
+<title>פנייה למערכת | Smart Scale</title>
+<meta name="description" content="מצאתם טעות, מידע לא מדויק או תוכן שצריך תיקון? כתבו לנו. כל פנייה נבדקת.">
+<link rel="canonical" href="https://www.ilyamaltsev.com/pniyot">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* דף פנייה למערכת: גנרי לכל הכתבות והדפים (נוהל: יוצר-כתבות/_outbrain/CLAUDE.md) */
+  :root { --ink:#1a1a1a; --meta:#666; --line:#e5e5e5; --red:#c00; --box:#f6f6f4; --col:640px; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fff; color:var(--ink); font-family:"Open Sans","Arial Hebrew",Arial,sans-serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color: inherit; }
+  .wrap { max-width: var(--col); margin: 0 auto; padding: 0 18px; }
+  h1 { font-size: 28px; line-height: 1.25; font-weight: 800; margin: 34px 0 10px; color:#111; }
+  .lead { font-size: 18px; color:#333; margin: 0 0 22px; }
+  .notes { background: var(--box); border-top: 3px solid var(--ink); padding: 14px 18px 4px; margin: 0 0 26px; }
+  .notes ul { margin: 0; padding: 0 20px 0 0; }
+  .notes li { font-size: 15px; line-height: 1.55; margin-bottom: 8px; }
+  form { margin: 0 0 30px; }
+  .field { margin-bottom: 18px; }
+  label { display:block; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  label .opt { font-weight: 400; color: var(--meta); }
+  input[type=text], input[type=email], input[type=url], select, textarea {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    border: 1px solid #ccc; border-radius: 3px; padding: 11px 12px; background: #fff;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+  textarea { min-height: 150px; resize: vertical; }
+  select { appearance: auto; }
+  .hint { font-size: 13px; color: var(--meta); margin-top: 5px; }
+  /* מלכודת בוטים. לא מזיזים הצידה: ב-RTL הזזה שמאלה יוצרת גלילה אופקית */
+  .hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
+  .privacy { font-size: 13.5px; color: var(--meta); margin: 4px 0 16px; }
+  button {
+    font: inherit; font-size: 16.5px; font-weight: 700; color: #fff; background: var(--red);
+    border: 0; border-radius: 3px; padding: 13px 34px; cursor: pointer;
+  }
+  button:hover { background: #a00; }
+  button:disabled { opacity: .6; cursor: default; }
+  .msg { margin-top: 14px; font-size: 15.5px; }
+  .msg.err { color: var(--red); }
+  .msg.ok { color: #0a6b2e; font-weight: 700; }
+  .done { display: none; background: var(--box); border-top: 3px solid var(--ink); padding: 18px; margin: 0 0 30px; }
+  .done h2 { font-size: 20px; margin: 0 0 6px; }
+  .done p { margin: 0; }
+  .site-footer { margin-top: 30px; background:#f7f7f7; border-top:1px solid var(--line); padding: 22px max(18px, calc((100% - var(--col)) / 2 + 18px)) 28px; font-size:13px; color:var(--meta); line-height:1.8; }
+  .site-footer strong { color: var(--ink); }
+  .site-footer a { color: var(--meta); }
+  .nw { white-space: nowrap; }
+  @media (min-width: 720px) { h1 { font-size: 34px; margin-top: 44px; } }
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <h1>פנייה למערכת</h1>
+  <p class="lead">מצאתם טעות, מידע לא מדויק או תוכן שלדעתכם צריך תיקון? ספרו לנו. כל פנייה מגיעה אלינו ונבדקת.</p>
+
+  <aside class="notes" aria-label="לפני שפונים">
+    <ul>
+      <li>כשנמצאת טעות, אנחנו מתקנים אותה בכתבה.</li>
+      <li>אם תשאירו אימייל, נחזור אליכם כשיש צורך. איננו מתחייבים להשיב לכל פנייה.</li>
+      <li>בקשה לתיקון או להסרה של תוכן שנוגע לכם: פרטו במה מדובר, ונבדוק אותה.</li>
+    </ul>
+  </aside>
+
+  <form id="f" novalidate>
+    <div class="field">
+      <label for="subject">נושא הפנייה</label>
+      <select id="subject" name="subject" required>
+        <option>דיווח על טעות או מידע לא מדויק</option>
+        <option>טעות לשון</option>
+        <option>בקשה לתיקון או להסרת תוכן</option>
+        <option>תלונה</option>
+        <option>פנייה אחרת</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="page">הכתבה או הדף <span class="opt">(לא חובה)</span></label>
+      <input type="url" id="page" name="page" dir="ltr" placeholder="קישור לכתבה">
+      <div class="hint">אם הגעתם מכתבה, הקישור כבר מולא.</div>
+    </div>
+
+    <div class="field">
+      <label for="details">פירוט</label>
+      <textarea id="details" name="details" maxlength="3000" required placeholder="מה לא מדויק, ומה נכון לדעתכם?"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="name">שם <span class="opt">(לא חובה)</span></label>
+      <input type="text" id="name" name="name" maxlength="120" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="email">אימייל לחזרה <span class="opt">(לא חובה)</span></label>
+      <input type="email" id="email" name="email" maxlength="200" dir="ltr" autocomplete="email">
+    </div>
+
+    <div class="hp" aria-hidden="true">
+      <label for="website">אתר</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+    </div>
+
+    <p class="privacy">הפרטים שתמסרו ישמשו לטיפול בפנייה בלבד, ולא לדיוור או לפרסום. פרטים נוספים ב<a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>
+
+    <button type="submit" id="btn">שליחה</button>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <section class="done" id="done" role="status" aria-live="polite">
+    <h2>תודה, הפנייה התקבלה</h2>
+    <p>נבדוק אותה, ואם השארתם אימייל ויש צורך, נחזור אליכם.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div>האתר מופעל על ידי <strong>Smart Scale</strong></div>
+  <div>טלפון <span class="nw">050-261-1165</span> · <a href="mailto:im@ilyamaltsev.com">im@ilyamaltsev.com</a></div>
+  <div><a href="/privacy" target="_blank" rel="noopener">מדיניות פרטיות</a> · <a href="/terms" target="_blank" rel="noopener">תנאי שימוש</a></div>
+</footer>
+
+<script>
+  (function () {
+    // הקישור לכתבה: מגיע כ-?page= מהקישור "כתבו לנו", או מה-referrer
+    var q = new URLSearchParams(location.search);
+    var from = q.get('page') || (document.referrer.indexOf(location.origin) === 0 ? document.referrer : '');
+    if (from) document.getElementById('page').value = from.split('?')[0];
+
+    var f = document.getElementById('f'), btn = document.getElementById('btn'), msg = document.getElementById('msg');
+    function v(id) { return (document.getElementById(id).value || '').trim(); }
+
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      msg.className = 'msg'; msg.textContent = '';
+      if (v('details').length < 3) { msg.classList.add('err'); msg.textContent = 'נא לפרט את הפנייה.'; return; }
+      var email = v('email');
+      if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.classList.add('err'); msg.textContent = 'כתובת האימייל לא נראית תקינה.'; return; }
+
+      btn.disabled = true; var orig = btn.textContent; btn.textContent = 'שולח...';
+      fetch('/api/pniya', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject: v('subject'), page: v('page'), details: v('details'), name: v('name'), email: email, _gotcha: v('website') })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          if (d && d.ok) { f.style.display = 'none'; document.getElementById('done').style.display = 'block'; return; }
+          msg.classList.add('err');
+          msg.textContent = (d && d.userMessage) || 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו ל-im@ilyamaltsev.com';
+          btn.disabled = false; btn.textContent = orig;
+        })
+        .catch(function () {
+          msg.classList.add('err');
+          msg.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לכתוב לנו ל-im@ilyamaltsev.com';
+          btn.disabled = false; btn.textContent = orig;
+        });
+    });
+  })();
+</script>
+</body>
+</html>

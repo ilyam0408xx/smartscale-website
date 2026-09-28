@@ -36,6 +36,8 @@ const nextConfig: NextConfig = {
       // כתבות ממומנות לטאבולה, 27.9.2026: HTML סטטי לפי הטמפלייט הנעול
       // (יוצר-כתבות/_outbrain/_טמפלייט-עיצוב/). נבדק לפני הנתיב הדינמי /promo/[slug].
       { source: '/promo/tahkir-mazkira-orchei-din', destination: '/promo/tahkir-mazkira-orchei-din.html' },
+      // פנייה למערכת ("מצאתם טעות? כתבו לנו"), גנרי לכל כתבה ודף. נשלח לטלגרם דרך /api/pniya.
+      { source: '/pniyot', destination: '/pniyot.html' },
     ]
   },
 }

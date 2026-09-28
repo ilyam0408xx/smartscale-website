@@ -547,7 +547,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <span class="pill">לשכת עורכי הדין</span>
       <span class="pill">ניהול משרד</span>
     </div>
-    <div class="errata">מצאתם טעות? <a href="mailto:im@ilyamaltsev.com">כתבו לנו</a></div>
+    <div class="errata">מצאתם טעות? <a href="/pniyot" data-report>כתבו לנו</a></div>
 
   </article>
 </main>
@@ -575,6 +575,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   // כפתורי שיתוף: כתובת נקייה, בלי פרמטרי מעקב
   var url = location.protocol === 'file:' ? location.href.split(/[?#]/)[0] : location.origin + location.pathname;
   var title = document.title;
+  // "כתבו לנו": דף הפנייה למערכת, עם הקישור לכתבה הזו
+  document.querySelectorAll('a[data-report]').forEach(function (a) { a.href = '/pniyot?page=' + encodeURIComponent(url); });
   document.getElementById('sh-wa').href = 'https://wa.me/?text=' + encodeURIComponent(title + ' ' + url);
   document.getElementById('sh-fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
   document.getElementById('sh-mail').href = 'mailto:?subject=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(url);
