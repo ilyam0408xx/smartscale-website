@@ -355,7 +355,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // הוחזר 30.8.2026 באישור איליה, אחרי שבדיקת פאנל הראתה שהדף מבטיח מעבר אוטומטי
   // בזמן שההפניה מוערת. 15 שניות הן גם החלון שבו תגי GTM מספיקים לירות לפני העזיבה.
   setTimeout(function () {
-    window.location.href = 'https://book.ilyamaltsev.com/?e=15min';
+    // הכתובת של הכפתור, שהסקריפט למטה כבר הוסיף לה את פרמטרי הקמפיין (17.10.2026).
+    var a = document.querySelector('a[href^="https://book.ilyamaltsev.com"]');
+    window.location.href = a ? a.href : 'https://book.ilyamaltsev.com/?e=15min';
   }, 15000);
 </script>
 

@@ -1032,6 +1032,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           // one-time token so that a reload, a back-button or a bookmark of that page
           // cannot report the same lead as another conversion.
           msg.classList.add('ok');
+          // דף הקביעה (book.ilyamaltsev.com) קורא את העוגיות האלה וממלא מראש את הטופס,
+          // כדי שהפגישה תתקשר לליד הזה ב-CRM לפי אותו טלפון ומייל (17.10.2026).
+          try {
+            var ck = function (k, v) {
+              var c = k + '=' + encodeURIComponent(v) + ';path=/;max-age=' + (60 * 60 * 24 * 30) + ';SameSite=Lax';
+              if (location.hostname.indexOf('ilyamaltsev.com') >= 0) c += ';domain=.ilyamaltsev.com';
+              document.cookie = c;
+            };
+            ck('ss_lead_name', name); ck('ss_lead_phone', phone); ck('ss_lead_email', email);
+          } catch (e) {}
           msg.textContent = 'נשלח! מעביר אותך...';
           btn.textContent = 'נשלח ✓';
           window.location.href = '/lp-toda' + convQuery();
