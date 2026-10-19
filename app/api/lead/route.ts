@@ -27,6 +27,11 @@ type LeadBody = {
 const WEBHOOK_TIMEOUT_MS = 8000
 const TELEGRAM_TIMEOUT_MS = 5000
 
+// CRM then Telegram run one after the other, so the worst case is 8s + 5s. Without
+// this, a plan whose default limit is 10s would cut off the backup copy exactly when
+// the CRM is down, the one case it exists for.
+export const maxDuration = 30
+
 // The CRM's public lead endpoint (book. host, no Cloudflare Access). The secret is
 // CRM_LEAD_SECRET on Vercel, the same value as secrets/make_ingest.json in the CRM.
 const DEFAULT_CRM_LEAD_URL = 'https://book.ilyamaltsev.com/api/public/lead'
@@ -43,17 +48,19 @@ function logLead(event: string, fields: Record<string, unknown>): void {
   }
 }
 
-// Second, independent copy of the lead. If the CRM is unreachable the lead exists
-// nowhere else. Telegram is already the proven alert channel for the CRM, it keeps
-// history forever, and it does not depend on the CRM being up. Failure here never
-// changes what the visitor sees.
-async function sendTelegramCopy(payload: Record<string, unknown>): Promise<'sent' | 'skipped' | 'failed'> {
+// Backup copy of the lead, sent ONLY when the CRM did not take it: then the lead
+// exists nowhere else. Telegram keeps history forever and does not depend on the
+// CRM being up. Failure here never changes what the visitor sees.
+// Until 19.10.2026 this was sent on every lead, in parallel with the CRM, and the CRM
+// sends its own Telegram alert after saving, so every lead arrived twice. The CRM's
+// alert now carries the same details (lead_tracking.telegram_text in the CRM).
+async function sendTelegramCopy(payload: Record<string, unknown>, crmDetail: string): Promise<'sent' | 'skipped' | 'failed'> {
   const token = process.env.TELEGRAM_BOT_TOKEN
   const chatId = process.env.TELEGRAM_CHAT_ID
   if (!token || !chatId) return 'skipped'
 
   const lines = [
-    '🆕 ליד חדש מדף הנחיתה',
+    `⚠️ ליד מדף הנחיתה לא נכנס ל-CRM (${crmDetail}). צריך להזין אותו ידנית`,
     `שם: ${payload.name}`,
     `טלפון: ${payload.phone}`,
     `אימייל: ${payload.email || 'לא נמסר'}`,
@@ -206,12 +213,12 @@ export async function POST(req: Request) {
     }
   }
 
-  // Both must be awaited before responding: work left pending after the response
-  // is returned can be cut off by the serverless runtime.
-  const [crmResult, telegramResult] = await Promise.allSettled([callCrm(), sendTelegramCopy(payload)])
-
-  const crm = crmResult.status === 'fulfilled' ? crmResult.value : { ok: false, detail: 'threw' }
-  const telegram = telegramResult.status === 'fulfilled' ? telegramResult.value : 'failed'
+  // CRM first, Telegram only if the CRM failed. Both are awaited before responding:
+  // work left pending after the response is returned can be cut off by the runtime.
+  const crm = await callCrm().catch(() => ({ ok: false, detail: 'threw' }))
+  const telegram = crm.ok
+    ? 'skipped'
+    : await sendTelegramCopy(payload, crm.detail).catch(() => 'failed' as const)
 
   logLead('delivered', { phone, crm: crm.detail, telegram })
 
