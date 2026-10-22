@@ -1616,12 +1616,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   // Campaign attribution from the URL (?ref=, ?utm_*=) — forwarded to the
   // webhook and preserved into the thank-you page URL.
-  var TRACK_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
+  // campaign_id / adset_id / ad_id / placement: the human name rides in utm_*, the id next
+  // to it (22.10.2026, שיווק/_מאגר/בריף-שמות-ו-UTM.md). Same list as route.ts and the CRM.
+  var TRACK_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid',
+                    'campaign_id', 'adset_id', 'ad_id', 'placement'];
+  var TRACK_STORE = 'ss_trk_v1', TRACK_TTL = 30 * 24 * 3600 * 1000;
+  // The visitor's campaign survives a return visit without the parameters (a lead that
+  // came back from a bookmark used to arrive with no source at all). The newest visit that
+  // carried parameters wins; a bare visit falls back to it for 30 days.
   function getTracking() {
     var p = new URLSearchParams(location.search), out = {};
     TRACK_KEYS.forEach(function (k) { var v = p.get(k); if (v) out[k] = v; });
+    try {
+      if (Object.keys(out).length) {
+        localStorage.setItem(TRACK_STORE, JSON.stringify({ at: Date.now(), t: out }));
+        return out;
+      }
+      var s = JSON.parse(localStorage.getItem(TRACK_STORE) || 'null');
+      if (s && s.t && Date.now() - (s.at || 0) < TRACK_TTL) return s.t;
+    } catch (e) { /* private mode: current URL only */ }
     return out;
   }
+  try { getTracking(); } catch (e) { /* store on landing, not only on submit */ }
   // One-time conversion token. The thank-you page counts a conversion only when the
   // token in the URL matches the one we just stored, and it burns the stored copy on
   // use — so a reload or a direct visit to that page reports nothing.

@@ -103,7 +103,9 @@ function isValidPhone(phone: string): boolean {
 }
 
 // Campaign attribution keys passed through to the CRM (string values only).
-const TRACKING_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'] as const
+// campaign_id / adset_id / ad_id / placement (22.10.2026): names ride in utm_*, ids next to them.
+const TRACKING_KEYS = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid',
+  'campaign_id', 'adset_id', 'ad_id', 'placement'] as const
 function pickTracking(t: unknown): Record<string, string> {
   const out: Record<string, string> = {}
   if (t && typeof t === 'object') {
